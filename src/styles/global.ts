@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const StyledGlobal = createGlobalStyle`
@@ -46,6 +47,8 @@ const StyledGlobal = createGlobalStyle`
     }
 
     :root {
+        font-size: 62.5%;
+      
         --color-brand-1: #4529E6;
         --color-brand-2: #5126EA;
         --color-brand-3: #B0A6F0;
@@ -92,10 +95,10 @@ const StyledGlobal = createGlobalStyle`
 
 
     body {
-        min-width: 425px;
+        min-width: 42.5rem;
     }
     .container {
-        max-width: 1100px;
+        max-width: 110rem;
         margin: 0 auto;
     }
 `;
@@ -103,125 +106,125 @@ const StyledGlobal = createGlobalStyle`
 export const Heading_1_700 = styled.h1`
   font-family: var(--font-lexend);
   font-weight: 700;
-  font-size: 44px;
+  font-size: 4.4rem;
 `;
 
 export const Heading_2_600 = styled.h2`
   font-family: var(--font-lexend);
   font-weight: 600;
-  font-size: 36px;
+  font-size: 3.6rem;
 `;
 
 export const Heading_3_600 = styled.h3`
   font-family: var(--font-lexend);
   font-weight: 600;
-  font-size: 32px;
+  font-size: 3.2rem;
 `;
 
 export const Heading_3_500 = styled.h3`
   font-family: var(--font-lexend);
   font-weight: 500;
-  font-size: 32px;
+  font-size: 3.2rem;
 `;
 
 export const Heading_4_600 = styled.h4`
   font-family: var(--font-lexend);
   font-weight: 600;
-  font-size: 28px;
+  font-size: 2.8rem;
 `;
 
 export const Heading_4_500 = styled.h4`
   font-family: var(--font-lexend);
   font-weight: 500;
-  font-size: 28px;
+  font-size: 2.8rem;
 `;
 
 export const Heading_5_600 = styled.h5`
   font-family: var(--font-lexend);
   font-weight: 600;
-  font-size: 24px;
+  font-size: 2.4rem;
 `;
 
 export const Heading_5_500 = styled.h5`
   font-family: var(--font-lexend);
   font-weight: 500;
-  font-size: 24px;
+  font-size: 2.4rem;
 `;
 
 export const Heading_6_600 = styled.h6`
   font-family: var(--font-lexend);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 2rem;
 `;
 
 export const Heading_6_500 = styled.h6`
   font-family: var(--font-lexend);
   font-weight: 500;
-  font-size: 20px;
+  font-size: 2rem;
 `;
 
 export const Heading_7_600 = styled.h6`
   font-family: var(--font-lexend);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.6rem;
 `;
 
 export const Heading_7_500 = styled.h6`
   font-family: var(--font-lexend);
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1.6rem;
 `;
 
 export const Body_1_400 = styled.p`
   font-family: var(--font-inter);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1.6rem;
 `;
 
 export const Body_1_600 = styled.p`
   font-family: var(--font-inter);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.6rem;
 `;
 
 export const Body_2_400 = styled.p`
   font-family: var(--font-inter);
   font-weight: 400;
-  font-size: 14px;
+  font-size: 1.4rem;
 `;
 
 export const Body_2_500 = styled.p`
   font-family: var(--font-inter);
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 1.4rem;
 `;
 
 export const Button_big_text = styled.button`
   font-family: var(--font-inter);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.6rem;
   width: 100%;
-  height: 48px;
+  height: 4.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   cursor: pointer;
   border-style: solid;
-  border-width: 1.5px;
+  border-width: 0.15rem;
   ::before {
     content: '';
     position: absolute;
     background: var(--color-whiteFixed);
-    width: 8px;
+    width: 0.8rem;
     top: 0;
     bottom: 0;
-    left: -32px;
+    left: -3.2rem;
     transform: rotate(-16deg);
-    filter: blur(6px);
+    filter: blur(0.6rem);
   }
   :hover::before {
-    left: calc(100% + 32px);
+    left: calc(100% + 3.2rem);
     transition: 0.75s;
   }
   :hover {
@@ -232,28 +235,28 @@ export const Button_big_text = styled.button`
 export const Button_medium_text = styled.p`
   font-family: var(--font-inter);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 1.4rem;
 
   width: 100%;
-  height: 38px;
+  height: 3.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   cursor: pointer;
   ::before {
     content: '';
     position: absolute;
     background: var(--color-whiteFixed);
-    width: 8px;
+    width: 0.8rem;
     top: 0;
     bottom: 0;
-    left: -32px;
+    left: -3.2rem;
     transform: rotate(-16deg);
-    filter: blur(6px);
+    filter: blur(0.6rem);
   }
   :hover::before {
-    left: calc(100% + 32px);
+    left: calc(100% + 3.2rem);
     transition: 0.75s;
   }
   :hover {
@@ -261,16 +264,69 @@ export const Button_medium_text = styled.p`
   }
 `;
 
+export const Details = styled(Link)`
+  background: var(--color-brand-4);
+  border-radius: 0.4rem;
+  color: var(--color-brand-1);
+  padding: 0.4rem 0.8rem;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 1.4rem;
+  text-decoration: none;
+`;
+
 export const Input_place_holder = styled.p`
   font-family: var(--font-inter);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1.6rem;
 `;
 
 export const Input_label = styled.p`
   font-family: var(--font-inter);
   font-weight: 500;
-  font-size: 14px;
+  font-size: 1.4rem;
+`;
+
+export const ProductCardStyled = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.6rem;
+  max-width: 31.2rem;
+  height: 34rem;
+  padding: 3px;
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 15.2rem;
+    background-color: var(--color-grey-7);
+  }
+  > h6 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  > p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: pre-line;
+    text-overflow: ellipsis;
+  }
+  > span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+`;
+
+export const AdvertiserStyled = styled.aside`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;
 
 export default StyledGlobal;
