@@ -95,10 +95,11 @@ const StyledGlobal = createGlobalStyle`
 
 
     body {
+        background-color: var(--color-grey-7);
         min-width: 42.5rem;
     }
     .container {
-        max-width: 110rem;
+        max-width: 125rem;
         margin: 0 auto;
     }
 `;
@@ -212,23 +213,8 @@ export const Button_big_text = styled.button`
   cursor: pointer;
   border-style: solid;
   border-width: 0.15rem;
-  ::before {
-    content: '';
-    position: absolute;
-    background: var(--color-whiteFixed);
-    width: 0.8rem;
-    top: 0;
-    bottom: 0;
-    left: -3.2rem;
-    transform: rotate(-16deg);
-    filter: blur(0.6rem);
-  }
-  :hover::before {
-    left: calc(100% + 3.2rem);
-    transition: 0.75s;
-  }
   :hover {
-    transform: scale(1, 1);
+    filter: brightness(1.1);
   }
 `;
 
@@ -244,23 +230,8 @@ export const Button_medium_text = styled.p`
   justify-content: center;
   border-radius: 0.4rem;
   cursor: pointer;
-  ::before {
-    content: '';
-    position: absolute;
-    background: var(--color-whiteFixed);
-    width: 0.8rem;
-    top: 0;
-    bottom: 0;
-    left: -3.2rem;
-    transform: rotate(-16deg);
-    filter: blur(0.6rem);
-  }
-  :hover::before {
-    left: calc(100% + 3.2rem);
-    transition: 0.75s;
-  }
   :hover {
-    transform: scale(1, 1);
+    filter: brightness(1.1);
   }
 `;
 

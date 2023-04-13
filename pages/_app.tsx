@@ -1,3 +1,4 @@
+import { AdvertsProvider } from '@/src/contexts/advertsContext';
 import UserProvider from '@/src/contexts/userContext';
 import StyledGlobal from '@/src/styles/global';
 import type { AppProps } from 'next/app';
@@ -8,6 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <UserProvider>
+        <AdvertsProvider>
         <ToastContainer
           position="top-right"
           autoClose={2500}
@@ -22,6 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <StyledGlobal />
         <Component {...pageProps} />
+        </AdvertsProvider>
       </UserProvider>
     </>
   );

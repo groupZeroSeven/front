@@ -10,7 +10,7 @@ import { ButtonMedium } from './button-medium';
 import { ProfileAdvertiser } from './profile';
 
 export const Header = () => {
-  const user = true;
+  const user = false;
   const vendedor = true;
 
   const router = useRouter();
