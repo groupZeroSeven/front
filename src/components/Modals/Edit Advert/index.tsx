@@ -50,6 +50,10 @@ export interface iEditAdvert {
   images?: string[]
 }
 
+export interface iImage {
+  url: string;
+}
+
 const schemaEditAdvert = yup.object({
   brand: yup.string().notRequired(),
   model: yup.string().notRequired(),
@@ -117,14 +121,25 @@ export const EditAdvertModal = ({setIsEditAdvertModal, advert}: iEditAdvertModal
       delete data.secondImage
     }
     if (data.firstImage || data.secondImage) {
-      data.images = []
       if (data.firstImage) {
-        data.images.push(data.firstImage)
+        const image: iImage = {url: ""}
+        image.url += data.firstImage
         delete data.firstImage
+        try {
+          api.post(`/api/images/${advert.id}`, image)
+        } catch (err) {
+          console.log(err)
+        }
       }
       if (data.secondImage) {
-        data.images.push(data.secondImage)
+        const image: iImage = {url: ""}
+        image.url += data.secondImage
         delete data.secondImage
+        try {
+          api.post(`/api/images/${advert.id}`, image)
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
     try {
@@ -202,8 +217,8 @@ export const EditAdvertModal = ({setIsEditAdvertModal, advert}: iEditAdvertModal
               
               <Input_label>Publicado</Input_label>
               <StyledDivButtons>
-                <button className="cancel" type="button" onClick={() => setIsPublished(true)}>SIM</button>
-                <button className="confirm" type="button" onClick={() => setIsPublished(false)}>NÃO</button>
+                <button type="button" style={isPublished ? {backgroundColor: "var(--color-brand-1)", color: "var(--color-whiteFixed)"} : {backgroundColor: "var(--color-whiteFixed)", color: "var(--color-grey-0)"}} onClick={() => setIsPublished(true)}>SIM</button>
+                <button type="button" style={isPublished ? {backgroundColor: "var(--color-whiteFixed)", color: "var(--color-grey-0)"} : {backgroundColor: "var(--color-brand-1)", color: "var(--color-whiteFixed)"}} onClick={() => setIsPublished(false)}>NÃO</button>
               </StyledDivButtons>
               <Input_label>Imagem da Capa</Input_label>
               <StyledInput type="text" id="banner" placeholder="https://image.com" {...register("banner")}/>
