@@ -11,7 +11,7 @@ export const HeaderStyled = styled.header`
   }
 
   > nav {
-    background-color: var(--color-grey-10);
+    background-color: var(--color-grey-7);
     .computer {
       display: none;
     }
@@ -22,6 +22,7 @@ export const HeaderStyled = styled.header`
       position: relative;
       > svg {
         padding-right: 2.9rem;
+        cursor: pointer;
       }
       > span {
         width: 100vw;
@@ -45,7 +46,7 @@ export const HeaderStyled = styled.header`
       padding: 2.7rem 6rem;
     }
     > nav {
-      background-color: var(--color-grey-10);
+      background-color: var(--color-grey-7);
       border-left: 2px solid var(--color-grey-6);
       .mobile {
         display: none;
