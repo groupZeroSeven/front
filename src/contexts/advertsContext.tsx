@@ -23,6 +23,16 @@ export const AdvertsProvider = ( { children }  : IAdvertsProps) => {
         }
     }
 
+    async function getEspecificAdverts(id : string) {
+        
+        try {
+            const {data} = await api.get(`/api/anoucements/${id}`)
+            return data
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     async function addAdverts(data: any) {
         try {
             await api.post('/api/anoucements', data)
@@ -44,12 +54,12 @@ export const AdvertsProvider = ( { children }  : IAdvertsProps) => {
 
     async function patchAdverts(data: any, id : string) {
         try {
-            const response = await api.patch(`/api/anoucements/${id}`, data)
+            await api.patch(`/api/anoucements/${id}`, data)
             await getAdverts()
         } catch (error) {
             console.error(error)
         }
     }
 
-    return(<AdvertsContext.Provider value={{adverts, getAdverts, addAdverts, delAdverts, patchAdverts}}>{children}</AdvertsContext.Provider>)
+    return(<AdvertsContext.Provider value={{adverts, getAdverts, addAdverts, delAdverts, patchAdverts, getEspecificAdverts}}>{children}</AdvertsContext.Provider>)
 }

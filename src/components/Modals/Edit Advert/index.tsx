@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect } from "react"
 import { StyledEditAdvertModal } from "./style"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,10 +9,11 @@ import {  useState } from "react";
 import { DeleteAdvertModal } from "../Delete Advert";
 import { Body_2_500, Heading_7_500, Input_label } from "@/src/styles/global";
 import { StyledButtonClose, StyledButtonImg, StyledDivButtons, StyledInput } from "../Create Advert/style";
+import { AdvertsContext } from "@/src/contexts/advertsContext";
 
 export interface iEditAdvertModalProps {
   setIsEditAdvertModal: Dispatch<SetStateAction<boolean>>
-  advert: iAdvert
+  id?: string
 }
 
 export interface iAdvert {
@@ -69,9 +70,23 @@ const schemaEditAdvert = yup.object({
   secondImage: yup.string().notRequired()
 });
 
-export const EditAdvertModal = ({setIsEditAdvertModal, advert}: iEditAdvertModalProps) => {
-  const [isPublished, setIsPublished] = useState<boolean>(advert.is_published)
+
+
+export const EditAdvertModal = ({setIsEditAdvertModal, id}: iEditAdvertModalProps)=> {
+  const { getEspecificAdverts, patchAdverts } = useContext(AdvertsContext)
+  const [ advert, setAdvert] = useState<any>()
+  const [isPublished, setIsPublished] = useState<boolean>(advert?.is_published)
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false)
+
+  useEffect(()=>{
+    async function getAdvert(id : string | undefined) {
+      const advert2 : iAdvert= await getEspecificAdverts(id)
+      setAdvert(advert2)
+    }
+
+    getAdvert(id)
+  },[])
+
   const {
     register,
     handleSubmit,
@@ -154,6 +169,8 @@ export const EditAdvertModal = ({setIsEditAdvertModal, advert}: iEditAdvertModal
         theme: "dark",
       })
     }
+
+    patchAdverts(data, id)
   }
 
   return (
