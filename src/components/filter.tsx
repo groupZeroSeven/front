@@ -1,10 +1,12 @@
+import { FilterStyled } from "../styles/containers"
 import { Heading_4_600, Heading_6_500 } from "../styles/global"
+import { ButtonBig } from "./button-big"
 
 export const Filter = () => {
 
     return(
         <>
-            <div>
+            <FilterStyled>
                 <ul>
                     <Heading_4_600>Marca</Heading_4_600>
                     <li><Heading_6_500>General Motors</Heading_6_500></li>
@@ -69,7 +71,10 @@ export const Filter = () => {
                         <input placeholder="Maximo"></input>
                     </div>
                 </form>
-            </div>
+                 <div>
+                    <ButtonBig   bgColor="var(--color-brand-2)" fontColor="var(--color-whiteFixed)" borderColor="var(--color-brand-2)">Ver anuncios</ButtonBig>
+                </div>
+            </FilterStyled>
         </>
     )
 }

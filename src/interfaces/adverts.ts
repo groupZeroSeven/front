@@ -5,5 +5,6 @@ export interface IAdvertsProps {
     delAdverts  ?: any;
     patchAdverts  ?: any;
     children?: React.ReactNode;
+    getEspecificAdverts ?: any;
   }
   

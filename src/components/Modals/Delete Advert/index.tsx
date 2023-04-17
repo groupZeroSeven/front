@@ -21,7 +21,6 @@ export const DeleteAdvertModal = ({setIsDeleteModal, advertId, setIsEditAdvertMo
       setIsDeleteModal(false)
       setIsEditAdvertModal(false)
     } catch (err) {
-      console.log(err)
       toast.error("Não foi possível deletar o anúncio", {
         theme: "dark",
       })
