@@ -1,10 +1,10 @@
 import { CreateAdvertModal } from "@/src/components/Modals/Create Advert";
 import { EditAdvertModal } from "@/src/components/Modals/Edit Advert";
-import {  useState } from "react";
+import { UserContext } from "@/src/contexts/userContext";
+import React, {  useState } from "react";
 
 const Teste = () => {
-  const [isCreateAdvertModal, setIsCreateAdvertModal] = useState<boolean>(false)
-  const [isEditAdvertModal, setIsEditAdvertModal] = useState<boolean>(false)
+  const { setIsCreateAdvertModal, isCreateAdvertModal, isEditAdvertModal, setIsEditAdvertModal } = React.useContext(UserContext);
   const advert = 	{
 		"id": "834f811b-6436-4e9e-b96f-cd6f765c50f9",
 		"brand": "Fiat",
@@ -25,7 +25,7 @@ const Teste = () => {
     <>
       <div>
         {isCreateAdvertModal ? (
-          <CreateAdvertModal setIsCreateAdvertModal={setIsCreateAdvertModal}/>
+          <CreateAdvertModal />
         ) : null
         }
         {isEditAdvertModal ? (

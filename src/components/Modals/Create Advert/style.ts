@@ -55,6 +55,7 @@ export const StyledInput = styled.input`
   padding: 12px 8px;
   border: 1.5px solid var(--color-grey-7);
   border-radius: 4px;
+  width: 95%;
   ::placeholder {
     font-family: var(--font-inter);
     font-weight: 400;

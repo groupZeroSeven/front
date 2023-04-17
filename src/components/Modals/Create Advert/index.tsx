@@ -1,8 +1,8 @@
 import { UserContext } from '@/src/contexts/userContext';
-import { api } from '@/src/services/api';
+import { api, apiKars } from '@/src/services/api';
 import { Body_2_500, Heading_7_500, Input_label } from '@/src/styles/global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -31,29 +31,103 @@ export interface iCreateAdvert {
   banner: string;
   is_bargain?: boolean;
   is_published?: boolean;
-  firstImage?: string;
-  secondImage?: string;
+  image1?: string;
+  image2?: string;
+  image3?: string;
+  image4?: string;
+  image5?: string;
+  image6?: string;
   images: string[];
 }
 
+export interface iModel {
+  id: string;
+  name: string;
+  brand: string;
+  year: string;
+  fuel: number;
+  value: number;
+}
 const schemaNewAdvert = yup.object({
   brand: yup.string().required('Obrigatório inserir uma marca'),
   model: yup.string().required('Obrigatório inserir um modelo'),
-  year: yup.string().required('Obrigatório inserir o ano'),
-  fuel: yup.string().required('Obrigatório inserir o tipo de combustível'),
   mileage: yup.string().required('Obrigatório inserir a quilometragem'),
   color: yup.string().required('Obrigatório inserir a cor do veículo'),
-  fipe: yup.string().required('Obrigatório inserir o valor FIPE'),
   price: yup.string().required('Obrigatório inserir o preço'),
   description: yup.string().required('Obrigatório inserir uma descrição'),
   banner: yup.string().required('Obrigatório inserir a imagem do veículo'),
-  firstImage: yup.string().notRequired(),
-  secondImage: yup.string().notRequired(),
+  image1: yup.string().notRequired(),
+  image2: yup.string().notRequired(),
+  image3: yup.string().notRequired(),
+  image4: yup.string().notRequired(),
+  image5: yup.string().notRequired(),
+  image6: yup.string().notRequired(),
 });
 
 export const CreateAdvertModal = () => {
-  const { setIsCreateAdvertModal } = React.useContext(UserContext);
+  const { setIsCreateAdvertModal, isCreateAdvertModal } = React.useContext(UserContext);
+  const brands = [
+    "Citroën",
+    "Fiat",
+    "Ford",
+    "Chevrolet",
+    "Honda",
+    "Hyundai",
+    "Nissan",
+    "Peugeot",
+    "Renault",
+    "Toyota",
+    "Volkswagen",
+  ]
+  const [selectBrand, setSelectBrand] = useState<string>("")
+  const [selectModelValues, setSelectModelValues] = useState<iModel[]>([])
+  const [selectModel, setSelectModel] = useState<string>("")
+  const [selectModelData, setSelectModelData] = useState<iModel>()
+  const [inputImages, setInputImages] = useState<boolean[]>([true, true])
+  useEffect(() => {
+    const res = async () => {
+      try {
+        const {data} = await apiKars.get(`/cars?brand=${selectBrand.toLocaleLowerCase()}`)
+        setSelectModelValues(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    if(selectBrand !== "") {
+      res()
+    }
+  }, [selectBrand])
 
+  useEffect(() => {
+    const data = async () => {
+      const modelData = selectModelValues.filter((model) => (
+        model.name === selectModel
+      ))
+      setSelectModelData(modelData[0])
+    }
+    if(selectModel !== "") {
+      data()
+    }
+    if (!isCreateAdvertModal) {
+      setSelectModelData(undefined)
+    }
+  }, [selectModel])
+
+  const handleImages = () => {
+    setInputImages(prevInputImages => {
+      if (prevInputImages.length < 6) { 
+        return [...prevInputImages, true];
+      }
+      return prevInputImages;
+    });
+  };
+  const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectBrand(event.target.value)
+  }
+
+  const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectModel(event.target.value)
+  }
   const {
     register,
     handleSubmit,
@@ -62,20 +136,58 @@ export const CreateAdvertModal = () => {
     resolver: yupResolver(schemaNewAdvert),
   });
 
+  const fuelType = (n: number) => {
+    switch (n) {
+      case 1:
+        return "Flex"
+      case 2:
+        return "Híbrido"
+      case 3:
+        return "Elétrico"
+      default:
+        return ""
+    }
+  }
+  
   const handleSubmitFunction = async (data: iCreateAdvert) => {
     data['mileage'] = +data.mileage;
     data['is_bargain'] = false;
     data['is_published'] = true;
-    const firstImg = data.firstImage;
-    delete data.firstImage;
-    const secondImg = data.secondImage;
-    delete data.secondImage;
+    data.fipe = selectModelData!.value.toString()
+    data.fuel = fuelType(selectModelData!.fuel)
+    data.year = selectModelData!.year
+
+    const image1 = data.image1;
+    delete data.image1;
+    const image2 = data.image2;
+    delete data.image2;
+    const image3 = data.image3;
+    delete data.image3;
+    const image4 = data.image4;
+    delete data.image4;
+    const image5 = data.image5;
+    delete data.image5;
+    const image6 = data.image6;
+    delete data.image6;
+
     data.images = [];
-    if (firstImg) {
-      data.images.push(firstImg);
+    if (image1) {
+      data.images.push(image1);
     }
-    if (secondImg) {
-      data.images.push(secondImg);
+    if (image2) {
+      data.images.push(image2);
+    }
+    if (image3) {
+      data.images.push(image3);
+    }
+    if (image4) {
+      data.images.push(image4);
+    }
+    if (image5) {
+      data.images.push(image5);
+    }
+    if (image6) {
+      data.images.push(image6);
     }
     try {
       await toast.promise(
@@ -114,21 +226,28 @@ export const CreateAdvertModal = () => {
 
           <div className="formSingleInput">
             <Input_label>Marca</Input_label>
-            <StyledInput
-              type="text"
-              id="brand"
-              placeholder="Mercedes Benz"
-              {...register('brand')}
-            />
+            <select value={selectBrand} {...register('brand')} onChange={handleBrandChange} >
+              <option value="">Selecione uma marca</option>
+              {
+                brands.map((brand, i) => (
+                  <option value={brand} key={i}>{brand}</option>
+                )
+                )
+              }
+            </select>
             <span>{errors.brand?.message}</span>
 
             <Input_label>Modelo</Input_label>
-            <StyledInput
-              type="text"
-              id="model"
-              placeholder="A 200 CGI ADVANCE SEDAN"
-              {...register('model')}
-            />
+            <select value={selectModel} {...register('model')} onChange={handleModelChange}>
+              <option value="">Selecione um modelo</option>
+              {
+                selectModelValues.length > 0 && (
+                  selectModelValues.map((model) => (
+                    <option key={model.id} value={model.name.toLocaleLowerCase()}>{model.name}</option>
+                  ))
+                )
+              }
+            </select>
             <span>{errors.model?.message}</span>
           </div>
           <div className="formDoubleInput">
@@ -137,8 +256,8 @@ export const CreateAdvertModal = () => {
               <StyledInput
                 type="text"
                 id="year"
-                placeholder="2018"
-                {...register('year')}
+                value={selectModelData ? selectModelData.year : ""}
+                disabled
               />
               <span>{errors.year?.message}</span>
             </div>
@@ -148,8 +267,8 @@ export const CreateAdvertModal = () => {
               <StyledInput
                 type="text"
                 id="fuel"
-                placeholder="Gasolina/Etanol"
-                {...register('fuel')}
+                value={selectModelData ? fuelType(selectModelData.fuel) : ""}
+                disabled
               />
               <span>{errors.fuel?.message}</span>
             </div>
@@ -181,8 +300,8 @@ export const CreateAdvertModal = () => {
               <StyledInput
                 type="text"
                 id="fipe"
-                placeholder="R$ 48.000,00"
-                {...register('fipe')}
+                value={selectModelData ? selectModelData.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : ""}
+                disabled
               />
               <span>{errors.fipe?.message}</span>
             </div>
@@ -217,23 +336,25 @@ export const CreateAdvertModal = () => {
             />
             <span>{errors.banner?.message}</span>
 
-            <Input_label>1º Imagem da galeria</Input_label>
-            <StyledInput
-              type="text"
-              id="firstImage"
-              placeholder="https://image.com"
-              {...register('firstImage')}
-            />
-
-            <Input_label>2º Imagem da galeria</Input_label>
-            <StyledInput
-              type="text"
-              id="secondImage"
-              placeholder="https://image.com"
-              {...register('secondImage')}
-            />
-
-            <StyledButtonImg type="button">
+            {
+              inputImages.map((image, i) => (
+                <div key={i} style={image ? {display: "block", width: "100%"} : {display: "none"}}>
+                      <Input_label >{i + 1}º Imagem da galeria</Input_label>
+                      <StyledInput
+                        type="text"
+                        placeholder="https://image.com"
+                        {...i === 0 ? {...register('image1')} : null}
+                        {...i === 1 ? {...register('image2')} : null}
+                        {...i === 2 ? {...register('image3')} : null}
+                        {...i === 3 ? {...register('image4')} : null}
+                        {...i === 4 ? {...register('image5')} : null}
+                        {...i === 5 ? {...register('image6')} : null}
+                      />
+                </div>
+              ))
+            }
+    
+            <StyledButtonImg type="button" onClick={handleImages}>
               Adicionar campo para imagem da galeria
             </StyledButtonImg>
 
