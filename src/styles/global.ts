@@ -102,6 +102,11 @@ const StyledGlobal = createGlobalStyle`
         max-width: 125rem;
         margin: 0 auto;
     }
+    .my-toast {
+        margin-top: 20px;
+        font-size: 16px;
+        padding: 20px;
+    }
 `;
 
 export const Heading_1_700 = styled.h1`

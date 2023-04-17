@@ -10,20 +10,21 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <UserProvider>
         <AdvertsProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={2500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable
-          pauseOnHover={false}
-          theme="colored"
-        />
-        <StyledGlobal />
-        <Component {...pageProps} />
+          <ToastContainer
+            className="my-toast"
+            position="top-right"
+            autoClose={2500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+            theme="colored"
+          />
+          <StyledGlobal />
+          <Component {...pageProps} />
         </AdvertsProvider>
       </UserProvider>
     </>
