@@ -2,7 +2,7 @@ import { UserContext } from '@/src/contexts/userContext';
 import { api, apiKars } from '@/src/services/api';
 import { Body_2_500, Heading_7_500, Input_label } from '@/src/styles/global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -12,78 +12,15 @@ import {
   StyledCreateAdvertModal,
   StyledDivButtons,
   StyledInput,
+  StyledSelect,
 } from './style';
-
-export interface iCreateAdvertModalProps {
-  setIsCreateAdvertModal: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface iCreateAdvert {
-  brand: string;
-  model: string;
-  year: string;
-  fuel: string;
-  mileage: string | number;
-  color: string;
-  fipe: string;
-  price: string;
-  description: string;
-  banner: string;
-  is_bargain?: boolean;
-  is_published?: boolean;
-  image1?: string;
-  image2?: string;
-  image3?: string;
-  image4?: string;
-  image5?: string;
-  image6?: string;
-  images: string[];
-}
-
-export interface iModel {
-  id: string;
-  name: string;
-  brand: string;
-  year: string;
-  fuel: number;
-  value: number;
-}
-const schemaNewAdvert = yup.object({
-  brand: yup.string().required('Obrigatório inserir uma marca'),
-  model: yup.string().required('Obrigatório inserir um modelo'),
-  mileage: yup.string().required('Obrigatório inserir a quilometragem'),
-  color: yup.string().required('Obrigatório inserir a cor do veículo'),
-  price: yup.string().required('Obrigatório inserir o preço'),
-  description: yup.string().required('Obrigatório inserir uma descrição'),
-  banner: yup.string().required('Obrigatório inserir a imagem do veículo'),
-  image1: yup.string().notRequired(),
-  image2: yup.string().notRequired(),
-  image3: yup.string().notRequired(),
-  image4: yup.string().notRequired(),
-  image5: yup.string().notRequired(),
-  image6: yup.string().notRequired(),
-});
+import { schemaNewAdvert } from '@/src/schemas/createAdvert';
+import { iCreateAdvert, iModel } from '@/src/interfaces/adverts';
+import { AdvertsContext } from '@/src/contexts/advertsContext';
 
 export const CreateAdvertModal = () => {
   const { setIsCreateAdvertModal, isCreateAdvertModal } = React.useContext(UserContext);
-  const brands = [
-    "Citroën",
-    "Fiat",
-    "Ford",
-    "Chevrolet",
-    "Honda",
-    "Hyundai",
-    "Nissan",
-    "Peugeot",
-    "Renault",
-    "Toyota",
-    "Volkswagen",
-  ]
-  const [selectBrand, setSelectBrand] = useState<string>("")
-  const [selectModelValues, setSelectModelValues] = useState<iModel[]>([])
-  const [selectModel, setSelectModel] = useState<string>("")
-  const [selectModelData, setSelectModelData] = useState<iModel>()
-  const [inputImages, setInputImages] = useState<boolean[]>([true, true])
+  const {brands, selectBrand, selectModelValues, setSelectModelValues, selectModel, selectModelData, setSelectModelData, inputImages, handleImages, handleBrandChange, handleModelChange, fuelType} = React.useContext(AdvertsContext)
   useEffect(() => {
     const res = async () => {
       try {
@@ -113,21 +50,6 @@ export const CreateAdvertModal = () => {
     }
   }, [selectModel])
 
-  const handleImages = () => {
-    setInputImages(prevInputImages => {
-      if (prevInputImages.length < 6) { 
-        return [...prevInputImages, true];
-      }
-      return prevInputImages;
-    });
-  };
-  const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectBrand(event.target.value)
-  }
-
-  const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectModel(event.target.value)
-  }
   const {
     register,
     handleSubmit,
@@ -136,19 +58,6 @@ export const CreateAdvertModal = () => {
     resolver: yupResolver(schemaNewAdvert),
   });
 
-  const fuelType = (n: number) => {
-    switch (n) {
-      case 1:
-        return "Flex"
-      case 2:
-        return "Híbrido"
-      case 3:
-        return "Elétrico"
-      default:
-        return ""
-    }
-  }
-  
   const handleSubmitFunction = async (data: iCreateAdvert) => {
     data['mileage'] = +data.mileage;
     data['is_bargain'] = false;
@@ -226,7 +135,7 @@ export const CreateAdvertModal = () => {
 
           <div className="formSingleInput">
             <Input_label>Marca</Input_label>
-            <select value={selectBrand} {...register('brand')} onChange={handleBrandChange} >
+            <StyledSelect value={selectBrand} {...register('brand')} onChange={handleBrandChange} >
               <option value="">Selecione uma marca</option>
               {
                 brands.map((brand, i) => (
@@ -234,11 +143,11 @@ export const CreateAdvertModal = () => {
                 )
                 )
               }
-            </select>
+            </StyledSelect>
             <span>{errors.brand?.message}</span>
 
             <Input_label>Modelo</Input_label>
-            <select value={selectModel} {...register('model')} onChange={handleModelChange}>
+            <StyledSelect value={selectModel} {...register('model')} onChange={handleModelChange}>
               <option value="">Selecione um modelo</option>
               {
                 selectModelValues.length > 0 && (
@@ -247,7 +156,7 @@ export const CreateAdvertModal = () => {
                   ))
                 )
               }
-            </select>
+            </StyledSelect>
             <span>{errors.model?.message}</span>
           </div>
           <div className="formDoubleInput">

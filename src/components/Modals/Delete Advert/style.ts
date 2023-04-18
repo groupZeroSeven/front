@@ -10,13 +10,13 @@ display: flex;
 align-items: center;
 justify-content: center;
   .modal {
-    max-width: 520px;
+    max-width: 52rem;
     background-color: white;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    padding: 20px;
-    border-radius: 8px;
+    gap: 2.5rem;
+    padding: 2.0rem;
+    border-radius: 0.8rem;
   }
 `
