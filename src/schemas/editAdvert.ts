@@ -7,7 +7,7 @@ export const schemaEditAdvert = yup.object({
   fuel: yup.string().notRequired(),
   mileage: yup.string().notRequired(),
   color: yup.string().notRequired(),
-  fipe: yup.string().notRequired(),
+  fip: yup.string().notRequired(),
   price: yup.string().notRequired(),
   description: yup.string().notRequired(),
   banner: yup.string().notRequired(),

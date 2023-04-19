@@ -83,9 +83,10 @@ export const CreateAdvertModal = () => {
     data['mileage'] = +data.mileage;
     data['is_bargain'] = false;
     data['is_published'] = true;
-    data.fipe = selectModelData!.value.toString();
-    data.fuel = fuelType(selectModelData!.fuel);
-    data.year = selectModelData!.year;
+
+    data.fip = selectModelData!.value.toString()
+    data.fuel = fuelType(selectModelData!.fuel)
+    data.year = selectModelData!.year
 
     const image1 = data.image1;
     delete data.image1;
@@ -237,18 +238,11 @@ export const CreateAdvertModal = () => {
               <Input_label>Preço tabela FIPE</Input_label>
               <StyledInput
                 type="text"
-                id="fipe"
-                value={
-                  selectModelData
-                    ? selectModelData.value.toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL',
-                      })
-                    : ''
-                }
+                id="fip"
+                value={selectModelData ? selectModelData.value : ""}
                 disabled
               />
-              <StyledSpanError>{errors.fipe?.message}</StyledSpanError>
+              <StyledSpanError>{errors.fip?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">

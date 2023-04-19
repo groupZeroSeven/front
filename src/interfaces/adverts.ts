@@ -38,7 +38,7 @@ export interface IAdvertsProps {
     fuel: string;
     mileage: string | number;
     color: string;
-    fipe: string;
+    fip: string;
     price: string;
     description: string;
     banner: string;
@@ -96,7 +96,7 @@ export interface IAdvertsProps {
     description?: string;
     is_bargain?: boolean;
     is_published?: boolean;
-    fipe?: string;
+    fip?: string;
     firstImage?: string;
     secondImage?: string;
     images?: string[];
