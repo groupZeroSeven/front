@@ -95,7 +95,7 @@ const StyledGlobal = createGlobalStyle`
 
 
     body {
-        background-color: var(--color-grey-7);
+        background-color: var(--color-grey-8);
         min-width: 42.5rem;
     }
     .container {
@@ -227,7 +227,6 @@ export const Button_medium_text = styled.p`
   font-family: var(--font-inter);
   font-weight: 600;
   font-size: 1.4rem;
-
   width: 100%;
   height: 3.8rem;
   display: flex;
@@ -235,6 +234,8 @@ export const Button_medium_text = styled.p`
   justify-content: center;
   border-radius: 0.4rem;
   cursor: pointer;
+  border-style: solid;
+  border-width: 0.15rem;
   :hover {
     filter: brightness(1.1);
   }
@@ -269,15 +270,19 @@ export const ProductCardStyled = styled.li`
   justify-content: space-between;
   gap: 1.6rem;
   max-width: 31.2rem;
-  height: 34rem;
   padding: 3px;
-  > div {
+  .img {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 15.2rem;
     background-color: var(--color-grey-7);
+  }
+  .buttons {
+    display: flex;
+    width: 100%;
+    gap: 1.6rem;
   }
   > h6 {
     white-space: nowrap;
