@@ -12,7 +12,6 @@ import React, {
 } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import * as yup from 'yup';
 import {
   StyledButtonClose,
   StyledButtonImg,
@@ -21,65 +20,9 @@ import {
 } from '../Create Advert/style';
 import { DeleteAdvertModal } from '../Delete Advert';
 import { StyledEditAdvertModal } from './style';
+import { iAdvert, iEditAdvert, iImage } from '@/src/interfaces/adverts';
+import { schemaEditAdvert } from '@/src/schemas/editAdvert';
 
-export interface iEditAdvertModalProps {
-  setIsEditAdvertModal: Dispatch<SetStateAction<boolean>>;
-  id?: string;
-}
-
-export interface iAdvert {
-  id: string;
-  brand: string;
-  banner: string;
-  model: string;
-  year: string;
-  fuel: string;
-  mileage: number;
-  color: string;
-  price: string;
-  description: string;
-  is_bargain: boolean;
-  is_published: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface iEditAdvert {
-  brand?: string;
-  banner?: string;
-  model?: string;
-  year?: string;
-  fuel?: string;
-  mileage?: string;
-  color?: string;
-  price?: string;
-  description?: string;
-  is_bargain?: boolean;
-  is_published?: boolean;
-  fipe?: string;
-  firstImage?: string;
-  secondImage?: string;
-  images?: string[];
-}
-
-export interface iImage {
-  url: string;
-}
-
-const schemaEditAdvert = yup.object({
-  brand: yup.string().notRequired(),
-  model: yup.string().notRequired(),
-  year: yup.string().notRequired(),
-  fuel: yup.string().notRequired(),
-  mileage: yup.string().notRequired(),
-  color: yup.string().notRequired(),
-  fipe: yup.string().notRequired(),
-  price: yup.string().notRequired(),
-  description: yup.string().notRequired(),
-  banner: yup.string().notRequired(),
-  firstImage: yup.string().notRequired(),
-  secondImage: yup.string().notRequired(),
-});
 
 export const EditAdvertModal = ({ id }: any) => {
   const { getEspecificAdverts, patchAdverts } = useContext(AdvertsContext);

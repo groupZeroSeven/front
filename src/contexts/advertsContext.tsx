@@ -1,13 +1,59 @@
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { IAdvertsProps } from '../interfaces/adverts';
+import { IAdvertsProps, iModel } from '../interfaces/adverts';
 import { api } from '../services/api';
 
 export const AdvertsContext = createContext<IAdvertsProps>({} as IAdvertsProps);
 
 export const AdvertsProvider = ({ children }: IAdvertsProps) => {
   const [adverts, setAdverts] = useState();
+  const [selectBrand, setSelectBrand] = useState<string>("")
+  const [selectModelValues, setSelectModelValues] = useState<iModel[]>([])
+  const [selectModel, setSelectModel] = useState<string>("")
+  const [selectModelData, setSelectModelData] = useState<iModel>()
+  const [inputImages, setInputImages] = useState<boolean[]>([true, true])
+  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false)
+  const brands = [
+    "Citroën",
+    "Fiat",
+    "Ford",
+    "Chevrolet",
+    "Honda",
+    "Hyundai",
+    "Nissan",
+    "Peugeot",
+    "Renault",
+    "Toyota",
+    "Volkswagen",
+  ]
+  const handleImages = () => {
+    setInputImages(prevInputImages => {
+      if (prevInputImages.length < 6) { 
+        return [...prevInputImages, true];
+      }
+      return prevInputImages;
+    });
+  };
+  const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectBrand(event.target.value)
+  }
 
+  const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectModel(event.target.value)
+  }
+
+  const fuelType = (n: number) => {
+    switch (n) {
+      case 1:
+        return "Flex"
+      case 2:
+        return "Híbrido"
+      case 3:
+        return "Elétrico"
+      default:
+        return ""
+    }
+  }
   useEffect(() => {
     getAdverts();
   }, []);
@@ -67,6 +113,23 @@ export const AdvertsProvider = ({ children }: IAdvertsProps) => {
         delAdverts,
         patchAdverts,
         getEspecificAdverts,
+        brands,
+        selectBrand,
+        setSelectBrand,
+        selectModelValues,
+        setSelectModelValues,
+        selectModel,
+        setSelectModel,
+        selectModelData,
+        setSelectModelData,
+        inputImages,
+        setInputImages,
+        handleImages,
+        handleBrandChange,
+        handleModelChange,
+        fuelType,
+        isConfirmModal,
+        setIsConfirmModal,
       }}
     >
       {children}
