@@ -5,55 +5,55 @@ import { api } from '../services/api';
 
 export const AdvertsContext = createContext<IAdvertsProps>({} as IAdvertsProps);
 
-export const AdvertsProvider = ({ children }: IAdvertsProps) => {
+const AdvertsProvider = ({ children }: IAdvertsProps) => {
   const [adverts, setAdverts] = useState();
-  const [selectBrand, setSelectBrand] = useState<string>("")
-  const [selectModelValues, setSelectModelValues] = useState<iModel[]>([])
-  const [selectModel, setSelectModel] = useState<string>("")
-  const [selectModelData, setSelectModelData] = useState<iModel>()
-  const [inputImages, setInputImages] = useState<boolean[]>([true, true])
-  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false)
+  const [selectBrand, setSelectBrand] = useState<string>('');
+  const [selectModelValues, setSelectModelValues] = useState<iModel[]>([]);
+  const [selectModel, setSelectModel] = useState<string>('');
+  const [selectModelData, setSelectModelData] = useState<iModel>();
+  const [inputImages, setInputImages] = useState<boolean[]>([true, true]);
+  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
   const brands = [
-    "Citroën",
-    "Fiat",
-    "Ford",
-    "Chevrolet",
-    "Honda",
-    "Hyundai",
-    "Nissan",
-    "Peugeot",
-    "Renault",
-    "Toyota",
-    "Volkswagen",
-  ]
+    'Citroën',
+    'Fiat',
+    'Ford',
+    'Chevrolet',
+    'Honda',
+    'Hyundai',
+    'Nissan',
+    'Peugeot',
+    'Renault',
+    'Toyota',
+    'Volkswagen',
+  ];
   const handleImages = () => {
-    setInputImages(prevInputImages => {
-      if (prevInputImages.length < 6) { 
+    setInputImages((prevInputImages) => {
+      if (prevInputImages.length < 6) {
         return [...prevInputImages, true];
       }
       return prevInputImages;
     });
   };
   const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectBrand(event.target.value)
-  }
+    setSelectBrand(event.target.value);
+  };
 
   const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectModel(event.target.value)
-  }
+    setSelectModel(event.target.value);
+  };
 
   const fuelType = (n: number) => {
     switch (n) {
       case 1:
-        return "Flex"
+        return 'Flex';
       case 2:
-        return "Híbrido"
+        return 'Híbrido';
       case 3:
-        return "Elétrico"
+        return 'Elétrico';
       default:
-        return ""
+        return '';
     }
-  }
+  };
   useEffect(() => {
     getAdverts();
   }, []);
@@ -136,3 +136,5 @@ export const AdvertsProvider = ({ children }: IAdvertsProps) => {
     </AdvertsContext.Provider>
   );
 };
+
+export default AdvertsProvider;
