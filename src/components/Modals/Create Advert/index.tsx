@@ -5,7 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import * as yup from 'yup';
 import {
   StyledButtonClose,
   StyledButtonImg,
@@ -63,7 +62,7 @@ export const CreateAdvertModal = () => {
     data['mileage'] = +data.mileage;
     data['is_bargain'] = false;
     data['is_published'] = true;
-    data.fipe = selectModelData!.value.toString()
+    data.fip = selectModelData!.value.toString()
     data.fuel = fuelType(selectModelData!.fuel)
     data.year = selectModelData!.year
 
@@ -210,11 +209,11 @@ export const CreateAdvertModal = () => {
               <Input_label>Preço tabela FIPE</Input_label>
               <StyledInput
                 type="text"
-                id="fipe"
-                value={selectModelData ? selectModelData.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : ""}
+                id="fip"
+                value={selectModelData ? selectModelData.value : ""}
                 disabled
               />
-              <StyledSpanError>{errors.fipe?.message}</StyledSpanError>
+              <StyledSpanError>{errors.fip?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">
