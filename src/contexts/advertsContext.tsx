@@ -12,6 +12,7 @@ export const AdvertsProvider = ({ children }: IAdvertsProps) => {
   const [selectModel, setSelectModel] = useState<string>("")
   const [selectModelData, setSelectModelData] = useState<iModel>()
   const [inputImages, setInputImages] = useState<boolean[]>([true, true])
+  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false)
   const brands = [
     "Citroën",
     "Fiat",
@@ -127,6 +128,8 @@ export const AdvertsProvider = ({ children }: IAdvertsProps) => {
         handleBrandChange,
         handleModelChange,
         fuelType,
+        isConfirmModal,
+        setIsConfirmModal,
       }}
     >
       {children}

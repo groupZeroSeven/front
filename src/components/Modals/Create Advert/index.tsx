@@ -13,6 +13,7 @@ import {
   StyledDivButtons,
   StyledInput,
   StyledSelect,
+  StyledSpanError,
 } from './style';
 import { schemaNewAdvert } from '@/src/schemas/createAdvert';
 import { iCreateAdvert, iModel } from '@/src/interfaces/adverts';
@@ -20,7 +21,7 @@ import { AdvertsContext } from '@/src/contexts/advertsContext';
 
 export const CreateAdvertModal = () => {
   const { setIsCreateAdvertModal, isCreateAdvertModal } = React.useContext(UserContext);
-  const {brands, selectBrand, selectModelValues, setSelectModelValues, selectModel, selectModelData, setSelectModelData, inputImages, handleImages, handleBrandChange, handleModelChange, fuelType} = React.useContext(AdvertsContext)
+  const {brands, selectBrand, selectModelValues, setSelectModelValues, selectModel, selectModelData, setSelectModelData, inputImages, handleImages, handleBrandChange, handleModelChange, fuelType, setIsConfirmModal} = React.useContext(AdvertsContext)
   useEffect(() => {
     const res = async () => {
       try {
@@ -99,18 +100,19 @@ export const CreateAdvertModal = () => {
       data.images.push(image6);
     }
     try {
-      await toast.promise(
-        api.post('/api/anoucements', data),
-        {
-          pending: 'Waiting...',
-          success: 'Anúncio criado com sucesso.',
-        },
-        {
-          theme: 'dark',
-        }
-      );
+      // await toast.promise(
+        api.post('/api/anoucements', data)
+        // {
+        //   pending: 'Waiting...',
+        //   success: 'Anúncio criado com sucesso.',
+        // },
+        // {
+        //   theme: 'dark',
+        // }
+      // );
 
       setIsCreateAdvertModal(false);
+      setIsConfirmModal(true)
     } catch (err) {
       toast.error('Não foi possível criar o anúncio', {
         theme: 'dark',
@@ -144,7 +146,7 @@ export const CreateAdvertModal = () => {
                 )
               }
             </StyledSelect>
-            <span>{errors.brand?.message}</span>
+            <StyledSpanError>{errors.brand?.message}</StyledSpanError>
 
             <Input_label>Modelo</Input_label>
             <StyledSelect value={selectModel} {...register('model')} onChange={handleModelChange}>
@@ -157,7 +159,7 @@ export const CreateAdvertModal = () => {
                 )
               }
             </StyledSelect>
-            <span>{errors.model?.message}</span>
+            <StyledSpanError>{errors.model?.message}</StyledSpanError>
           </div>
           <div className="formDoubleInput">
             <div className="containerInput">
@@ -168,7 +170,7 @@ export const CreateAdvertModal = () => {
                 value={selectModelData ? selectModelData.year : ""}
                 disabled
               />
-              <span>{errors.year?.message}</span>
+              <StyledSpanError>{errors.year?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">
@@ -179,7 +181,7 @@ export const CreateAdvertModal = () => {
                 value={selectModelData ? fuelType(selectModelData.fuel) : ""}
                 disabled
               />
-              <span>{errors.fuel?.message}</span>
+              <StyledSpanError>{errors.fuel?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">
@@ -190,7 +192,7 @@ export const CreateAdvertModal = () => {
                 placeholder="30.000"
                 {...register('mileage')}
               />
-              <span>{errors.mileage?.message}</span>
+              <StyledSpanError>{errors.mileage?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">
@@ -201,7 +203,7 @@ export const CreateAdvertModal = () => {
                 placeholder="Branco"
                 {...register('color')}
               />
-              <span>{errors.color?.message}</span>
+              <StyledSpanError>{errors.color?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">
@@ -212,7 +214,7 @@ export const CreateAdvertModal = () => {
                 value={selectModelData ? selectModelData.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : ""}
                 disabled
               />
-              <span>{errors.fipe?.message}</span>
+              <StyledSpanError>{errors.fipe?.message}</StyledSpanError>
             </div>
 
             <div className="containerInput">
@@ -223,7 +225,7 @@ export const CreateAdvertModal = () => {
                 placeholder="R$ 50.000,00"
                 {...register('price')}
               />
-              <span>{errors.price?.message}</span>
+              <StyledSpanError>{errors.price?.message}</StyledSpanError>
             </div>
           </div>
           <div className="formSingleInput">
@@ -234,7 +236,7 @@ export const CreateAdvertModal = () => {
               placeholder="Descrição do anúncio"
               {...register('description')}
             />
-            <span>{errors.description?.message}</span>
+            <StyledSpanError>{errors.description?.message}</StyledSpanError>
 
             <Input_label>Imagem da Capa</Input_label>
             <StyledInput
@@ -243,7 +245,7 @@ export const CreateAdvertModal = () => {
               placeholder="https://image.com"
               {...register('banner')}
             />
-            <span>{errors.banner?.message}</span>
+            <StyledSpanError>{errors.banner?.message}</StyledSpanError>
 
             {
               inputImages.map((image, i) => (

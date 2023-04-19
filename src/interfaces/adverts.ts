@@ -23,6 +23,8 @@ export interface IAdvertsProps {
     handleBrandChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     handleModelChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     fuelType: (n: number) => "" | "Flex" | "Híbrido" | "Elétrico";
+    isConfirmModal: boolean;
+    setIsConfirmModal: Dispatch<SetStateAction<boolean>>;
   }
 
   export interface iCreateAdvertModalProps {

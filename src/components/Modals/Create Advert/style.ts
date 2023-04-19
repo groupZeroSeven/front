@@ -159,3 +159,13 @@ export const StyledButtonClose = styled.button`
     color: var(--color-grey-2);
   }
 `;
+
+export const StyledSpanError = styled.span`
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 1.2rem;  
+  margin-top: -0.5rem;
+  color: var(--color-alert-1);
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+`
