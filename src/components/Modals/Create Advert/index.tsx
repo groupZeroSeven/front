@@ -1,8 +1,11 @@
+import { AdvertsContext } from '@/src/contexts/advertsContext';
 import { UserContext } from '@/src/contexts/userContext';
+import { iCreateAdvert } from '@/src/interfaces/adverts';
+import { schemaNewAdvert } from '@/src/schemas/createAdvert';
 import { api, apiKars } from '@/src/services/api';
 import { Body_2_500, Heading_7_500, Input_label } from '@/src/styles/global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -14,41 +17,59 @@ import {
   StyledSelect,
   StyledSpanError,
 } from './style';
-import { schemaNewAdvert } from '@/src/schemas/createAdvert';
-import { iCreateAdvert, iModel } from '@/src/interfaces/adverts';
-import { AdvertsContext } from '@/src/contexts/advertsContext';
 
 export const CreateAdvertModal = () => {
-  const { setIsCreateAdvertModal, isCreateAdvertModal } = React.useContext(UserContext);
-  const {brands, selectBrand, selectModelValues, setSelectModelValues, selectModel, selectModelData, setSelectModelData, inputImages, handleImages, handleBrandChange, handleModelChange, fuelType, setIsConfirmModal} = React.useContext(AdvertsContext)
+  const {
+    setIsCreateAdvertModal,
+    isCreateAdvertModal,
+    setMyAnnouncement,
+    myAnnouncement,
+  } = React.useContext(UserContext);
+  const {
+    brands,
+    selectBrand,
+    selectModelValues,
+    setSelectModelValues,
+    selectModel,
+    selectModelData,
+    setSelectModelData,
+    inputImages,
+    handleImages,
+    handleBrandChange,
+    handleModelChange,
+    fuelType,
+    setIsConfirmModal,
+  } = React.useContext(AdvertsContext);
   useEffect(() => {
     const res = async () => {
       try {
-        const {data} = await apiKars.get(`/cars?brand=${selectBrand.toLocaleLowerCase()}`)
-        setSelectModelValues(data)
+        const { data } = await apiKars.get(
+          `/cars?brand=${selectBrand.toLocaleLowerCase()}`
+        );
+        setSelectModelValues(data);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
+    };
+    if (selectBrand !== '') {
+      res();
     }
-    if(selectBrand !== "") {
-      res()
-    }
-  }, [selectBrand])
+  }, [selectBrand]);
 
   useEffect(() => {
     const data = async () => {
-      const modelData = selectModelValues.filter((model) => (
-        model.name === selectModel
-      ))
-      setSelectModelData(modelData[0])
-    }
-    if(selectModel !== "") {
-      data()
+      const modelData = selectModelValues.filter(
+        (model) => model.name === selectModel
+      );
+      setSelectModelData(modelData[0]);
+    };
+    if (selectModel !== '') {
+      data();
     }
     if (!isCreateAdvertModal) {
-      setSelectModelData(undefined)
+      setSelectModelData(undefined);
     }
-  }, [selectModel])
+  }, [selectModel]);
 
   const {
     register,
@@ -62,6 +83,7 @@ export const CreateAdvertModal = () => {
     data['mileage'] = +data.mileage;
     data['is_bargain'] = false;
     data['is_published'] = true;
+
     data.fip = selectModelData!.value.toString()
     data.fuel = fuelType(selectModelData!.fuel)
     data.year = selectModelData!.year
@@ -100,18 +122,19 @@ export const CreateAdvertModal = () => {
     }
     try {
       // await toast.promise(
-        api.post('/api/anoucements', data)
-        // {
-        //   pending: 'Waiting...',
-        //   success: 'Anúncio criado com sucesso.',
-        // },
-        // {
-        //   theme: 'dark',
-        // }
+      const res = await api.post('/api/anoucements', data);
+      // {
+      //   pending: 'Waiting...',
+      //   success: 'Anúncio criado com sucesso.',
+      // },
+      // {
+      //   theme: 'dark',
+      // }
       // );
 
+      setMyAnnouncement([res.data, ...myAnnouncement!]);
       setIsCreateAdvertModal(false);
-      setIsConfirmModal(true)
+      setIsConfirmModal(true);
     } catch (err) {
       toast.error('Não foi possível criar o anúncio', {
         theme: 'dark',
@@ -136,27 +159,33 @@ export const CreateAdvertModal = () => {
 
           <div className="formSingleInput">
             <Input_label>Marca</Input_label>
-            <StyledSelect value={selectBrand} {...register('brand')} onChange={handleBrandChange} >
+            <StyledSelect
+              value={selectBrand}
+              {...register('brand')}
+              onChange={handleBrandChange}
+            >
               <option value="">Selecione uma marca</option>
-              {
-                brands.map((brand, i) => (
-                  <option value={brand} key={i}>{brand}</option>
-                )
-                )
-              }
+              {brands.map((brand, i) => (
+                <option value={brand} key={i}>
+                  {brand}
+                </option>
+              ))}
             </StyledSelect>
             <StyledSpanError>{errors.brand?.message}</StyledSpanError>
 
             <Input_label>Modelo</Input_label>
-            <StyledSelect value={selectModel} {...register('model')} onChange={handleModelChange}>
+            <StyledSelect
+              value={selectModel}
+              {...register('model')}
+              onChange={handleModelChange}
+            >
               <option value="">Selecione um modelo</option>
-              {
-                selectModelValues.length > 0 && (
-                  selectModelValues.map((model) => (
-                    <option key={model.id} value={model.name.toLocaleLowerCase()}>{model.name}</option>
-                  ))
-                )
-              }
+              {selectModelValues.length > 0 &&
+                selectModelValues.map((model) => (
+                  <option key={model.id} value={model.name.toLocaleLowerCase()}>
+                    {model.name}
+                  </option>
+                ))}
             </StyledSelect>
             <StyledSpanError>{errors.model?.message}</StyledSpanError>
           </div>
@@ -166,7 +195,7 @@ export const CreateAdvertModal = () => {
               <StyledInput
                 type="text"
                 id="year"
-                value={selectModelData ? selectModelData.year : ""}
+                value={selectModelData ? selectModelData.year : ''}
                 disabled
               />
               <StyledSpanError>{errors.year?.message}</StyledSpanError>
@@ -177,7 +206,7 @@ export const CreateAdvertModal = () => {
               <StyledInput
                 type="text"
                 id="fuel"
-                value={selectModelData ? fuelType(selectModelData.fuel) : ""}
+                value={selectModelData ? fuelType(selectModelData.fuel) : ''}
                 disabled
               />
               <StyledSpanError>{errors.fuel?.message}</StyledSpanError>
@@ -246,24 +275,29 @@ export const CreateAdvertModal = () => {
             />
             <StyledSpanError>{errors.banner?.message}</StyledSpanError>
 
-            {
-              inputImages.map((image, i) => (
-                <div key={i} style={image ? {display: "block", width: "100%"} : {display: "none"}}>
-                      <Input_label >{i + 1}º Imagem da galeria</Input_label>
-                      <StyledInput
-                        type="text"
-                        placeholder="https://image.com"
-                        {...i === 0 ? {...register('image1')} : null}
-                        {...i === 1 ? {...register('image2')} : null}
-                        {...i === 2 ? {...register('image3')} : null}
-                        {...i === 3 ? {...register('image4')} : null}
-                        {...i === 4 ? {...register('image5')} : null}
-                        {...i === 5 ? {...register('image6')} : null}
-                      />
-                </div>
-              ))
-            }
-    
+            {inputImages.map((image, i) => (
+              <div
+                key={i}
+                style={
+                  image
+                    ? { display: 'block', width: '100%' }
+                    : { display: 'none' }
+                }
+              >
+                <Input_label>{i + 1}º Imagem da galeria</Input_label>
+                <StyledInput
+                  type="text"
+                  placeholder="https://image.com"
+                  {...(i === 0 ? { ...register('image1') } : null)}
+                  {...(i === 1 ? { ...register('image2') } : null)}
+                  {...(i === 2 ? { ...register('image3') } : null)}
+                  {...(i === 3 ? { ...register('image4') } : null)}
+                  {...(i === 4 ? { ...register('image5') } : null)}
+                  {...(i === 5 ? { ...register('image6') } : null)}
+                />
+              </div>
+            ))}
+
             <StyledButtonImg type="button" onClick={handleImages}>
               Adicionar campo para imagem da galeria
             </StyledButtonImg>
