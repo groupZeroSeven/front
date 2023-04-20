@@ -13,6 +13,7 @@ export const MainDetailsStyle = styled.main`
         gap: 1.7rem;
         padding: 4.5rem 1.2rem;
         > div {
+          width: 100%;
           display: flex;
           flex-direction: column;
           gap: 1.7rem;

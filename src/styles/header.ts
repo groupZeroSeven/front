@@ -20,6 +20,7 @@ export const HeaderStyled = styled.header`
     }
     > div {
       position: relative;
+      background-color: var(--color-grey-8);
       > svg {
         padding-right: 2.9rem;
         cursor: pointer;

@@ -3,20 +3,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Body_1_400, Body_1_600 } from '../styles/global';
+import { UserContext } from '../contexts/userContext';
+import { Body_1_400, Body_1_600, Button_medium_text } from '../styles/global';
 import { HeaderStyled } from '../styles/header';
 import { ButtonBig } from './button-big';
-import { ButtonMedium } from './button-medium';
 import { ProfileAdvertiser } from './profile';
 
 export const Header = () => {
-  const user = false;
-  const vendedor = true;
-
   const router = useRouter();
 
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openMenuMobile, setOpenMenuMobile] = React.useState(false);
+
+  const { user, userLogout } = React.useContext(UserContext);
 
   const openMenuHandler = () => {
     if (openMenu) {
@@ -48,7 +47,6 @@ export const Header = () => {
         <div className="mobile">
           {openMenuMobile ? (
             <>
-              {' '}
               <CloseIcon
                 fontSize="large"
                 onClick={() => openMenuMobileHandler()}
@@ -56,42 +54,62 @@ export const Header = () => {
               <span>
                 {user ? (
                   <div>
-                    <ButtonMedium
-                      bgColor="transparent"
-                      fontColor="var(--color-grey-2)"
-                      borderColor="transparent"
+                    <Button_medium_text
+                      style={{
+                        backgroundColor: 'transparent',
+                        color: 'var(--color-grey-2)',
+                        borderColor: 'transparent',
+                      }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        // router.push('/dashboard');
+                      }}
                     >
-                      <Body_1_400 style={{ padding: 22 }}>
-                        Editar Perfil
-                      </Body_1_400>
-                    </ButtonMedium>
-                    <ButtonMedium
-                      bgColor="transparent"
-                      fontColor="var(--color-grey-2)"
-                      borderColor="transparent"
+                      <Body_1_400>Editar Perfil</Body_1_400>
+                    </Button_medium_text>
+
+                    <Button_medium_text
+                      style={{
+                        backgroundColor: 'transparent',
+                        color: 'var(--color-grey-2)',
+                        borderColor: 'transparent',
+                      }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        // router.push('/dashboard');
+                      }}
                     >
-                      <Body_1_400 style={{ padding: 22 }}>
-                        Editar endereço
-                      </Body_1_400>
-                    </ButtonMedium>
-                    {vendedor && (
-                      <ButtonMedium
-                        bgColor="transparent"
-                        fontColor="var(--color-grey-2)"
-                        borderColor="transparent"
+                      <Body_1_400>Editar endereço</Body_1_400>
+                    </Button_medium_text>
+                    {user.is_seller && (
+                      <Button_medium_text
+                        style={{
+                          backgroundColor: 'transparent',
+                          color: 'var(--color-grey-2)',
+                          borderColor: 'transparent',
+                        }}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          router.push('/dashboard');
+                        }}
                       >
-                        <Body_1_400 style={{ padding: 22 }}>
-                          Meus Anúncios
-                        </Body_1_400>
-                      </ButtonMedium>
+                        <Body_1_400>Meus Anúncios</Body_1_400>
+                      </Button_medium_text>
                     )}
-                    <ButtonMedium
-                      bgColor="transparent"
-                      fontColor="var(--color-grey-2)"
-                      borderColor="transparent"
+
+                    <Button_medium_text
+                      style={{
+                        backgroundColor: 'transparent',
+                        color: 'var(--color-grey-2)',
+                        borderColor: 'transparent',
+                      }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        userLogout();
+                      }}
                     >
-                      <Body_1_400 style={{ padding: 22 }}>Sair</Body_1_400>
-                    </ButtonMedium>
+                      <Body_1_400>Sair</Body_1_400>
+                    </Button_medium_text>
                   </div>
                 ) : (
                   <div>
@@ -165,44 +183,62 @@ export const Header = () => {
             </div>
             {openMenu && (
               <span className="computerSpan">
-                <ButtonMedium
-                  bgColor="transparent"
-                  fontColor="var(--color-grey-2)"
-                  borderColor="transparent"
+                <Button_medium_text
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: 'var(--color-grey-2)',
+                    borderColor: 'transparent',
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    // router.push('/dashboard');
+                  }}
                 >
-                  <Body_1_400 style={{ width: '100%', padding: 22 }}>
-                    Editar Perfil
-                  </Body_1_400>
-                </ButtonMedium>
-                <ButtonMedium
-                  bgColor="transparent"
-                  fontColor="var(--color-grey-2)"
-                  borderColor="transparent"
+                  <Body_1_400>Editar Perfil</Body_1_400>
+                </Button_medium_text>
+
+                <Button_medium_text
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: 'var(--color-grey-2)',
+                    borderColor: 'transparent',
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    // router.push('/dashboard');
+                  }}
                 >
-                  <Body_1_400 style={{ width: '100%', padding: 22 }}>
-                    Editar endereço
-                  </Body_1_400>
-                </ButtonMedium>
-                {vendedor && (
-                  <ButtonMedium
-                    bgColor="transparent"
-                    fontColor="var(--color-grey-2)"
-                    borderColor="transparent"
+                  <Body_1_400>Editar endereço</Body_1_400>
+                </Button_medium_text>
+                {user.is_seller && (
+                  <Button_medium_text
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: 'var(--color-grey-2)',
+                      borderColor: 'transparent',
+                    }}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      router.push('/dashboard');
+                    }}
                   >
-                    <Body_1_400 style={{ width: '100%', padding: 22 }}>
-                      Meus Anúncios
-                    </Body_1_400>
-                  </ButtonMedium>
+                    <Body_1_400>Meus Anúncios</Body_1_400>
+                  </Button_medium_text>
                 )}
-                <ButtonMedium
-                  bgColor="transparent"
-                  fontColor="var(--color-grey-2)"
-                  borderColor="transparent"
+
+                <Button_medium_text
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: 'var(--color-grey-2)',
+                    borderColor: 'transparent',
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    userLogout();
+                  }}
                 >
-                  <Body_1_400 style={{ width: '100%', padding: 22 }}>
-                    Sair
-                  </Body_1_400>
-                </ButtonMedium>
+                  <Body_1_400>Sair</Body_1_400>
+                </Button_medium_text>
               </span>
             )}
           </>

@@ -2,6 +2,9 @@ import { ButtonBig } from '@/src/components/button-big';
 import { ButtonMedium } from '@/src/components/button-medium';
 import { Header } from '@/src/components/header';
 import { ProfileAdvertiser } from '@/src/components/profile';
+import { LoadContext } from '@/src/contexts/loadingContext';
+import { UserContext } from '@/src/contexts/userContext';
+import { api } from '@/src/services/api';
 import { MainDetailsStyle } from '@/src/styles/details';
 import {
   Body_1_400,
@@ -11,6 +14,9 @@ import {
   Heading_7_500,
 } from '@/src/styles/global';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { toast } from 'react-toastify';
 
 const fotos = [
   '/image/car.png',
@@ -45,6 +51,41 @@ const commits = [
 ];
 
 export default function DetailsPage() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { setLoad } = React.useContext(LoadContext);
+
+  const { user, setDetailAnnouncement, detailAnnouncement } =
+    React.useContext(UserContext);
+
+  React.useEffect(() => {
+    if (user) {
+      setLoad(true);
+      const getAnnouncement = async () => {
+        try {
+          const { data } = await toast.promise(
+            api.get(`api/anoucements/${id}`),
+            { pending: 'Waiting...' },
+            { autoClose: 6000 }
+          );
+
+          setDetailAnnouncement(data);
+        } catch (error: any) {
+          toast.error(error.response.data.message, {
+            position: 'bottom-right',
+            autoClose: 5000,
+          });
+        } finally {
+          setLoad(false)
+        }
+      };
+
+      getAnnouncement();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   return (
     <>
       <Header />
@@ -55,7 +96,7 @@ export default function DetailsPage() {
               <div className="menu-one">
                 <section className="img-default">
                   <Image
-                    src="/image/car2.png"
+                    src={`${detailAnnouncement?.banner}`}
                     alt="Car"
                     width={294}
                     height={253}
@@ -64,13 +105,13 @@ export default function DetailsPage() {
 
                 <section className="info-car">
                   <Heading_6_600>
-                    Mercedes Benz A 200 CGI ADVANCE SEDAN Mercedes Benz A 200
+                    {`${detailAnnouncement?.brand} - ${detailAnnouncement?.model}`}
                   </Heading_6_600>
                   <div>
-                    <Details href="">2013</Details>
-                    <Details href="">0 KM</Details>
+                    <Details href="">{detailAnnouncement?.year}</Details>
+                    <Details href="">{detailAnnouncement?.mileage}</Details>
                   </div>
-                  <Heading_7_500>R$ 00.000,00</Heading_7_500>
+                  <Heading_7_500>{`R$: ${detailAnnouncement?.price}`}</Heading_7_500>
                   <span>
                     <ButtonMedium
                       bgColor="var(--color-brand-1)"
@@ -84,13 +125,7 @@ export default function DetailsPage() {
 
                 <section className="description">
                   <Heading_6_600>Descrição</Heading_6_600>
-                  <Body_1_400>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industrys
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book.
-                  </Body_1_400>
+                  <Body_1_400>{detailAnnouncement?.description}</Body_1_400>
                 </section>
               </div>
 
@@ -113,7 +148,7 @@ export default function DetailsPage() {
                     width={77}
                     height={77}
                   ></Image>
-                  <Heading_6_600>Samuel Leão</Heading_6_600>
+                  <Heading_6_600>{user?.name}</Heading_6_600>
                   <Body_1_400>
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industrys

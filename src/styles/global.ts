@@ -302,6 +302,11 @@ export const ProductCardStyled = styled.li`
     justify-content: space-between;
     align-items: center;
   }
+  > div {
+    > img {
+      object-fit: cover;
+    }
+  }
 `;
 
 export const AdvertiserStyled = styled.aside`

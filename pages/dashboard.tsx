@@ -1,23 +1,32 @@
 import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
-import { ProductCard } from '@/src/components/ProductCard';
+import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
+import { ProfileAdvertiser } from '@/src/components/profile';
 import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
 import { api } from '@/src/services/api';
 import { DashboardStyle } from '@/src/styles/dashboard';
 import {
   Body_1_400,
+  Body_2_400,
   Button_big_text,
+  Button_medium_text,
   Details,
   Heading_5_600,
   Heading_6_600,
+  Heading_7_500,
+  Heading_7_600,
+  ProductCardStyled,
 } from '@/src/styles/global';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { toast } from 'react-toastify';
 
 export default function Dashboard() {
+  const route = useRouter();
+
   const { setLoad } = React.useContext(LoadContext);
 
   const {
@@ -27,7 +36,12 @@ export default function Dashboard() {
     userLogout,
     setMyAnnouncement,
     myAnnouncement,
+    isEditAdvertModal,
+    setIsEditAdvertModal,
+    setDetailAnnouncement,
   } = React.useContext(UserContext);
+
+  const [advertSelected, setAdvertSelected] = React.useState<string>();
 
   React.useEffect(() => {
     setLoad(true);
@@ -42,13 +56,7 @@ export default function Dashboard() {
           api.get(`/api/anoucements`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          {
-            pending: 'Waiting...',
-            success: 'Successfully recovered data.',
-          },
-          {
-            autoClose: 6000,
-          }
+          {}
         );
 
         setMyAnnouncement(data);
@@ -58,7 +66,7 @@ export default function Dashboard() {
           autoClose: 5000,
         });
       } finally {
-        setTimeout(() => setLoad(false), 1000);
+        setLoad(false);
       }
     };
 
@@ -66,10 +74,16 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function editAdvert(id: string) {
+    setAdvertSelected(id);
+    setIsEditAdvertModal(true);
+  }
+
   return (
     <>
       {isCreateAdvertModal && <CreateAdvertModal />}
       <Header />
+      {isEditAdvertModal && <EditAdvertModal id={advertSelected} />}
       <DashboardStyle>
         <aside>
           <Image
@@ -110,17 +124,54 @@ export default function Dashboard() {
         <ul>
           {myAnnouncement &&
             myAnnouncement.map((el) => (
-              <ProductCard
-                key={el.id}
-                img={el.banner}
-                title={`${el.brand} - ${el.model}`}
-                desc={el.description}
-                imageProfile="/image/profile.png"
-                nameProfile={user?.name}
-                km={el.mileage}
-                age={el.year}
-                price={`R$: ${el.price}`}
-              />
+              <ProductCardStyled key={el.id}>
+                <div className="img">
+                  <Image src={el.banner} alt="Photo" width="250" height="140" />
+                </div>
+                <Heading_7_600>{`${el.brand} - ${el.model}`}</Heading_7_600>
+                <Body_2_400>{el.description}</Body_2_400>
+                <ProfileAdvertiser
+                  imgProfile="/image/profile.png"
+                  nameProfile={user?.name}
+                />
+                <span>
+                  <Details href="">{el.mileage}</Details>
+                  <Details href="">{el.year}</Details>
+                  <Heading_7_500>{`R$: ${el.price}`}</Heading_7_500>
+                </span>
+                {user?.is_seller && (
+                  <div className="buttons">
+                    <Button_medium_text
+                      style={{
+                        backgroundColor: 'var(--color-grey-7)',
+                        color: 'var(--color-grey-1)',
+                        borderColor: 'var(--color-grey-1)',
+                      }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        editAdvert(el.id);
+                      }}
+                    >
+                      Editar
+                    </Button_medium_text>
+
+                    <Button_medium_text
+                      style={{
+                        backgroundColor: 'var(--color-grey-7)',
+                        color: 'var(--color-grey-0)',
+                        borderColor: 'var(--color-grey-1)',
+                      }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setDetailAnnouncement(el);
+                        route.push(`/details/${el.id}`);
+                      }}
+                    >
+                      Ver detalhes
+                    </Button_medium_text>
+                  </div>
+                )}
+              </ProductCardStyled>
             ))}
         </ul>
         <div>

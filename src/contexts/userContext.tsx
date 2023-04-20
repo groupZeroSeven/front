@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { toast } from 'react-toastify';
 import { IContextProps } from '../interfaces/global';
@@ -8,12 +9,18 @@ import { LoadContext } from './loadingContext';
 export const UserContext = React.createContext({} as IUserContext);
 
 const UserProvider = ({ children }: IContextProps) => {
+  const router = useRouter();
+
   const { setLoad } = React.useContext(LoadContext);
 
   const [user, setUser] = React.useState<IUser | null>(null);
 
-  const [myAnnouncement, setMyAnnouncement] =
-    React.useState<IUserAnnouncement[] | null>(null);
+  const [myAnnouncement, setMyAnnouncement] = React.useState<
+    IUserAnnouncement[] | null
+  >(null);
+
+  const [detailAnnouncement, setDetailAnnouncement] =
+    React.useState<IUserAnnouncement | null>(null);
 
   const [isCreateAdvertModal, setIsCreateAdvertModal] =
     React.useState<boolean>(false);
@@ -25,6 +32,7 @@ const UserProvider = ({ children }: IContextProps) => {
     setLoad(false);
     setUser(null);
     localStorage.removeItem('token');
+    router.push('/');
   };
 
   React.useEffect(() => {
@@ -40,13 +48,7 @@ const UserProvider = ({ children }: IContextProps) => {
           api.get(`/api/profile`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          {
-            pending: 'Waiting...',
-            success: 'Successfully recovered data.',
-          },
-          {
-            autoClose: 6000,
-          }
+          {}
         );
 
         setUser(data);
@@ -56,7 +58,7 @@ const UserProvider = ({ children }: IContextProps) => {
           autoClose: 5000,
         });
       } finally {
-        setTimeout(() => setLoad(false), 1000);
+        setLoad(false);
       }
     };
 
@@ -76,6 +78,8 @@ const UserProvider = ({ children }: IContextProps) => {
         setIsEditAdvertModal,
         myAnnouncement,
         setMyAnnouncement,
+        detailAnnouncement,
+        setDetailAnnouncement,
       }}
     >
       {children}
