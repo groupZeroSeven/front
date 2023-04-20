@@ -14,6 +14,9 @@ export interface IUserContext {
   setMyAnnouncement: React.Dispatch<
     React.SetStateAction<IUserAnnouncement[] | null>
   >;
+
+  LoginUser : any;
+  RegisterUser : any;
 }
 
 export interface IUser {
@@ -43,4 +46,31 @@ export interface IUserAnnouncement {
   is_published: true;
   created_at: string;
   updated_at: string;
+}
+
+export interface IFormLogin {
+  email : string;
+  password : string;
+}
+
+export interface iFormRegister{
+  name : string;
+  password  : string;
+  confim_password  : string;
+  email : string;
+  phone : string;
+  cpf : string;
+  birth_date : string;
+  description : string;
+  address : iFormRegisterAddress;
+  is_seller  : string;
+}
+
+export interface iFormRegisterAddress{
+  cep  : string;
+  state  : string;
+  city  : string;
+  road  : string;
+  number  : string;
+  complement  : string;
 }
