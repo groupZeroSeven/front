@@ -172,4 +172,171 @@ export const FilterStyled = styled.div`
       display: none;
     }
   }
+  & > form {
+    margin: 2rem 1rem 0rem 1rem;
+  }
+
+  & > form > h4 {
+    margin: 0rem 0rem 1.5rem 0rem;
+  }
+
+  & > form > div {
+    display: flex;
+    width: 70%;
+    justify-content: flex-start;
+  }
+
+  & > form > div > input {
+    width: 30%;
+    height: 2rem;
+    margin: 0rem 2rem 0rem 0rem;
+    background-color: var(--color-grey-5);
+    border: none;
+    padding: 1rem;
+  }
+
+  & > div {
+    @media screen and (min-width: 720px) {
+      display: none;
+    }
+  }
+`;
+
+export const LoginStyled = styled.main`
+  background-color: var(--color-grey-7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: 720px) {
+    height: 90vh;
+  }
+  & > div {
+    margin: 5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-whiteFixed);
+    padding: 5rem 3rem;
+
+    @media screen and (min-width: 720px) {
+      width: 35rem;
+    }
+  }
+
+  & > div > form {
+    margin: 3rem 0rem;
+  }
+
+  & > div > form > input {
+    margin: 0.8rem 0rem 2rem 0rem;
+  }
+
+  & > div > form > .lostPassword {
+    margin: 1rem 2.5rem 3rem 0rem;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+  }
+
+  & > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    text-align: center;
+    height: 10rem;
+  }
+`;
+
+export const RegisterStyled = styled.main`
+  background-color: var(--color-grey-7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: 720px) {
+    height: 155vh;
+  }
+
+  & > div {
+    margin: 5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-whiteFixed);
+    padding: 5rem 3rem;
+
+    @media screen and (min-width: 720px) {
+      width: 35rem;
+    }
+  }
+
+  & > div > form {
+    margin: 3rem 0rem;
+  }
+
+  & > div > form > p {
+    margin: 0.8rem 0rem 2rem 0rem;
+  }
+
+  & > div > form > div > p {
+    margin: 0.8rem 0rem 2rem 0rem;
+  }
+
+  & > div > form > input {
+    margin: 0.8rem 0rem 2rem 0rem;
+  }
+`;
+
+export const StyledAdress = styled.div`
+  margin: 0.8rem 0rem 2rem 0rem;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    margin: 0rem;
+  }
+  & > div > div {
+    width: 45%;
+  }
+`;
+
+export const StyledCheckbox = styled.label`
+  position: relative;
+  width: 42%;
+  height: 5rem;
+  margin: 0rem 1rem 1rem 1rem;
+  float: left;
+  border: 1px solid var(--color-grey-0);
+  border-radius: 0.5rem;
+  color: var(--color-grey-0);
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 1.6rem;
+  box-sizing: border-box;
+
+  & > div {
+    width: 100%;
+    height: 4.8rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 25px;
+    transition: 0.5s ease;
+    background-color: var(--color-grey-10);
+  }
+
+  & > input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0.5rem;
+    height: 4.8rem;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  input[type='checkbox']:checked ~ div {
+    background-color: var(--color-brand-1);
+    color: var(--color-whiteFixed);
+  }
 `;

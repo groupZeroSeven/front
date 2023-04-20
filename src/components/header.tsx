@@ -119,6 +119,7 @@ export const Header = () => {
                       borderColor="transparent"
                     >
                       <Body_1_600
+                      onClick={() => router.push('/login')}
                         style={{
                           textAlign: 'start',
                           width: '100%',
@@ -132,7 +133,8 @@ export const Header = () => {
                       fontColor="var(--color-grey-2)"
                       borderColor="var(--color-grey-4)"
                     >
-                      <Body_1_600 style={{ padding: '12px 28px' }}>
+                      <Body_1_600 style={{ padding: '12px 28px' }}
+                      onClick={() => router.push('/register')}>
                         Cadastrar
                       </Body_1_600>
                     </ButtonBig>
@@ -157,14 +159,14 @@ export const Header = () => {
               fontColor="var(--color-grey-2)"
               borderColor="transparent"
             >
-              <Body_1_600 style={{ width: '100px' }}>Fazer Login</Body_1_600>
+              <Body_1_600 onClick={() => router.push('/login')} style={{ width: '100px' }}>Fazer Login</Body_1_600>
             </ButtonBig>
             <ButtonBig
               bgColor="transparent"
               fontColor="var(--color-grey-2)"
               borderColor="var(--color-grey-4)"
             >
-              <Body_1_600 style={{ padding: '12px 28px' }}>
+              <Body_1_600 style={{ padding: '12px 28px' }} onClick={() => router.push('/register')}>
                 Cadastrar
               </Body_1_600>
             </ButtonBig>
