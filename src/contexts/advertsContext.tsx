@@ -61,9 +61,9 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
   async function getAdverts() {
     try {
       const { data } = await api.get('/api/anoucements');
-      setAdverts(data);
+      setAdverts(data.data);
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data.message);
     }
   }
 

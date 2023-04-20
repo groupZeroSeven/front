@@ -27,23 +27,6 @@ export default function Home() {
   const [advertSelected, setAdvertSelected] = useState<string>();
   const { adverts, getAdverts } = useContext(AdvertsContext);
 
-  const advert = {
-    id: '834f811b-6436-4e9e-b96f-cd6f765c50f9',
-    brand: 'Fiat',
-    banner: 'aaaaaaaaaa',
-    model: 'aaaaaaaaaa',
-    year: '22',
-    fuel: 'aaaaaaaa',
-    mileage: 22,
-    color: 'aaaaaaa',
-    price: '22.00',
-    description: 'aaaaaaa',
-    is_bargain: false,
-    is_published: true,
-    created_at: '2023-04-13T22:26:25.606Z',
-    updated_at: '2023-04-13T22:41:32.095Z',
-  };
-
   function editAdvert(id: string) {
     setAdvertSelected(id);
     setIsEditAdvertModal(true);
@@ -85,26 +68,33 @@ export default function Home() {
             </Button_big_text>
           </div>
           <ul>
-            {adverts?.map((advert: any, i: any) => (
-              <button
-                key={i}
-                id={advert.id}
-                onClick={() => {
-                  editAdvert(advert.id);
-                }}
-              >
-                <ProductCard
-                  img={advert.banner}
-                  title={`${advert.brand} - ${advert.model}`}
-                  desc={advert.description}
-                  imageProfile="/image/profile.png"
-                  nameProfile="Samuel Pereira"
-                  km={advert.mileage}
-                  age={advert.year}
-                  price={`R$: ${advert.price}`}
-                />
-              </button>
-            ))}
+            {adverts?
+              <>
+              </>
+              :
+              <>
+              {adverts?.map((advert: any, i: any) => (
+                <button
+                  key={i}
+                  id={advert.id}
+                  onClick={() => {
+                    editAdvert(advert.id);
+                  }}
+                >
+                  <ProductCard
+                    img={advert.banner}
+                    title={`${advert.brand} - ${advert.model}`}
+                    desc={advert.description}
+                    imageProfile="/image/profile.png"
+                    nameProfile="Samuel Pereira"
+                    km={advert.mileage}
+                    age={advert.year}
+                    price={`R$: ${advert.price}`}
+                  />
+                </button>
+              ))}
+            </>
+            }
           </ul>
           <div className="filterbutton">
             <ButtonBig
