@@ -9,7 +9,6 @@ export const HeaderStyled = styled.header`
   > img {
     padding: 2.7rem 1.6rem;
   }
-
   > nav {
     background-color: var(--color-grey-7);
     .computer {

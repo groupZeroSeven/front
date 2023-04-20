@@ -1,18 +1,23 @@
-import { createContext, useEffect, useState } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
-import { IAdvertsProps, iModel } from '../interfaces/adverts';
+import { IAdvertsProps, iAdvert, iModel } from '../interfaces/adverts';
 import { api } from '../services/api';
 
-export const AdvertsContext = createContext<IAdvertsProps>({} as IAdvertsProps);
+export const AdvertsContext = React.createContext<IAdvertsProps>(
+  {} as IAdvertsProps
+);
 
 const AdvertsProvider = ({ children }: IAdvertsProps) => {
-  const [adverts, setAdverts] = useState();
-  const [selectBrand, setSelectBrand] = useState<string>('');
-  const [selectModelValues, setSelectModelValues] = useState<iModel[]>([]);
-  const [selectModel, setSelectModel] = useState<string>('');
-  const [selectModelData, setSelectModelData] = useState<iModel>();
-  const [inputImages, setInputImages] = useState<boolean[]>([true, true]);
-  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
+  const [adverts, setAdverts] = React.useState<iAdvert[] | null>(null);
+  const [selectBrand, setSelectBrand] = React.useState<string>('');
+  const [selectModel, setSelectModel] = React.useState<string>('');
+  const [inputImages, setInputImages] = React.useState<boolean[]>([true, true]);
+  const [isConfirmModal, setIsConfirmModal] = React.useState<boolean>(false);
+  const [selectModelData, setSelectModelData] = React.useState<iModel>();
+  const [selectModelValues, setSelectModelValues] = React.useState<iModel[]>(
+    []
+  );
+
   const brands = [
     'Citroën',
     'Fiat',
@@ -26,7 +31,8 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
     'Toyota',
     'Volkswagen',
   ];
-  const handleImages = () => {
+
+  const handleImages = (): void => {
     setInputImages((prevInputImages) => {
       if (prevInputImages.length < 6) {
         return [...prevInputImages, true];
@@ -34,15 +40,20 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
       return prevInputImages;
     });
   };
-  const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+
+  const handleBrandChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ): void => {
     setSelectBrand(event.target.value);
   };
 
-  const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleModelChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ): void => {
     setSelectModel(event.target.value);
   };
 
-  const fuelType = (n: number) => {
+  const fuelType = (n: number): '' | 'Flex' | 'Híbrido' | 'Elétrico' => {
     switch (n) {
       case 1:
         return 'Flex';
@@ -54,38 +65,31 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
         return '';
     }
   };
-  useEffect(() => {
-    getAdverts();
-  }, []);
 
-  async function getAdverts() {
+  const getAdverts = async (): Promise<void> => {
     try {
       const { data } = await api.get('/api/anoucements');
       setAdverts(data.data);
     } catch (error: any) {
       toast.error(error.response?.data.message);
     }
-  }
+  };
 
-  async function getEspecificAdverts(id: string) {
-    try {
-      const { data } = await api.get(`/api/anoucements/${id}`);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const getEspecificAdverts = async (id: string): Promise<iAdvert> => {
+    const { data } = await api.get(`/api/anoucements/${id}`);
+    return data;
+  };
 
-  async function addAdverts(data: any) {
+  const addAdverts = async (data: any): Promise<void> => {
     try {
       await api.post('/api/anoucements', data);
       await getAdverts();
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  async function delAdverts(id: string) {
+  const delAdverts = async (id: string): Promise<void> => {
     try {
       await api.delete(`/api/anoucements/${id}`);
       await getAdverts();
@@ -93,16 +97,20 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  async function patchAdverts(data: any, id: string) {
+  const patchAdverts = async (data: any, id: string): Promise<void> => {
     try {
       await api.patch(`/api/anoucements/${id}`, data);
       await getAdverts();
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+  React.useEffect(() => {
+    getAdverts();
+  }, []);
 
   return (
     <AdvertsContext.Provider

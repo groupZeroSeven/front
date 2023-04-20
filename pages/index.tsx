@@ -25,6 +25,7 @@ export default function Home() {
   } = React.useContext(UserContext);
 
   const [advertSelected, setAdvertSelected] = useState<string>();
+
   const { adverts, getAdverts } = useContext(AdvertsContext);
 
   function editAdvert(id: string) {
@@ -68,33 +69,30 @@ export default function Home() {
             </Button_big_text>
           </div>
           <ul>
-            {adverts?
+            {adverts && (
               <>
+                {adverts?.map((advert: any, i: any) => (
+                  <button
+                    key={i}
+                    id={advert.id}
+                    onClick={() => {
+                      editAdvert(advert.id);
+                    }}
+                  >
+                    <ProductCard
+                      img={advert.banner}
+                      title={`${advert.brand} - ${advert.model}`}
+                      desc={advert.description}
+                      imageProfile="/image/profile.png"
+                      nameProfile="Samuel Pereira"
+                      km={advert.mileage}
+                      age={advert.year}
+                      price={`R$: ${advert.price}`}
+                    />
+                  </button>
+                ))}
               </>
-              :
-              <>
-              {adverts?.map((advert: any, i: any) => (
-                <button
-                  key={i}
-                  id={advert.id}
-                  onClick={() => {
-                    editAdvert(advert.id);
-                  }}
-                >
-                  <ProductCard
-                    img={advert.banner}
-                    title={`${advert.brand} - ${advert.model}`}
-                    desc={advert.description}
-                    imageProfile="/image/profile.png"
-                    nameProfile="Samuel Pereira"
-                    km={advert.mileage}
-                    age={advert.year}
-                    price={`R$: ${advert.price}`}
-                  />
-                </button>
-              ))}
-            </>
-            }
+            )}
           </ul>
           <div className="filterbutton">
             <ButtonBig

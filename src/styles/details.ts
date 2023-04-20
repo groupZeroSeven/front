@@ -132,7 +132,7 @@ export const MainDetailsStyle = styled.main`
           }
         }
       }
-
+      
       .commit {
         background-color: var(--color-grey-10);
         border-radius: 0.4rem;

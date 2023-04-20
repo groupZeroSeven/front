@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const StyledInput2 = styled.input`
   margin: 0.8rem 0;

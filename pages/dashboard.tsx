@@ -50,29 +50,32 @@ export default function Dashboard() {
 
     if (!token) return userLogout();
 
-    const getAnnouncement = async () => {
-      try {
-        const { data } = await toast.promise(
-          api.get(`/api/anoucements`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          {}
-        );
+    if (user) {
+      const getAnnouncement = async () => {
+        try {
+          const { data } = await toast.promise(
+            api.get(`/api/anoucementUser/${user?.id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            {}
+          );
 
-        setMyAnnouncement(data);
-      } catch (e: any) {
-        toast.error(e.response.data.message, {
-          position: 'bottom-right',
-          autoClose: 5000,
-        });
-      } finally {
-        setLoad(false);
-      }
-    };
+          setMyAnnouncement(data.data);
+        } catch (e: any) {
+          toast.error(e.response.data.message, {
+            position: 'bottom-right',
+            autoClose: 5000,
+          });
+        } finally {
+          setLoad(false);
+        }
+      };
 
-    getAnnouncement();
+      getAnnouncement();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   function editAdvert(id: string) {
     setAdvertSelected(id);
