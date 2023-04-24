@@ -120,9 +120,14 @@ export const CreateAdvertModal = () => {
     if (image6) {
       data.images.push(image6);
     }
+    const token = localStorage.getItem("token")
     try {
       // await toast.promise(
-      const res = await api.post('/api/anoucements', data);
+      const res = await api.post('/api/anoucements', data, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       // {
       //   pending: 'Waiting...',
       //   success: 'Anúncio criado com sucesso.',
@@ -131,11 +136,13 @@ export const CreateAdvertModal = () => {
       //   theme: 'dark',
       // }
       // );
-
-      setMyAnnouncement([res.data, ...myAnnouncement!]);
+      if (myAnnouncement) {
+        setMyAnnouncement([res.data, ...myAnnouncement!]);
+      }
       setIsCreateAdvertModal(false);
       setIsConfirmModal(true);
     } catch (err) {
+      console.log(err)
       toast.error('Não foi possível criar o anúncio', {
         theme: 'dark',
       });

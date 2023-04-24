@@ -17,7 +17,7 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
   const [selectModelValues, setSelectModelValues] = React.useState<iModel[]>(
     []
   );
-
+  const [filteredAdverts, setFilteredAdverts] = React.useState<iAdvert[] | null>(null)
   const brands = [
     'Citroën',
     'Fiat',
@@ -138,6 +138,8 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
         fuelType,
         isConfirmModal,
         setIsConfirmModal,
+        filteredAdverts, 
+        setFilteredAdverts,
       }}
     >
       {children}
