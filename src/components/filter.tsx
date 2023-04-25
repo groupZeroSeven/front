@@ -27,7 +27,11 @@ export const Filter = () => {
   const [markedYear, setMarkedYear] = useState<string>("")
   const [markedFuel, setMarkedFuel] = useState<string>("")
 
+  const [isMinPrice, setIsMinPrice] = useState<boolean>(false)
+  const [isMaxPrice, setIsMaxPrice] = useState<boolean>(false)
 
+  const [isMinKm, setIsMinKm] = useState<boolean>(false)
+  const [isMaxKm, setIsMaxKm] = useState<boolean>(false)
   const handleBrandMarked = (
     event: React.MouseEvent<HTMLButtonElement>
   ): void => {
@@ -64,7 +68,7 @@ export const Filter = () => {
   };
 
   const resetFilter = () => {
-    setFilteredAdverts(null)
+    setFilteredAdverts(adverts)
     setMarkedBrand("")
     setMarkedModel("")
     setMarkedColor("")
@@ -75,6 +79,10 @@ export const Filter = () => {
     setListColors(colors)
     setListYears(years)
     setListFuels(fuels)
+    setIsMaxPrice(false)
+    setIsMinPrice(false)
+    setIsMaxKm(false)
+    setIsMinKm(false)
   }
 
   const filterLister = (filterAdverts: iAdvert[]) => {
@@ -220,6 +228,66 @@ export const Filter = () => {
       filterLister(adverts)
     }
   }, [markedFuel])
+
+
+  const sortMinPrice = () => {
+    setIsMinPrice(true)
+    if (filteredAdverts) {
+      const sort = [...filteredAdverts].sort(((a, b) => +a.price - +b.price))
+      setFilteredAdverts(sort)
+    }
+    if (!filteredAdverts && adverts) {
+      const sort = adverts.sort(((a, b) => +a.price - +b.price))
+      setFilteredAdverts(sort)
+    }
+    if (isMaxPrice === true) {
+      setIsMaxPrice(false)
+    }
+  }
+
+  const sortMaxPrice = () => {
+    setIsMaxPrice(true)
+    if (filteredAdverts) {
+      const sort = [...filteredAdverts].sort(((a, b) => +b.price - +a.price))
+      setFilteredAdverts(sort)
+    }
+    if (!filteredAdverts && adverts) {
+      const sort = adverts.sort(((a, b) => +b.price - +a.price))
+      setFilteredAdverts(sort)
+    }
+    if (isMinPrice === true) {
+      setIsMinPrice(false)
+    }
+  }
+
+  const sortMinKm = () => {
+    setIsMinKm(true)
+    if (filteredAdverts) {
+      const sort = [...filteredAdverts].sort(((a, b) => a.mileage - b.mileage))
+      setFilteredAdverts(sort)
+    }
+    if (!filteredAdverts && adverts) {
+      const sort = adverts.sort(((a, b) => a.mileage - b.mileage))
+      setFilteredAdverts(sort)
+    }
+    if (isMaxKm === true) {
+      setIsMaxKm(false)
+    }
+  }
+  const sortMaxKm = () => {
+    setIsMaxKm(true)
+    if (filteredAdverts) {
+      const sort = [...filteredAdverts].sort(((a, b) => b.mileage - a.mileage))
+      setFilteredAdverts(sort)
+    }
+    if (!filteredAdverts && adverts) {
+      const sort = adverts.sort(((a, b) => b.mileage - a.mileage))
+      setFilteredAdverts(sort)
+    }
+    if (isMinKm === true) {
+      setIsMinKm(false)
+    }
+  }
     return(
         <>
             <FilterStyled>
@@ -267,15 +335,31 @@ export const Filter = () => {
                 <form>
                     <Heading_4_600>KM</Heading_4_600>
                     <div>
-                        <input placeholder="Minimo"></input>
-                        <input placeholder="Maximo"></input>
+                        <button onClick={(event) => {
+                          event.preventDefault(); 
+                          sortMinPrice()}}
+                          style={isMinPrice ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
+                          >Minimo</button>
+                        <button onClick={(event) => {
+                          event.preventDefault();
+                          sortMaxPrice()}}
+                          style={isMaxPrice ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
+                          >Máximo</button>
                     </div>
                 </form>
                 <form>
                     <Heading_4_600>Preço</Heading_4_600>
                     <div>
-                        <input placeholder="Minimo"></input>
-                        <input placeholder="Maximo"></input>
+                        <button onClick={(event) => {
+                          event.preventDefault(); 
+                          sortMinKm()}}
+                          style={isMinKm ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
+                          >Minimo</button>
+                        <button onClick={(event) => {
+                          event.preventDefault();
+                          sortMaxKm()}}
+                          style={isMaxKm ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
+                          >Máximo</button>
                     </div>
                 </form>
                 <button onClick={resetFilter}>Zerar filtros</button>

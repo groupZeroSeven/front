@@ -154,17 +154,19 @@ export const FilterStyled = styled.div`
 
   & > form > div {
     display: flex;
-    width: 70%;
     justify-content: flex-start;
   }
 
-  & > form > div > input {
-    width: 30%;
+  & > form > div > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
     height: 2rem;
-    margin: 0rem 2rem 0rem 0rem;
+    margin: 0rem 2rem 1rem 0rem;
     background-color: var(--color-grey-5);
     border: none;
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   & > div {
@@ -176,23 +178,14 @@ export const FilterStyled = styled.div`
     margin: 2rem 1rem 0rem 1rem;
   }
 
-  & > form > h4 {
+  & > div > h4 {
     margin: 0rem 0rem 1.5rem 0rem;
   }
 
-  & > form > div {
+  & > div > div {
     display: flex;
     width: 70%;
     justify-content: flex-start;
-  }
-
-  & > form > div > input {
-    width: 30%;
-    height: 2rem;
-    margin: 0rem 2rem 0rem 0rem;
-    background-color: var(--color-grey-5);
-    border: none;
-    padding: 1rem;
   }
 
   & > div {
