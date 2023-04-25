@@ -4,9 +4,19 @@ import { FilterStyled } from "../styles/containers"
 import { Heading_4_600, Heading_6_500 } from "../styles/global"
 import { ButtonBig } from "./button-big"
 import { AdvertsContext } from "../contexts/advertsContext"
+import { apiKars } from "../services/api"
+import {iModel} from "../interfaces/adverts"
 
 export const Filter = () => {
   const { adverts, setFilteredAdverts, brands, filteredAdverts } = useContext(AdvertsContext);
+  
+  const models = ["Civic", "Corolla", "Cruze", "Fit", "Gol", "Ka", "Onix"]
+  const colors = ["Azul", "Branco", "Cinza", "Prata", "Preto", "Verde"]
+  const years = ["2022", "2021", "2018", "2015", "2013", "2012", "2010"]
+  const fuels = ["Flex", "Híbrido", "Elétrico"]
+
+  const [listBrands, setListBrands] = useState<string[]>(brands)
+  const [listModels, setListModels] = useState<string[]>(models)
 
   const [markedBrand, setMarkedBrand] = useState<string>("")
   const [markedModel, setMarkedModel] = useState<string>("")
@@ -14,21 +24,19 @@ export const Filter = () => {
   const [markedYear, setMarkedYear] = useState<string>("")
   const [markedFuel, setMarkedFuel] = useState<string>("")
 
-  const models = ["Civic", "Corolla", "Cruze", "Fit", "Gol", "Ka", "Onix"]
-  const colors = ["Azul", "Branco", "Cinza", "Prata", "Preto", "Verde"]
-  const years = ["2022", "2021", "2018", "2015", "2013", "2012", "2010"]
-  const fuels = ["Flex", "Híbrido", "Elétrico"]
 
   const handleBrandMarked = (
     event: React.MouseEvent<HTMLButtonElement>
   ): void => {
     setMarkedBrand(event.currentTarget.value);
+    setListBrands([event.currentTarget.value])
   };
 
   const handleModelMarked = (
     event: React.MouseEvent<HTMLButtonElement>
   ): void => {
     setMarkedModel(event.currentTarget.value);
+    setListModels([event.currentTarget.value])
   };
 
   const handleColorMarked = (
@@ -56,21 +64,60 @@ export const Filter = () => {
     setMarkedColor("")
     setMarkedFuel("")
     setMarkedYear("")
+    setListBrands(brands)
+    setListModels(models)
+  }
+
+  const modelLister = (list: iModel[], filterAdverts: iAdvert[]) => {
+    const modelsList = list.map((model: iModel) => (model.name.split(" ")[0]))
+    const uniqueArr = modelsList.filter((elem: string, index: number, self: string[]) => {
+      return index === self.indexOf(elem);
+    });
+
+    const coincidenceList = []
+    for (let i = 0; i < filterAdverts.length; i++) {
+      if (uniqueArr.includes(filterAdverts[i].model.split(" ")[0])) {
+        coincidenceList.push(filterAdverts[i].model)
+      }
+    }
+
+    const upperName = coincidenceList.map((modelName) => (`${modelName.split(" ")[0][0].toUpperCase()}${modelName.split(" ")[0].slice(1).toLowerCase()}`))
+    const uniqueModels = upperName.filter((elem: string, index: number, self: string[]) => {
+      return index === self.indexOf(elem);
+    })
+
+    setListModels(uniqueModels);
   }
 
   useEffect(() => {
     if (filteredAdverts) {
       const filter = filteredAdverts.filter((advert) => (advert.brand === markedBrand))
-      if (filter.length > 0) {
-        setFilteredAdverts(filter)
-      }
-  } 
-  if (!filteredAdverts && adverts) {
-    const filter = adverts.filter((advert) => (advert.brand === markedBrand))
-    if (filter.length > 0) {
+     
       setFilteredAdverts(filter)
+      
+  } 
+    if (!filteredAdverts && adverts) {
+      const filter = adverts.filter((advert) => (advert.brand === markedBrand))
+      
+      setFilteredAdverts(filter)
+    
     }
-  }
+    const res = async () => {
+      try {
+        const { data } = await apiKars.get(
+          `/cars?brand=${markedBrand.toLocaleLowerCase()}`
+        );
+        if (adverts) {
+          const filterAdverts = adverts.filter((advert) => (advert.brand === markedBrand))
+          modelLister(data, filterAdverts)
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (markedBrand !== '') {
+      res();
+    }
   }, [markedBrand])
 
   useEffect(() => {
@@ -80,9 +127,9 @@ export const Filter = () => {
           return advert
         }
       })
-      if (filter.length > 0) {
-        setFilteredAdverts(filter)
-      }
+      
+      setFilteredAdverts(filter)
+      
   } 
   if (!filteredAdverts && adverts) {
     const filter = adverts.filter((advert) => {
@@ -90,9 +137,9 @@ export const Filter = () => {
         return advert
       }
     })
-    if (filter.length > 0) {
-      setFilteredAdverts(filter)
-    }
+    
+    setFilteredAdverts(filter)
+    
   }
   
   }, [markedModel])
@@ -148,7 +195,7 @@ export const Filter = () => {
                 <ul>
                 <Heading_4_600>Marca</Heading_4_600>
                     {
-                      brands.map((brand) => (
+                      listBrands.map((brand) => (
                         <li key={brand}><button value={brand} onClick={handleBrandMarked} style={markedBrand === brand ? {backgroundColor: "red"} : {backgroundColor: "blue"}}><Heading_6_500>{brand}</Heading_6_500></button></li>
                       ))
                     }
@@ -156,7 +203,7 @@ export const Filter = () => {
                 <ul>
                     <Heading_4_600>Modelo</Heading_4_600>
                     {
-                      models.map((model) => (
+                      listModels.map((model) => (
                         <li key={model}><button value={model} onClick={handleModelMarked} style={markedModel === model ? {backgroundColor: "red"} : {backgroundColor: "blue"}}><Heading_6_500>{model}</Heading_6_500></button></li>
                       ))
                     }
