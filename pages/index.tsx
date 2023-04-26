@@ -3,6 +3,7 @@ import { ButtonBig } from '@/src/components/button-big';
 import { Filter } from '@/src/components/filter';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
+import { ConfirmModal } from '@/src/components/Modals/Confirm';
 import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
 import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
 import { ProductCard } from '@/src/components/ProductCard';
@@ -11,6 +12,7 @@ import { UserContext } from '@/src/contexts/userContext';
 import { BannerStyled, MainStyled } from '@/src/styles/containers';
 import {
   Button_big_text,
+  Button_brand,
   Heading_1_700,
   Heading_2_600,
 } from '@/src/styles/global';
@@ -25,8 +27,9 @@ export default function Home() {
   } = React.useContext(UserContext);
 
   const [advertSelected, setAdvertSelected] = useState<string>();
+  const [isFilterModal, setIsFilterModal] = useState<boolean>(false);
 
-  const { adverts, getAdverts } = useContext(AdvertsContext);
+  const { adverts, getAdverts, isConfirmModal, filteredAdverts } = useContext(AdvertsContext);
 
   function editAdvert(id: string) {
     setAdvertSelected(id);
@@ -39,6 +42,7 @@ export default function Home() {
 
   return (
     <>
+      {isConfirmModal && <ConfirmModal message='Criado' title='Sucesso!'/>}
       {isCreateAdvertModal && <CreateAdvertModal />}
       {isEditAdvertModal && <EditAdvertModal id={advertSelected} />}
       <Header />
@@ -49,9 +53,14 @@ export default function Home() {
         </Heading_2_600>
       </BannerStyled>
       <MainStyled>
-        <aside>
-          <Filter />
-        </aside>
+      {
+      isFilterModal ?     
+      <div className="modalFilter">    
+        <Filter setIsFilterModal={setIsFilterModal} isFilterModal={isFilterModal}/>
+      </div> : null}
+      <aside>    
+        <Filter setIsFilterModal={setIsFilterModal} isFilterModal={isFilterModal}/>
+      </aside>
         <div>
           <div>
             <Button_big_text
@@ -69,9 +78,9 @@ export default function Home() {
             </Button_big_text>
           </div>
           <ul>
-            {adverts && (
-              <>
-                {adverts?.map((advert: any, i: any) => (
+            {
+              filteredAdverts ? (
+                filteredAdverts.map((advert: any, i: any) => (
                   <button
                     key={i}
                     id={advert.id}
@@ -90,18 +99,39 @@ export default function Home() {
                       price={`R$: ${advert.price}`}
                     />
                   </button>
-                ))}
-              </>
-            )}
+                ))
+              ) : null
+            }
+            {adverts ? !filteredAdverts ? (
+                adverts.map((advert: any, i: any) => (
+                  <button
+                    key={i}
+                    id={advert.id}
+                    onClick={() => {
+                      editAdvert(advert.id);
+                    }}
+                  >
+                    <ProductCard
+                      img={advert.banner}
+                      title={`${advert.brand} - ${advert.model}`}
+                      desc={advert.description}
+                      imageProfile="/image/profile.png"
+                      nameProfile="Samuel Pereira"
+                      km={advert.mileage}
+                      age={advert.year}
+                      price={`R$: ${advert.price}`}
+                    />
+                  </button>
+                ))
+            ): null : null} 
+           
           </ul>
           <div className="filterbutton">
-            <ButtonBig
-              bgColor="var(--color-brand-2)"
-              fontColor="var(--color-whiteFixed)"
-              borderColor="var(--color-brand-2)"
+            <Button_brand
+              onClick={() => setIsFilterModal(true)}
             >
               Filtros
-            </ButtonBig>
+            </Button_brand>
           </div>
         </div>
       </MainStyled>
