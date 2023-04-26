@@ -7,7 +7,10 @@ import { AdvertsContext } from "../contexts/advertsContext"
 import { apiKars } from "../services/api"
 import {iModel} from "../interfaces/adverts"
 
-export const Filter = () => {
+export interface iFilterProps {
+  setIsFilterModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+export const Filter = ({setIsFilterModal}: iFilterProps) => {
   const { adverts, setFilteredAdverts, brands, filteredAdverts } = useContext(AdvertsContext);
   
   const models = ["Civic", "Corolla", "Cruze", "Fit", "Gol", "Ka", "Onix"]
@@ -364,7 +367,7 @@ export const Filter = () => {
                 </form>
                 <button onClick={resetFilter}>Zerar filtros</button>
                  <div>
-                    <ButtonBig   bgColor="var(--color-brand-2)" fontColor="var(--color-whiteFixed)" borderColor="var(--color-brand-2)">Ver anuncios</ButtonBig>
+                    <button onClick={() => setIsFilterModal(false)}>Ver anuncios</button>
                 </div>
             </FilterStyled>
         </>

@@ -61,11 +61,23 @@ export const MainStyled = styled.div`
 
   & > aside {
     display: none;
-    @media screen and (min-width: 720px) {
+    @media screen and (min-width: 768px) {
       display: block;
+      background-color: transparent;
+      width: fit-content;
     }
   }
-
+  & > .modalFilter {
+    background-color: rgba(18, 18, 20, 0.5);
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+  }
   & > div {
     width: 80%;
     @media screen and (min-width: 720px) {
@@ -131,7 +143,17 @@ export const FilterStyled = styled.div`
   align-items: flex-start;
   justify-content: center;
   margin: 5rem 2rem;
-
+  
+  @media (max-width: 768px) {
+    max-width: 52rem;
+    max-height: 95%;
+    background-color: white;
+    width: 100%;
+    overflow: auto;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
   & > ul > h4 {
     margin: 1em 0em;
   }
@@ -169,11 +191,6 @@ export const FilterStyled = styled.div`
     padding: 1.5rem;
   }
 
-  & > div {
-    @media screen and (min-width: 720px) {
-      display: none;
-    }
-  }
   & > form {
     margin: 2rem 1rem 0rem 1rem;
   }
@@ -186,12 +203,6 @@ export const FilterStyled = styled.div`
     display: flex;
     width: 70%;
     justify-content: flex-start;
-  }
-
-  & > div {
-    @media screen and (min-width: 720px) {
-      display: none;
-    }
   }
 `;
 

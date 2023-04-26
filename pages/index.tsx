@@ -26,6 +26,7 @@ export default function Home() {
   } = React.useContext(UserContext);
 
   const [advertSelected, setAdvertSelected] = useState<string>();
+  const [isFilterModal, setIsFilterModal] = useState<boolean>(false);
 
   const { adverts, getAdverts, isConfirmModal, filteredAdverts } = useContext(AdvertsContext);
 
@@ -37,7 +38,11 @@ export default function Home() {
   useEffect(() => {
     getAdverts();
   }, [isEditAdvertModal, isCreateAdvertModal]);
+  useEffect(() => {
+    console.log(isFilterModal)
+  }, [isFilterModal])
 
+  
   return (
     <>
       {isConfirmModal && <ConfirmModal message='Criado' title='Sucesso!'/>}
@@ -51,9 +56,14 @@ export default function Home() {
         </Heading_2_600>
       </BannerStyled>
       <MainStyled>
-        <aside>
-          <Filter/>
-        </aside>
+      {
+      isFilterModal ?     
+      <div className="modalFilter">    
+        <Filter setIsFilterModal={setIsFilterModal}/>
+      </div> : null}
+      <aside>    
+        <Filter setIsFilterModal={setIsFilterModal}/>
+      </aside>
         <div>
           <div>
             <Button_big_text
@@ -120,13 +130,14 @@ export default function Home() {
            
           </ul>
           <div className="filterbutton">
-            <ButtonBig
-              bgColor="var(--color-brand-2)"
-              fontColor="var(--color-whiteFixed)"
-              borderColor="var(--color-brand-2)"
+            <button
+              // bgColor="var(--color-brand-2)"
+              // fontColor="var(--color-whiteFixed)"
+              // borderColor="var(--color-brand-2)"
+              onClick={() => setIsFilterModal(true)}
             >
               Filtros
-            </ButtonBig>
+            </button>
           </div>
         </div>
       </MainStyled>
