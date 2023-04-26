@@ -143,7 +143,7 @@ export const FilterStyled = styled.div`
   align-items: flex-start;
   justify-content: center;
   margin: 5rem 2rem;
-  
+  padding: 2rem;
   @media (max-width: 768px) {
     max-width: 52rem;
     max-height: 95%;
@@ -157,7 +157,23 @@ export const FilterStyled = styled.div`
   & > ul > h4 {
     margin: 1em 0em;
   }
-
+  .head {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      button {
+        background-color: transparent;
+        border: none;
+        color: var(--color--grey-4);
+        width: 1.2rem;
+        height: 1.2rem;
+        font-size: 2.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+    }
   & > ul > li {
     color: var(--color-grey-3);
     margin: 0.5rem 1rem;
@@ -166,6 +182,15 @@ export const FilterStyled = styled.div`
     font-size: 2rem;
   }
 
+  & > ul > li > button {
+    background-color: transparent;
+    border: none;
+    color: var(--color-grey-3);
+    cursor: pointer;
+    :hover{
+      color: var(--color-grey-1);
+    }
+  }
   & > form {
     margin: 2rem 1rem 0rem 1rem;
   }
@@ -177,18 +202,6 @@ export const FilterStyled = styled.div`
   & > form > div {
     display: flex;
     justify-content: flex-start;
-  }
-
-  & > form > div > button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 2rem;
-    margin: 0rem 2rem 1rem 0rem;
-    background-color: var(--color-grey-5);
-    border: none;
-    padding: 1.5rem;
   }
 
   & > form {
@@ -203,6 +216,16 @@ export const FilterStyled = styled.div`
     display: flex;
     width: 70%;
     justify-content: flex-start;
+  }
+
+  .containerButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
   }
 `;
 

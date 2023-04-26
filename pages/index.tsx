@@ -12,6 +12,7 @@ import { UserContext } from '@/src/contexts/userContext';
 import { BannerStyled, MainStyled } from '@/src/styles/containers';
 import {
   Button_big_text,
+  Button_brand,
   Heading_1_700,
   Heading_2_600,
 } from '@/src/styles/global';
@@ -38,11 +39,7 @@ export default function Home() {
   useEffect(() => {
     getAdverts();
   }, [isEditAdvertModal, isCreateAdvertModal]);
-  useEffect(() => {
-    console.log(isFilterModal)
-  }, [isFilterModal])
 
-  
   return (
     <>
       {isConfirmModal && <ConfirmModal message='Criado' title='Sucesso!'/>}
@@ -59,10 +56,10 @@ export default function Home() {
       {
       isFilterModal ?     
       <div className="modalFilter">    
-        <Filter setIsFilterModal={setIsFilterModal}/>
+        <Filter setIsFilterModal={setIsFilterModal} isFilterModal={isFilterModal}/>
       </div> : null}
       <aside>    
-        <Filter setIsFilterModal={setIsFilterModal}/>
+        <Filter setIsFilterModal={setIsFilterModal} isFilterModal={isFilterModal}/>
       </aside>
         <div>
           <div>
@@ -130,14 +127,11 @@ export default function Home() {
            
           </ul>
           <div className="filterbutton">
-            <button
-              // bgColor="var(--color-brand-2)"
-              // fontColor="var(--color-whiteFixed)"
-              // borderColor="var(--color-brand-2)"
+            <Button_brand
               onClick={() => setIsFilterModal(true)}
             >
               Filtros
-            </button>
+            </Button_brand>
           </div>
         </div>
       </MainStyled>

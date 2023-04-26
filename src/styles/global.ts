@@ -241,6 +241,63 @@ export const Button_medium_text = styled.p`
   }
 `;
 
+export const Button_brand = styled.button`
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 1.6rem;
+  width: 100%;
+  height: 4.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  border: 0.1rem solid transparent;
+  background-color: var(--color-brand-1);
+  color: var(--color-whiteFixed);
+  :hover {
+    filter: brightness(1.1);
+  }
+`
+
+export const Button_brand2 = styled.button`
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 1.6rem;
+  width: 80%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  border: 0.1rem solid transparent;
+  cursor: pointer;
+  background-color: var(--color-brand-2);
+  color: var(--color-whiteFixed);
+  :hover {
+    filter: brightness(1.1);
+  }
+`
+
+export const Button_disable = styled.button`
+  font-family: var(--font-lexend);
+  font-weight: 600;
+  font-size: 1.6rem;
+  width: 50%;
+  height: 2rem;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.1rem solid transparent;
+  cursor: pointer;
+  background-color: var(--color-grey-5);
+  color: var(--color-grey-3);
+  margin: 0rem 2rem 1rem 0rem;
+  :hover {
+    filter: brightness(1.1);
+  }
+`
 export const Details = styled(Link)`
   background: var(--color-brand-4);
   border-radius: 0.4rem;

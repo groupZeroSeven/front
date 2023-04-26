@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { iAdvert } from "../interfaces/adverts"
 import { FilterStyled } from "../styles/containers"
-import { Heading_4_600, Heading_6_500 } from "../styles/global"
+import { Button_brand, Button_brand2, Button_disable, Heading_4_600, Heading_6_500, Heading_7_500 } from "../styles/global"
 import { ButtonBig } from "./button-big"
 import { AdvertsContext } from "../contexts/advertsContext"
 import { apiKars } from "../services/api"
@@ -9,8 +9,9 @@ import {iModel} from "../interfaces/adverts"
 
 export interface iFilterProps {
   setIsFilterModal: React.Dispatch<React.SetStateAction<boolean>>
+  isFilterModal: boolean;
 }
-export const Filter = ({setIsFilterModal}: iFilterProps) => {
+export const Filter = ({setIsFilterModal, isFilterModal}: iFilterProps) => {
   const { adverts, setFilteredAdverts, brands, filteredAdverts } = useContext(AdvertsContext);
   
   const models = ["Civic", "Corolla", "Cruze", "Fit", "Gol", "Ka", "Onix"]
@@ -294,6 +295,11 @@ export const Filter = ({setIsFilterModal}: iFilterProps) => {
     return(
         <>
             <FilterStyled>
+              {isFilterModal ? 
+              <div className="head">
+                <Heading_7_500>Filtro</Heading_7_500>
+                <button onClick={() => setIsFilterModal(false)}>x</button>
+              </div> : null}
                 <ul>
                 <Heading_4_600>Marca</Heading_4_600>
                     {
@@ -338,37 +344,39 @@ export const Filter = ({setIsFilterModal}: iFilterProps) => {
                 <form>
                     <Heading_4_600>KM</Heading_4_600>
                     <div>
-                        <button onClick={(event) => {
+                        <Button_disable onClick={(event) => {
                           event.preventDefault(); 
                           sortMinPrice()}}
-                          style={isMinPrice ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
-                          >Minimo</button>
-                        <button onClick={(event) => {
+                          style={isMinPrice ? {backgroundColor: "var(--color-brand-1)", color: "white"} : {backgroundColor: "var(--color-grey-5)"}}
+                          >Minimo</Button_disable>
+                        <Button_disable onClick={(event) => {
                           event.preventDefault();
                           sortMaxPrice()}}
-                          style={isMaxPrice ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
-                          >Máximo</button>
+                          style={isMaxPrice ? {backgroundColor: "var(--color-brand-1)", color: "white"} : {backgroundColor: "var(--color-grey-5)"}}
+                          >Máximo</Button_disable>
                     </div>
                 </form>
                 <form>
                     <Heading_4_600>Preço</Heading_4_600>
                     <div>
-                        <button onClick={(event) => {
+                        <Button_disable onClick={(event) => {
                           event.preventDefault(); 
                           sortMinKm()}}
-                          style={isMinKm ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
-                          >Minimo</button>
-                        <button onClick={(event) => {
+                          style={isMinKm ? {backgroundColor: "var(--color-brand-1)", color: "white"} : {backgroundColor: "var(--color-grey-5)"}}
+                          >Minimo</Button_disable>
+                        <Button_disable onClick={(event) => {
                           event.preventDefault();
                           sortMaxKm()}}
-                          style={isMaxKm ? {backgroundColor: "red"} : {backgroundColor: "grey"}}
-                          >Máximo</button>
+                          style={isMaxKm ? {backgroundColor: "var(--color-brand-1)", color: "white"} : {backgroundColor: "var(--color-grey-5)"}}
+                          >Máximo</Button_disable>
                     </div>
                 </form>
-                <button onClick={resetFilter}>Zerar filtros</button>
-                 <div>
-                    <button onClick={() => setIsFilterModal(false)}>Ver anuncios</button>
+
+                <div className="containerButtons">
+                  <Button_brand2 onClick={resetFilter}>Limpar filtros</Button_brand2>
+                  {isFilterModal ? <Button_brand2 onClick={() => setIsFilterModal(false)}>Ver anuncios</Button_brand2> : null}
                 </div>
+                
             </FilterStyled>
         </>
     )
