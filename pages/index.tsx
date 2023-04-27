@@ -1,22 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
+import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
+import { ProductCard } from '@/src/components/ProductCard';
 import { ButtonBig } from '@/src/components/button-big';
 import { Filter } from '@/src/components/filter';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
-import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
-import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
-import { ProductCard } from '@/src/components/ProductCard';
 import { AdvertsContext } from '@/src/contexts/advertsContext';
 import { UserContext } from '@/src/contexts/userContext';
 import { BannerStyled, MainStyled } from '@/src/styles/containers';
-import {
-  Button_big_text,
-  Heading_1_700,
-  Heading_2_600,
-} from '@/src/styles/global';
+import { Heading_1_700, Heading_2_600 } from '@/src/styles/global';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 
 export default function Home() {
+  const router = useRouter();
+
   const {
     isCreateAdvertModal,
     setIsCreateAdvertModal,
@@ -53,21 +52,6 @@ export default function Home() {
           <Filter />
         </aside>
         <div>
-          <div>
-            <Button_big_text
-              style={{
-                backgroundColor: 'var(--color-grey-0)',
-                color: 'var(--color-whiteFixed)',
-                border: 'transparent',
-              }}
-              onClick={(event) => {
-                event.preventDefault();
-                setIsCreateAdvertModal(true);
-              }}
-            >
-              Criar anuncio
-            </Button_big_text>
-          </div>
           <ul>
             {adverts && (
               <>
@@ -75,9 +59,8 @@ export default function Home() {
                   <button
                     key={i}
                     id={advert.id}
-                    onClick={() => {
-                      editAdvert(advert.id);
-                    }}
+                    onClick={() => router.push(`details/${advert.id}`)}
+                    style={{ cursor: 'pointer' }}
                   >
                     <ProductCard
                       img={advert.banner}

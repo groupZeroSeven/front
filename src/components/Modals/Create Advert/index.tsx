@@ -24,6 +24,7 @@ export const CreateAdvertModal = () => {
     isCreateAdvertModal,
     setMyAnnouncement,
     myAnnouncement,
+    userLogout,
   } = React.useContext(UserContext);
   const {
     brands,
@@ -84,9 +85,9 @@ export const CreateAdvertModal = () => {
     data['is_bargain'] = false;
     data['is_published'] = true;
 
-    data.fip = selectModelData!.value.toString()
-    data.fuel = fuelType(selectModelData!.fuel)
-    data.year = selectModelData!.year
+    data.fip = selectModelData!.value.toString();
+    data.fuel = fuelType(selectModelData!.fuel);
+    data.year = selectModelData!.year;
 
     const image1 = data.image1;
     delete data.image1;
@@ -121,8 +122,16 @@ export const CreateAdvertModal = () => {
       data.images.push(image6);
     }
     try {
+      const token = localStorage.getItem('token');
+
+      if (!token) return userLogout();
+
       // await toast.promise(
-      const res = await api.post('/api/anoucements', data);
+      const res = await api.post('/api/anoucements', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // {
       //   pending: 'Waiting...',
       //   success: 'Anúncio criado com sucesso.',
@@ -136,6 +145,7 @@ export const CreateAdvertModal = () => {
       setIsCreateAdvertModal(false);
       setIsConfirmModal(true);
     } catch (err) {
+      console.log(err);
       toast.error('Não foi possível criar o anúncio', {
         theme: 'dark',
       });
@@ -239,7 +249,7 @@ export const CreateAdvertModal = () => {
               <StyledInput
                 type="text"
                 id="fip"
-                value={selectModelData ? selectModelData.value : ""}
+                value={selectModelData ? selectModelData.value : ''}
                 disabled
               />
               <StyledSpanError>{errors.fip?.message}</StyledSpanError>

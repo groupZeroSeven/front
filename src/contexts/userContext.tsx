@@ -24,6 +24,10 @@ const UserProvider = ({ children }: IContextProps) => {
     IUserAnnouncement[] | null
   >(null);
 
+  const [myAnnouncementSeller, setMyAnnouncementSeller] = React.useState<
+    IUserAnnouncement[] | null
+  >(null);
+
   const [detailAnnouncement, setDetailAnnouncement] =
     React.useState<IUserAnnouncement | null>(null);
 
@@ -38,6 +42,41 @@ const UserProvider = ({ children }: IContextProps) => {
     setUser(null);
     localStorage.removeItem('token');
     router.push('/');
+  };
+
+  const LoginUser = async (userLogin: IFormLogin) => {
+    try {
+      const resp = await api.post(`/api/login`, userLogin);
+      const { token } = resp.data;
+
+      localStorage.setItem('token', token);
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
+      const profile = await api.get(`/api/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setUser(profile.data);
+
+      router.push('/');
+    } catch (error: any) {
+      toast.error(error?.response.data.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+      });
+    }
+  };
+
+  const RegisterUser = async (data: any) => {
+    try {
+      await api.post('/api/users', data);
+      router.push('/login');
+    } catch (error: any) {
+      toast.error(error?.response.data.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+      });
+    }
   };
 
   React.useEffect(() => {
@@ -71,36 +110,6 @@ const UserProvider = ({ children }: IContextProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function LoginUser(data: IFormLogin) {
-    try {
-      console.log(data);
-      const resp = await api.post(`/api/login`, data);
-      const { token } = resp.data;
-
-      localStorage.setItem('token', token);
-      api.defaults.headers.authorization = `Bearer ${token}`;
-      router.push('/');
-    } catch (error: any) {
-      toast.error(error?.response.data.message, {
-        position: 'bottom-right',
-        autoClose: 5000,
-      });
-    }
-  }
-
-  async function RegisterUser(data: any) {
-    console.log(data);
-    try {
-      await api.post('/api/users', data);
-      router.push('/login');
-    } catch (error: any) {
-      toast.error(error?.response.data.message, {
-        position: 'bottom-right',
-        autoClose: 5000,
-      });
-    }
-  }
-
   return (
     <UserContext.Provider
       value={{
@@ -117,6 +126,8 @@ const UserProvider = ({ children }: IContextProps) => {
         setDetailAnnouncement,
         LoginUser,
         RegisterUser,
+        myAnnouncementSeller,
+        setMyAnnouncementSeller,
       }}
     >
       {children}
