@@ -55,6 +55,7 @@ export const CreateAdvertModal = () => {
     if (selectBrand !== '') {
       res();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectBrand]);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export const CreateAdvertModal = () => {
     if (!isCreateAdvertModal) {
       setSelectModelData(undefined);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectModel]);
 
   const {
@@ -121,6 +123,7 @@ export const CreateAdvertModal = () => {
     if (image6) {
       data.images.push(image6);
     }
+    const token = localStorage.getItem('token');
     try {
       const token = localStorage.getItem('token');
 
@@ -140,12 +143,12 @@ export const CreateAdvertModal = () => {
       //   theme: 'dark',
       // }
       // );
-
-      setMyAnnouncement([res.data, ...myAnnouncement!]);
+      if (myAnnouncement) {
+        setMyAnnouncement([res.data, ...myAnnouncement!]);
+      }
       setIsCreateAdvertModal(false);
       setIsConfirmModal(true);
     } catch (err) {
-      console.log(err);
       toast.error('Não foi possível criar o anúncio', {
         theme: 'dark',
       });

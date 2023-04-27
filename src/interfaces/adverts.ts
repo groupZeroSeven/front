@@ -25,6 +25,8 @@ export interface IAdvertsProps {
   fuelType: (n: number) => '' | 'Flex' | 'Híbrido' | 'Elétrico';
   isConfirmModal: boolean;
   setIsConfirmModal: Dispatch<SetStateAction<boolean>>;
+  filteredAdverts: iAdvert[] | null;
+  setFilteredAdverts: React.Dispatch<React.SetStateAction<iAdvert[] | null>>;
 }
 
 export interface iCreateAdvertModalProps {

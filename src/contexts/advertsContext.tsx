@@ -21,6 +21,10 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
 
   const { userLogout } = React.useContext(UserContext);
 
+  const [filteredAdverts, setFilteredAdverts] = React.useState<
+    iAdvert[] | null
+  >(null);
+
   const brands = [
     'Citroën',
     'Fiat',
@@ -148,6 +152,8 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
         fuelType,
         isConfirmModal,
         setIsConfirmModal,
+        filteredAdverts,
+        setFilteredAdverts,
       }}
     >
       {children}
