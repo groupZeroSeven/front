@@ -1,6 +1,3 @@
-import { ConfirmModal } from '@/src/components/Modals/Confirm';
-import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
-import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
 import { ProductCard } from '@/src/components/ProductCard';
 import { Filter } from '@/src/components/filter';
 import { Footer } from '@/src/components/footer';
@@ -19,23 +16,12 @@ import React, { useContext, useEffect, useState } from 'react';
 export default function Home() {
   const router = useRouter();
 
-  const {
-    isCreateAdvertModal,
-    setIsCreateAdvertModal,
-    isEditAdvertModal,
-    setIsEditAdvertModal,
-  } = React.useContext(UserContext);
+  const { isCreateAdvertModal, isEditAdvertModal } =
+    React.useContext(UserContext);
 
-  const [advertSelected, setAdvertSelected] = useState<string>();
   const [isFilterModal, setIsFilterModal] = useState<boolean>(false);
 
-  const { adverts, getAdverts, isConfirmModal, filteredAdverts } =
-    useContext(AdvertsContext);
-
-  function editAdvert(id: string) {
-    setAdvertSelected(id);
-    setIsEditAdvertModal(true);
-  }
+  const { adverts, getAdverts, filteredAdverts } = useContext(AdvertsContext);
 
   useEffect(() => {
     getAdverts();
@@ -44,9 +30,6 @@ export default function Home() {
 
   return (
     <>
-      {isConfirmModal && <ConfirmModal message="Criado" title="Sucesso!" />}
-      {isCreateAdvertModal && <CreateAdvertModal />}
-      {isEditAdvertModal && <EditAdvertModal id={advertSelected} />}
       <Header />
       <BannerStyled>
         <Heading_1_700>Motors Shop</Heading_1_700>
@@ -98,9 +81,8 @@ export default function Home() {
                     <button
                       key={i}
                       id={advert.id}
-                      onClick={() => {
-                        editAdvert(advert.id);
-                      }}
+                      onClick={() => router.push(`details/${advert.id}`)}
+                      style={{ cursor: 'pointer' }}
                     >
                       <ProductCard
                         img={advert.banner}
