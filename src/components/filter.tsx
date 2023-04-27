@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { iAdvert } from "../interfaces/adverts"
 import { FilterStyled } from "../styles/containers"
-import { Button_brand, Button_brand2, Button_disable, Heading_4_600, Heading_6_500, Heading_7_500 } from "../styles/global"
-import { ButtonBig } from "./button-big"
+import { Button_brand2, Button_disable, Heading_4_600, Heading_6_500, Heading_7_500 } from "../styles/global"
 import { AdvertsContext } from "../contexts/advertsContext"
 import { apiKars } from "../services/api"
 import {iModel} from "../interfaces/adverts"
@@ -130,18 +129,6 @@ export const Filter = ({setIsFilterModal, isFilterModal}: iFilterProps) => {
     setListModels(uniqueModels);
   }
   useEffect(() => {
-    if (filteredAdverts) {
-      const filter = filteredAdverts.filter((advert) => (advert.brand === markedBrand))
-     
-      setFilteredAdverts(filter)
-      
-  } 
-    if (!filteredAdverts && adverts) {
-      const filter = adverts.filter((advert) => (advert.brand === markedBrand))
-      
-      setFilteredAdverts(filter)
-    
-    }
     const res = async () => {
       try {
         const { data } = await apiKars.get(
@@ -158,78 +145,98 @@ export const Filter = ({setIsFilterModal, isFilterModal}: iFilterProps) => {
     }
     if (markedBrand !== '') {
       res();
+      if (filteredAdverts) {
+        const filter = filteredAdverts.filter((advert) => (advert.brand === markedBrand))
+       
+        setFilteredAdverts(filter)
+        
+    } 
+      if (!filteredAdverts && adverts) {
+        const filter = adverts.filter((advert) => (advert.brand === markedBrand))
+        
+        setFilteredAdverts(filter)
+      
+      }
     }
   }, [markedBrand])
 
   useEffect(() => {
-    if (filteredAdverts) {
-      const filter = filteredAdverts.filter((advert) => {
+    if (markedModel !== '') {
+      if (filteredAdverts) {
+        const filter = filteredAdverts.filter((advert) => {
+          if (advert.model.includes(markedModel.toLocaleLowerCase())) {
+            return advert
+          }
+        })
+        
+        setFilteredAdverts(filter)
+        filterLister(filteredAdverts)
+    } 
+    if (!filteredAdverts && adverts) {
+      const filter = adverts.filter((advert) => {
         if (advert.model.includes(markedModel.toLocaleLowerCase())) {
           return advert
         }
       })
       
       setFilteredAdverts(filter)
-      filterLister(filteredAdverts)
-  } 
-  if (!filteredAdverts && adverts) {
-    const filter = adverts.filter((advert) => {
-      if (advert.model.includes(markedModel.toLocaleLowerCase())) {
-        return advert
-      }
-    })
-    
-    setFilteredAdverts(filter)
-    filterLister(adverts)
-  }
+      filterLister(adverts)
+    }
+    }
   
   }, [markedModel])
 
   useEffect(() => {
-    if (filteredAdverts) {
-      const filter = filteredAdverts.filter((advert) => (advert.color.toLocaleLowerCase() === markedColor.toLocaleLowerCase()))
-      
-      setFilteredAdverts(filter)
-      filterLister(filteredAdverts)
-    } 
-    if (!filteredAdverts && adverts) {
-      const filter = adverts.filter((advert) => (advert.color.toLocaleLowerCase() === markedColor.toLocaleLowerCase()))
-      
+    if (markedColor !== '') {
+      if (filteredAdverts) {
+        const filter = filteredAdverts.filter((advert) => (advert.color.toLocaleLowerCase() === markedColor.toLocaleLowerCase()))
+        
         setFilteredAdverts(filter)
-        filterLister(adverts)
-  }
+        filterLister(filteredAdverts)
+      } 
+      if (!filteredAdverts && adverts) {
+        const filter = adverts.filter((advert) => (advert.color.toLocaleLowerCase() === markedColor.toLocaleLowerCase()))
+        
+          setFilteredAdverts(filter)
+          filterLister(adverts)
+    }
+    }
   
   }, [markedColor])
 
   useEffect(() => {
-    if (filteredAdverts) {
-      const filter = filteredAdverts.filter((advert) => (advert.year === markedYear))
-      
-      setFilteredAdverts(filter)
-      
-      filterLister(filteredAdverts)
-    } 
-    if (!filteredAdverts && adverts) {
-      const filter = adverts.filter((advert) => (advert.year === markedYear))
-     
-      setFilteredAdverts(filter)
-      filterLister(adverts)
+    if (markedYear !== '') {
+      if (filteredAdverts) {
+        const filter = filteredAdverts.filter((advert) => (advert.year === markedYear))
+        
+        setFilteredAdverts(filter)
+        
+        filterLister(filteredAdverts)
+      } 
+      if (!filteredAdverts && adverts) {
+        const filter = adverts.filter((advert) => (advert.year === markedYear))
+       
+        setFilteredAdverts(filter)
+        filterLister(adverts)
+      }
     }
   }, [markedYear])
 
   useEffect(() => {
-    if (filteredAdverts) {
-      const filter = filteredAdverts.filter((advert) => (advert.fuel === markedFuel))
-      
-      setFilteredAdverts(filter)
-      
-      filterLister(filteredAdverts)
-    } 
-    if (!filteredAdverts && adverts) {
-      const filter = adverts.filter((advert) => (advert.fuel === markedFuel))
-      
-      setFilteredAdverts(filter)
-      filterLister(adverts)
+    if (markedFuel !== '') {
+      if (filteredAdverts) {
+        const filter = filteredAdverts.filter((advert) => (advert.fuel === markedFuel))
+        
+        setFilteredAdverts(filter)
+        
+        filterLister(filteredAdverts)
+      } 
+      if (!filteredAdverts && adverts) {
+        const filter = adverts.filter((advert) => (advert.fuel === markedFuel))
+        
+        setFilteredAdverts(filter)
+        filterLister(adverts)
+      }
     }
   }, [markedFuel])
 
