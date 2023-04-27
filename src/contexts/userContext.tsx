@@ -79,6 +79,21 @@ const UserProvider = ({ children }: IContextProps) => {
     }
   };
 
+  const ResetPassword = async (data: IFormLogin) => {
+    try {
+      await api.post('/api/recoverpassword', data);
+      toast.success('Email enviado com sucesso!',{
+        position: 'bottom-right',
+        autoClose: 5000,
+      })
+    } catch (error: any) {
+      toast.error(error?.response.data.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+      });
+    }
+  }
+
   React.useEffect(() => {
     setLoad(true);
 
@@ -126,6 +141,7 @@ const UserProvider = ({ children }: IContextProps) => {
         setDetailAnnouncement,
         LoginUser,
         RegisterUser,
+        ResetPassword,
         myAnnouncementSeller,
         setMyAnnouncementSeller,
       }}

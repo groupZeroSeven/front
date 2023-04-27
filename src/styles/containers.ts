@@ -281,7 +281,8 @@ export const RegisterStyled = styled.main`
   justify-content: center;
 
   @media screen and (min-width: 720px) {
-    height: 155vh;
+    min-height: 155vh;
+    
   }
 
   & > div {
@@ -365,5 +366,44 @@ export const StyledCheckbox = styled.label`
   input[type='checkbox']:checked ~ div {
     background-color: var(--color-brand-1);
     color: var(--color-whiteFixed);
+  }
+`;
+
+
+export const ResetStyled = styled.main`
+  background-color: var(--color-grey-7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (min-width: 720px) {
+    height: 90vh;
+  }
+  & > div {
+    margin: 5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-whiteFixed);
+    padding: 5rem 3rem;
+
+    @media screen and (min-width: 720px) {
+      width: 35rem;
+    }
+  }
+
+  & > div > form {
+    margin: 2rem 0rem;
+  }
+
+  & > div > form > input {
+    margin: 0.8rem 0rem 2rem 0rem;
+  }
+
+  & > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    text-align: center;
+    height: 5rem;
   }
 `;

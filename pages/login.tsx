@@ -38,7 +38,7 @@ export default function Login() {
             <StyledInput2 id='email' placeholder="Digitar usuário" {...register("email")}/>
             <StyledLabels htmlFor='password'>Senha</StyledLabels>
             <StyledInput2 type="password" id='password' placeholder="Digitar Senha" {...register("password")}/>
-            <div className="lostPassword"><Body_2_500>Esqueci a minha senha</Body_2_500></div>
+            <div className="lostPassword"><Body_2_500 style={{ cursor: 'pointer'}} onClick={()=>{router.push('/reset')}}>Esqueci a minha senha</Body_2_500></div>
             <div>
               <ButtonBig
                 bgColor="var(--color-brand-1)"

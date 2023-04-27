@@ -27,6 +27,7 @@ export interface IUserContext {
 
   LoginUser: any;
   RegisterUser: any;
+  ResetPassword: any;
 }
 
 export interface IUser {
