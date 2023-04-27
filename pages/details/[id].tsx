@@ -77,14 +77,14 @@ export default function DetailsPage() {
             autoClose: 5000,
           });
         } finally {
-          setLoad(false)
+          setLoad(false);
         }
       };
 
       getAnnouncement();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, id]);
 
   return (
     <>
@@ -92,79 +92,81 @@ export default function DetailsPage() {
       <MainDetailsStyle>
         <div className="container">
           <span>
-            <span>
-              <div className="menu-one">
-                <section className="img-default">
-                  <Image
-                    src={`${detailAnnouncement?.banner}`}
-                    alt="Car"
-                    width={294}
-                    height={253}
-                  />
-                </section>
+            {detailAnnouncement && (
+              <span>
+                <div className="menu-one">
+                  <section className="img-default">
+                    <Image
+                      src={`${detailAnnouncement?.banner}`}
+                      alt="Car"
+                      width={294}
+                      height={253}
+                    />
+                  </section>
 
-                <section className="info-car">
-                  <Heading_6_600>
-                    {`${detailAnnouncement?.brand} - ${detailAnnouncement?.model}`}
-                  </Heading_6_600>
-                  <div>
-                    <Details href="">{detailAnnouncement?.year}</Details>
-                    <Details href="">{detailAnnouncement?.mileage}</Details>
-                  </div>
-                  <Heading_7_500>{`R$: ${detailAnnouncement?.price}`}</Heading_7_500>
-                  <span>
-                    <ButtonMedium
-                      bgColor="var(--color-brand-1)"
-                      fontColor="var(--color-whiteFixed)"
-                      borderColor="var(--color-brand-1)"
-                    >
-                      Comprar
-                    </ButtonMedium>
-                  </span>
-                </section>
+                  <section className="info-car">
+                    <Heading_6_600>
+                      {`${detailAnnouncement?.brand} - ${detailAnnouncement?.model}`}
+                    </Heading_6_600>
+                    <div>
+                      <Details href="#">{detailAnnouncement?.year}</Details>
+                      <Details href="#">{detailAnnouncement?.mileage}</Details>
+                    </div>
+                    <Heading_7_500>{`R$: ${detailAnnouncement?.price}`}</Heading_7_500>
+                    <span>
+                      <ButtonMedium
+                        bgColor="var(--color-brand-1)"
+                        fontColor="var(--color-whiteFixed)"
+                        borderColor="var(--color-brand-1)"
+                      >
+                        Comprar
+                      </ButtonMedium>
+                    </span>
+                  </section>
 
-                <section className="description">
-                  <Heading_6_600>Descrição</Heading_6_600>
-                  <Body_1_400>{detailAnnouncement?.description}</Body_1_400>
-                </section>
-              </div>
+                  <section className="description">
+                    <Heading_6_600>Descrição</Heading_6_600>
+                    <Body_1_400>{detailAnnouncement?.description}</Body_1_400>
+                  </section>
+                </div>
 
-              <div className="menu-two">
-                <section className="photo-car">
-                  <Heading_6_600>Fotos</Heading_6_600>
-                  <ul>
-                    {fotos.map((el, i) => (
-                      <li key={i}>
-                        <Image src={el} alt="Fotos" width={95} height={55} />
-                      </li>
-                    ))}
-                  </ul>
-                </section>
+                <div className="menu-two">
+                  <section className="photo-car">
+                    <Heading_6_600>Fotos</Heading_6_600>
+                    <ul>
+                      {fotos.map((el, i) => (
+                        <li key={i}>
+                          <Image src={el} alt="Fotos" width={95} height={55} />
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
 
-                <section className="profile">
-                  <Image
-                    src="/image/profile.png"
-                    alt="Profile"
-                    width={77}
-                    height={77}
-                  ></Image>
-                  <Heading_6_600>{user?.name}</Heading_6_600>
-                  <Body_1_400>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industrys
-                  </Body_1_400>
-                  <div>
-                    <ButtonBig
-                      bgColor="var(--color-grey-0)"
-                      fontColor="var(--color-whiteFixed)"
-                      borderColor="var(--color-grey-0)"
-                    >
-                      Ver todos anuncios
-                    </ButtonBig>
-                  </div>
-                </section>
-              </div>
-            </span>
+                  <section className="profile">
+                    <Image
+                      src="/image/profile.png"
+                      alt="Profile"
+                      width={77}
+                      height={77}
+                    ></Image>
+                    <Heading_6_600>{user?.name}</Heading_6_600>
+                    <Body_1_400>
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industrys
+                    </Body_1_400>
+                    <div onClick={() => router.push('#')}>
+                      <ButtonBig
+                        bgColor="var(--color-grey-0)"
+                        fontColor="var(--color-whiteFixed)"
+                        borderColor="var(--color-grey-0)"
+                      >
+                        Ver todos anuncios
+                      </ButtonBig>
+                    </div>
+                  </section>
+                </div>
+              </span>
+            )}
             <span>
               <div className="menu-three">
                 <section className="commits">

@@ -1,15 +1,11 @@
 import { AdvertsContext } from '@/src/contexts/advertsContext';
 import { UserContext } from '@/src/contexts/userContext';
+import { iAdvert, iEditAdvert, iImage } from '@/src/interfaces/adverts';
+import { schemaEditAdvert } from '@/src/schemas/editAdvert';
 import { api } from '@/src/services/api';
 import { Body_2_500, Heading_7_500, Input_label } from '@/src/styles/global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -20,16 +16,18 @@ import {
 } from '../Create Advert/style';
 import { DeleteAdvertModal } from '../Delete Advert';
 import { StyledEditAdvertModal } from './style';
-import { iAdvert, iEditAdvert, iImage } from '@/src/interfaces/adverts';
-import { schemaEditAdvert } from '@/src/schemas/editAdvert';
-
 
 export const EditAdvertModal = ({ id }: any) => {
   const { getEspecificAdverts, patchAdverts } = useContext(AdvertsContext);
   const [advert, setAdvert] = useState<any>();
   const [isPublished, setIsPublished] = useState<boolean>(advert?.is_published);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const { setIsEditAdvertModal } = React.useContext(UserContext);
+  const {
+    setIsEditAdvertModal,
+    userLogout,
+    myAnnouncement,
+    setMyAnnouncement,
+  } = React.useContext(UserContext);
 
   useEffect(() => {
     async function getAdvert(id: string | undefined) {
@@ -38,6 +36,7 @@ export const EditAdvertModal = ({ id }: any) => {
     }
 
     getAdvert(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {
@@ -49,8 +48,14 @@ export const EditAdvertModal = ({ id }: any) => {
   });
 
   const handleSubmitFunction = async (data: iEditAdvert) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) return userLogout();
+
     if (advert.is_published !== isPublished) {
       data.is_published = isPublished;
+    } else {
+      delete data.is_published;
     }
     if (data.brand === '') {
       delete data.brand;
@@ -76,8 +81,8 @@ export const EditAdvertModal = ({ id }: any) => {
     if (data.description === '') {
       delete data.description;
     }
-    if (data.fipe === '') {
-      delete data.fipe;
+    if (data.fip === '') {
+      delete data.fip;
     }
     if (data.banner === '') {
       delete data.banner;
@@ -94,7 +99,9 @@ export const EditAdvertModal = ({ id }: any) => {
         image.url += data.firstImage;
         delete data.firstImage;
         try {
-          api.post(`/api/images/${advert.id}`, image);
+          api.post(`/api/images/${advert.id}`, image, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
         } catch (err) {
           console.log(err);
         }
@@ -104,17 +111,27 @@ export const EditAdvertModal = ({ id }: any) => {
         image.url += data.secondImage;
         delete data.secondImage;
         try {
-          api.post(`/api/images/${advert.id}`, image);
+          api.post(`/api/images/${advert.id}`, image, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
         } catch (err) {
           console.log(err);
         }
       }
     }
     try {
-      await api.patch(`/api/anoucements/${advert.id}`, data);
+      const res = await api.patch(`/api/anoucements/${advert.id}`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const filter = myAnnouncement?.filter((el) => el.id !== advert.id);
+
+      setMyAnnouncement([res.data, ...filter!]);
+
       toast.success('Anúncio alterado com sucesso', {
         theme: 'dark',
       });
+
       setIsEditAdvertModal(false);
     } catch (err) {
       toast.error('Não foi possível alterar o anúncio', {
@@ -209,7 +226,7 @@ export const EditAdvertModal = ({ id }: any) => {
                   type="text"
                   id="fipe"
                   placeholder="R$ 48.000,00"
-                  {...register('fipe')}
+                  {...register('fip')}
                 />
               </div>
 

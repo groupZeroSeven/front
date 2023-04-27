@@ -1,10 +1,13 @@
+import { ConfirmModal } from '@/src/components/Modals/Confirm';
 import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
 import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
 import { ProfileAdvertiser } from '@/src/components/profile';
+import { AdvertsContext } from '@/src/contexts/advertsContext';
 import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
+import { IUserAnnouncement } from '@/src/interfaces/user';
 import { api } from '@/src/services/api';
 import { DashboardStyle } from '@/src/styles/dashboard';
 import {
@@ -41,7 +44,10 @@ export default function Dashboard() {
     setDetailAnnouncement,
   } = React.useContext(UserContext);
 
-  const [advertSelected, setAdvertSelected] = React.useState<string>();
+  const { isConfirmModal } = React.useContext(AdvertsContext);
+
+  const [advertSelected, setAdvertSelected] =
+    React.useState<IUserAnnouncement>();
 
   React.useEffect(() => {
     setLoad(true);
@@ -77,16 +83,22 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  function editAdvert(id: string) {
-    setAdvertSelected(id);
+  function editAdvert(advert: any) {
+    setAdvertSelected(advert);
     setIsEditAdvertModal(true);
   }
 
   return (
     <>
       {isCreateAdvertModal && <CreateAdvertModal />}
+      {isConfirmModal && (
+        <ConfirmModal
+          title="Seu anúncio foi criado com sucesso!"
+          message="Agora você poderá ver seus negócios crescendo em grande escala"
+        />
+      )}
       <Header />
-      {isEditAdvertModal && <EditAdvertModal id={advertSelected} />}
+      {isEditAdvertModal && <EditAdvertModal id={advertSelected?.id} />}
       <DashboardStyle>
         <aside>
           <Image
@@ -152,7 +164,7 @@ export default function Dashboard() {
                       }}
                       onClick={(event) => {
                         event.preventDefault();
-                        editAdvert(el.id);
+                        editAdvert(el);
                       }}
                     >
                       Editar

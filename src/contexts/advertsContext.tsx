@@ -2,6 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { IAdvertsProps, iAdvert, iModel } from '../interfaces/adverts';
 import { api } from '../services/api';
+import { UserContext } from './userContext';
 
 export const AdvertsContext = React.createContext<IAdvertsProps>(
   {} as IAdvertsProps
@@ -17,7 +18,13 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
   const [selectModelValues, setSelectModelValues] = React.useState<iModel[]>(
     []
   );
-  const [filteredAdverts, setFilteredAdverts] = React.useState<iAdvert[] | null>(null)
+
+  const { userLogout } = React.useContext(UserContext);
+
+  const [filteredAdverts, setFilteredAdverts] = React.useState<
+    iAdvert[] | null
+  >(null);
+
   const brands = [
     'Citroën',
     'Fiat',
@@ -66,7 +73,7 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
     }
   };
 
-  const getAdverts = async (): Promise<void> => {
+  const getAdverts = async () => {
     try {
       const { data } = await api.get('/api/anoucements');
       setAdverts(data.data);
@@ -75,8 +82,15 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
     }
   };
 
-  const getEspecificAdverts = async (id: string): Promise<iAdvert> => {
-    const { data } = await api.get(`/api/anoucements/${id}`);
+  const getEspecificAdverts = async (id: string) => {
+    const token: string | null = localStorage.getItem('token');
+
+    if (!token) return userLogout();
+
+    const { data } = await api.get(`/api/anoucements/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
     return data;
   };
 
@@ -138,7 +152,7 @@ const AdvertsProvider = ({ children }: IAdvertsProps) => {
         fuelType,
         isConfirmModal,
         setIsConfirmModal,
-        filteredAdverts, 
+        filteredAdverts,
         setFilteredAdverts,
       }}
     >

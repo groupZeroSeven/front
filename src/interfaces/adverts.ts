@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface IAdvertsProps {
   adverts: iAdvert[] | null;
-  getAdverts: () => Promise<void>;
   addAdverts: (data: any) => Promise<void>;
   delAdverts: (id: string) => Promise<void>;
+  getAdverts: () => Promise<void>;
   patchAdverts: (data: any, id: string) => Promise<void>;
   children?: React.ReactNode;
-  getEspecificAdverts: (id: string) => Promise<iAdvert>;
+  getEspecificAdverts: any;
   brands: string[];
   selectBrand: string;
   setSelectBrand: Dispatch<SetStateAction<string>>;

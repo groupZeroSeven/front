@@ -15,6 +15,11 @@ export interface IUserContext {
     React.SetStateAction<IUserAnnouncement[] | null>
   >;
 
+  myAnnouncementSeller: IUserAnnouncement[] | null;
+  setMyAnnouncementSeller: React.Dispatch<
+    React.SetStateAction<IUserAnnouncement[] | null>
+  >;
+
   detailAnnouncement: IUserAnnouncement | null;
   setDetailAnnouncement: React.Dispatch<
     React.SetStateAction<IUserAnnouncement | null>
