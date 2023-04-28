@@ -8,6 +8,7 @@ import { Body_1_400, Body_1_600, Button_medium_text } from '../styles/global';
 import { HeaderStyled } from '../styles/header';
 import { ButtonBig } from './button-big';
 import { ProfileAdvertiser } from './profile';
+import { EditUserModal } from './Modals/Edit User';
 
 export const Header = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ export const Header = () => {
   const [openMenuMobile, setOpenMenuMobile] = React.useState(false);
 
   const { user, userLogout } = React.useContext(UserContext);
+  const { setIsEditUserModal, isEditUserModal }  = React.useContext(UserContext);
 
   const openMenuHandler = () => {
     if (openMenu) {
@@ -34,6 +36,8 @@ export const Header = () => {
   };
 
   return (
+    <>
+    {isEditUserModal ? (<><EditUserModal/></>) : null}
     <HeaderStyled>
       <Image
         src="/image/logo.png"
@@ -62,7 +66,7 @@ export const Header = () => {
                       }}
                       onClick={(event) => {
                         event.preventDefault();
-                        // router.push('/dashboard');
+                        setIsEditUserModal(true)
                       }}
                     >
                       <Body_1_400>Editar Perfil</Body_1_400>
@@ -193,7 +197,7 @@ export const Header = () => {
                   }}
                   onClick={(event) => {
                     event.preventDefault();
-                    // router.push('/dashboard');
+                    setIsEditUserModal(true)
                   }}
                 >
                   <Body_1_400>Editar Perfil</Body_1_400>
@@ -247,5 +251,6 @@ export const Header = () => {
         )}
       </nav>
     </HeaderStyled>
+    </>
   );
 };

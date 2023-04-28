@@ -10,6 +10,9 @@ export interface IUserContext {
   isEditAdvertModal: boolean;
   setIsEditAdvertModal: React.Dispatch<React.SetStateAction<boolean>>;
 
+  isEditUserModal: boolean;
+  setIsEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+
   myAnnouncement: IUserAnnouncement[] | null;
   setMyAnnouncement: React.Dispatch<
     React.SetStateAction<IUserAnnouncement[] | null>
@@ -28,6 +31,7 @@ export interface IUserContext {
   LoginUser: any;
   RegisterUser: any;
   ResetPassword: any;
+  EditUser: any;
 }
 
 export interface IUser {
@@ -40,6 +44,8 @@ export interface IUser {
   birth_date: string;
   createdAt: string;
   updatedAt: string;
+  description: string;
+  address?: iFormRegisterAddress;
 }
 
 export interface IUserAnnouncement {
