@@ -142,6 +142,7 @@ const UserProvider = ({ children }: IContextProps) => {
   const RemoveUser = async () => {
     try {
       await api.delete(`/api/users/${user?.id}`);
+      userLogout();
       toast.success('Conta excluida com sucesso!',{
         position: 'bottom-right',
         autoClose: 5000,
