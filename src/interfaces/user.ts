@@ -63,6 +63,32 @@ export interface IUserAnnouncement {
   is_published: true;
   created_at: string;
   updated_at: string;
+  images?: [
+    {
+      id: string;
+      url: string;
+    }
+  ];
+  user?: {
+    updatedAt: string;
+    createdAt: string;
+    cpf: string;
+    is_seller: true;
+    birth_date: string;
+    description: string;
+    phone: string;
+    email: string;
+    name: string;
+    id: string;
+    address: {
+      complement: string;
+      road: string;
+      number: string;
+      city: string;
+      state: string;
+      cep: string;
+    };
+  };
 }
 
 export interface IFormLogin {

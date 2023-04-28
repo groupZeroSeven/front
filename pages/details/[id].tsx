@@ -59,6 +59,8 @@ export default function DetailsPage() {
   const { user, setDetailAnnouncement, detailAnnouncement } =
     React.useContext(UserContext);
 
+  const [userDetails, setUserDetails] = React.useState();
+
   React.useEffect(() => {
     if (user) {
       setLoad(true);
@@ -69,6 +71,8 @@ export default function DetailsPage() {
             { pending: 'Waiting...' },
             { autoClose: 6000 }
           );
+
+          console.log(data);
 
           setDetailAnnouncement(data);
         } catch (error: any) {
@@ -134,9 +138,9 @@ export default function DetailsPage() {
                   <section className="photo-car">
                     <Heading_6_600>Fotos</Heading_6_600>
                     <ul>
-                      {fotos.map((el, i) => (
+                      {detailAnnouncement.images?.map((el, i) => (
                         <li key={i}>
-                          <Image src={el} alt="Fotos" width={95} height={55} />
+                          <Image src={el.url} alt="Fotos" width={95} height={55} />
                         </li>
                       ))}
                     </ul>
@@ -149,12 +153,17 @@ export default function DetailsPage() {
                       width={77}
                       height={77}
                     ></Image>
-                    <Heading_6_600>{user?.name}</Heading_6_600>
+                    <Heading_6_600>
+                      {detailAnnouncement.user?.name}
+                    </Heading_6_600>
                     <Body_1_400>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industrys
+                      {detailAnnouncement.user?.description}
                     </Body_1_400>
-                    <div onClick={() => router.push('#')}>
+                    <div
+                      onClick={() =>
+                        router.push(`/seller/${detailAnnouncement.user?.id}`)
+                      }
+                    >
                       <ButtonBig
                         bgColor="var(--color-grey-0)"
                         fontColor="var(--color-whiteFixed)"
