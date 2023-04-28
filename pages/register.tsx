@@ -3,6 +3,7 @@ import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
 import { UserContext } from '@/src/contexts/userContext';
 import { iFormRegister } from '@/src/interfaces/user';
+import { userSchema } from '@/src/schemas/userSchema';
 import {
   RegisterStyled,
   StyledAdress,
@@ -18,40 +19,6 @@ import * as yup from 'yup';
 
 export default function Register() {
   const { RegisterUser } = useContext(UserContext);
-  const schema = yup.object().shape({
-    password: yup
-      .string()
-      .required('digite uma senha')
-      .matches(/[0-9]/, 'A senha deve possuir um numero')
-      .matches(/[a-z]/, 'A senha deve possuir uma letra')
-      .matches(/[^\w]/, 'A senha deve possuir um caractere especial')
-      .min(8, 'A senha deve ter no minimo 8 caracteres'),
-    confim_password: yup
-      .string()
-      .required('Confirmação de senha e obrigatoria')
-      .oneOf(
-        [yup.ref('password')],
-        'Confirmação de senha deve ser igual a senha'
-      ),
-    name: yup.string().required('digite o seu nome'),
-    email: yup
-      .string()
-      .required('digite o seu email')
-      .email('Deve ser um e-mail válido'),
-    phone: yup.string().required('digite o seu telefone'),
-    cpf: yup.string().required('digite o seu cpf'),
-    birth_date: yup.date().required('digite a sua data de nascimento'),
-    description: yup.string().required('digite uma descrição'),
-    address: yup.object({
-      cep: yup.string().required('digite o seu cep'),
-      state: yup.string().required('digite o seu estado'),
-      city: yup.string().required('digite o sua cidade'),
-      road: yup.string().required('digite o sua rua'),
-      number: yup.number().required('digite o numero da sua casa'),
-      complement: yup.string(),
-    }),
-    is_seller: yup.boolean(),
-  });
 
   const {
     register,
@@ -59,7 +26,7 @@ export default function Register() {
     formState: { errors },
   } = useForm<iFormRegister>({
     criteriaMode: 'all',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(userSchema),
   });
 
   return (

@@ -37,6 +37,9 @@ const UserProvider = ({ children }: IContextProps) => {
   const [isEditAdvertModal, setIsEditAdvertModal] =
     React.useState<boolean>(false);
 
+  const [isEditUserModal, setIsEditUserModal] =
+    React.useState<boolean>(false);
+
   const userLogout = (): void => {
     setLoad(false);
     setUser(null);
@@ -94,6 +97,45 @@ const UserProvider = ({ children }: IContextProps) => {
     }
   }
 
+  const EditUser = async (data: IUser) => {
+    try {
+      await api.patch(`/api/users/${user?.id}`, data);
+      toast.success('Dados alterados com sucesso!',{
+        position: 'bottom-right',
+        autoClose: 5000,
+      })
+      GetUserData()
+      setIsEditUserModal(false)
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+      });
+    }
+  }
+
+  const GetUserData = async () => {
+    const token: string | null = localStorage.getItem('token');
+
+    if (!token) return userLogout();
+    try {
+      const { data } = await toast.promise(
+        api.get(`/api/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        {}
+      );
+
+      setUser(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+      });
+    }
+  }
+
+
   React.useEffect(() => {
     setLoad(true);
 
@@ -144,6 +186,9 @@ const UserProvider = ({ children }: IContextProps) => {
         ResetPassword,
         myAnnouncementSeller,
         setMyAnnouncementSeller,
+        isEditUserModal,
+        setIsEditUserModal,
+        EditUser,
       }}
     >
       {children}
