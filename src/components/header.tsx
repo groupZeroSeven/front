@@ -9,6 +9,7 @@ import { HeaderStyled } from '../styles/header';
 import { ButtonBig } from './button-big';
 import { ProfileAdvertiser } from './profile';
 import { EditUserModal } from './Modals/Edit User';
+import { EditAddressModal } from './Modals/Edit Addres';
 
 export const Header = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ export const Header = () => {
   const [openMenuMobile, setOpenMenuMobile] = React.useState(false);
 
   const { user, userLogout } = React.useContext(UserContext);
-  const { setIsEditUserModal, isEditUserModal }  = React.useContext(UserContext);
+  const { setIsEditUserModal, isEditUserModal, isEditAddressModal, setIsEditAddressModal }  = React.useContext(UserContext);
 
   const openMenuHandler = () => {
     if (openMenu) {
@@ -38,6 +39,7 @@ export const Header = () => {
   return (
     <>
     {isEditUserModal ? (<><EditUserModal/></>) : null}
+    {isEditAddressModal ? (<><EditAddressModal/></>) : null}
     <HeaderStyled>
       <Image
         src="/image/logo.png"
@@ -80,7 +82,7 @@ export const Header = () => {
                       }}
                       onClick={(event) => {
                         event.preventDefault();
-                        // router.push('/dashboard');
+                        setIsEditAddressModal(true)
                       }}
                     >
                       <Body_1_400>Editar endereço</Body_1_400>
@@ -211,7 +213,7 @@ export const Header = () => {
                   }}
                   onClick={(event) => {
                     event.preventDefault();
-                    // router.push('/dashboard');
+                    setIsEditAddressModal(true)
                   }}
                 >
                   <Body_1_400>Editar endereço</Body_1_400>

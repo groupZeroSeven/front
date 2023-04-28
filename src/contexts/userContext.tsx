@@ -40,6 +40,9 @@ const UserProvider = ({ children }: IContextProps) => {
   const [isEditUserModal, setIsEditUserModal] =
     React.useState<boolean>(false);
 
+    const [isEditAddressModal, setIsEditAddressModal] =
+    React.useState<boolean>(false);
+
   const userLogout = (): void => {
     setLoad(false);
     setUser(null);
@@ -106,6 +109,7 @@ const UserProvider = ({ children }: IContextProps) => {
       })
       GetUserData()
       setIsEditUserModal(false)
+      setIsEditAddressModal(false)
     } catch (error: any) {
       toast.error(error?.response?.data?.message, {
         position: 'bottom-right',
@@ -129,6 +133,21 @@ const UserProvider = ({ children }: IContextProps) => {
       setUser(data);
     } catch (error: any) {
       toast.error(error?.response?.data?.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+      });
+    }
+  }
+
+  const RemoveUser = async () => {
+    try {
+      await api.delete(`/api/users/${user?.id}`);
+      toast.success('Conta excluida com sucesso!',{
+        position: 'bottom-right',
+        autoClose: 5000,
+      })
+    } catch (error: any) {
+      toast.error(error?.response.data.message, {
         position: 'bottom-right',
         autoClose: 5000,
       });
@@ -189,6 +208,9 @@ const UserProvider = ({ children }: IContextProps) => {
         isEditUserModal,
         setIsEditUserModal,
         EditUser,
+        isEditAddressModal,
+        setIsEditAddressModal,
+        RemoveUser,
       }}
     >
       {children}

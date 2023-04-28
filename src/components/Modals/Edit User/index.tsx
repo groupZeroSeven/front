@@ -12,7 +12,7 @@ import { StyledEditUserModal } from "./style";
 import { StyledButtonClose } from "../Create Advert/style";
 
 export const EditUserModal = () => {
-    const { user, EditUser} = useContext(UserContext);
+    const { user, EditUser, RemoveUser} = useContext(UserContext);
     const { isEditUserModal, setIsEditUserModal }  = useContext(UserContext);
 
     const {
@@ -24,8 +24,8 @@ export const EditUserModal = () => {
       });
       
     const teste = async (data : any) =>{
-        let o = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != ""));
-        EditUser({...user, ...o})
+        let newdata = Object.fromEntries(Object.entries(data).filter(([_, value]) => value != ""));
+        EditUser({...user, ...newdata})
     }
     return (
         <>
@@ -83,7 +83,7 @@ export const EditUserModal = () => {
                     placeholder={user?.description}
                     {...register('description')}
                     />
-                    
+
                     <StyledLabels htmlFor="password">Senha</StyledLabels>
                     <StyledInput2
                     id="password"
@@ -103,11 +103,11 @@ export const EditUserModal = () => {
                     />
                     <div>
                         <div>
-                            <Button_big_text className="remove">Excluir</Button_big_text>
-                            <Button_big_text className="save">Salvar Alterações</Button_big_text>
+                            <Button_big_text className="remove" onClick={()=>{RemoveUser}}>Excluir</Button_big_text>
+                            <Button_big_text className="save" type="submit">Salvar Alterações</Button_big_text>
                         </div>
                         <div>
-                            <Button_big_text className="exit">Cancelar</Button_big_text>
+                            <Button_big_text className="exit" onClick={()=>{setIsEditUserModal(false)}}>Cancelar</Button_big_text>
                         </div>
                     </div>
                 </form>

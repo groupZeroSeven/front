@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledEditUserModal = styled.div`
+export const StyledEditAddresModal = styled.div`
 background-color: rgba(18, 18, 20, 0.5);  
 position: fixed;
 inset: 0;
@@ -17,6 +17,7 @@ z-index: 500;
     width: 100%;
     overflow: auto;
     border-radius: 0.8rem;
+    margin: 1rem;
     ::-webkit-scrollbar {
       width: 0.5em;
       height: 0.5em;
@@ -32,6 +33,11 @@ z-index: 500;
       justify-content: space-between;
       padding: 1.8rem;
     }
+
+    p {
+      margin: 1rem;
+    }
+
     form {
       display: flex;
       flex-direction: column;
@@ -39,44 +45,44 @@ z-index: 500;
       align-items: flex-start
       width: 100%;
       }
+
+
      form > label {
       margin: 1rem;
      }
 
      form > input {
       width: 90%;
-      margin: 0rem 1rem;
+      margin: 1rem 1rem;
      }
 
      form > div {
-      width: 95%;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      margin: 1rem 0rem;
+     }
+
+     form > div > div > input{
+        width: 90%;
+        
+       }
+
+     form > div > .doubleInput{
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin: 3rem 1rem;
-     }
+      margin: 0rem 0rem;
 
-     form > div > div{
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      margin: 0.5rem 0rem;
-     }
-
-     form > div > div > .remove{
-      width: 50%;
-      margin: 0rem 0.5rem;
-      color: var(--color-alert-1);
-      background-color: var(--color-alert-2);
-      font-family: var(--font-inter);
-      font-weight: 600;
-      font-size: 1.6rem;
-      border: none;
+      @media screen and (min-width: 720px) {
+        width: 45%;
+        justify-content: flex-start;
+      }
      }
 
      form > div > div > .save{
-      width: 50%;
-      margin: 0rem 0.5rem;
+      width: 100%;
       color: var(--color-whiteFixed);
       background-color: var(--color-brand-1);
       font-family: var(--font-inter);
@@ -87,7 +93,7 @@ z-index: 500;
 
      form > div > div > .exit{
       width: 100%;
-      margin: 0rem 0.5rem;
+      padding: 0rem 4rem;
       color: var(--color-grey-2);
       background-color: var(--color-grey-6);
       font-family: var(--font-inter);
@@ -95,6 +101,22 @@ z-index: 500;
       font-size: 1.6rem;
       border: none;
      }
+
+     form > .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+     }
+
+     form > .buttons > .buttons_exit {
+        width: 35%;
+        margin: 0rem 1rem;
+     }
+
+     form > .buttons > .buttons_save {
+      width: 55%;
+      margin: 0rem 1rem 0rem 1rem;
+   }
     }
   }
 `

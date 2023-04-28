@@ -13,6 +13,9 @@ export interface IUserContext {
   isEditUserModal: boolean;
   setIsEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
 
+  isEditAddressModal: boolean;
+  setIsEditAddressModal: React.Dispatch<React.SetStateAction<boolean>>;
+
   myAnnouncement: IUserAnnouncement[] | null;
   setMyAnnouncement: React.Dispatch<
     React.SetStateAction<IUserAnnouncement[] | null>
@@ -32,6 +35,7 @@ export interface IUserContext {
   RegisterUser: any;
   ResetPassword: any;
   EditUser: any;
+  RemoveUser : any;
 }
 
 export interface IUser {
