@@ -62,31 +62,29 @@ export default function DetailsPage() {
   const [userDetails, setUserDetails] = React.useState();
 
   React.useEffect(() => {
-    if (user) {
-      setLoad(true);
-      const getAnnouncement = async () => {
-        try {
-          const { data } = await toast.promise(
-            api.get(`api/anoucements/${id}`),
-            { pending: 'Waiting...' },
-            { autoClose: 6000 }
-          );
+    setLoad(true);
+    const getAnnouncement = async () => {
+      try {
+        const { data } = await toast.promise(
+          api.get(`api/anoucements/${id}`),
+          { pending: 'Waiting...' },
+          { autoClose: 6000 }
+        );
 
-          console.log(data);
+        console.log(data);
 
-          setDetailAnnouncement(data);
-        } catch (error: any) {
-          toast.error(error.response.data.message, {
-            position: 'bottom-right',
-            autoClose: 5000,
-          });
-        } finally {
-          setLoad(false);
-        }
-      };
+        setDetailAnnouncement(data);
+      } catch (error: any) {
+        toast.error(error.response.data.message, {
+          position: 'bottom-right',
+          autoClose: 5000,
+        });
+      } finally {
+        setLoad(false);
+      }
+    };
 
-      getAnnouncement();
-    }
+    getAnnouncement();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, id]);
 
@@ -140,7 +138,12 @@ export default function DetailsPage() {
                     <ul>
                       {detailAnnouncement.images?.map((el, i) => (
                         <li key={i}>
-                          <Image src={el.url} alt="Fotos" width={95} height={55} />
+                          <Image
+                            src={el.url}
+                            alt="Fotos"
+                            width={95}
+                            height={55}
+                          />
                         </li>
                       ))}
                     </ul>

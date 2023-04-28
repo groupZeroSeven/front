@@ -184,7 +184,7 @@ export const Header = () => {
             >
               <ProfileAdvertiser
                 imgProfile="/image/profile.png"
-                nameProfile="Diego Monteiro"
+                nameProfile={user.name}
               />
             </div>
             {openMenu && (
