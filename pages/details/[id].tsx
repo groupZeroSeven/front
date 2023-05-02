@@ -63,28 +63,30 @@ export default function DetailsPage() {
 
   React.useEffect(() => {
     setLoad(true);
-    const getAnnouncement = async () => {
-      try {
-        const { data } = await toast.promise(
-          api.get(`api/anoucements/${id}`),
-          { pending: 'Waiting...' },
-          { autoClose: 6000 }
-        );
+    if (id) {
+      const getAnnouncement = async () => {
+        try {
+          const { data } = await toast.promise(
+            api.get(`api/anoucements/${id}`),
+            { pending: 'Waiting...' },
+            { autoClose: 6000 }
+          );
 
-        console.log(data);
+          setDetailAnnouncement(data);
+        } catch (error: any) {
+          console.log(error.response.data.message);
+          toast.error(error.response.data.message, {
+            position: 'bottom-right',
+            autoClose: 5000,
+          });
+        } finally {
+          setLoad(false);
+        }
+      };
 
-        setDetailAnnouncement(data);
-      } catch (error: any) {
-        toast.error(error.response.data.message, {
-          position: 'bottom-right',
-          autoClose: 5000,
-        });
-      } finally {
-        setLoad(false);
-      }
-    };
+      getAnnouncement();
+    }
 
-    getAnnouncement();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, id]);
 

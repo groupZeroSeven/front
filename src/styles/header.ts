@@ -39,6 +39,7 @@ export const HeaderStyled = styled.header`
       }
     }
     > span {
+      height: auto;
     }
   }
   @media (min-width: 768px) {

@@ -67,7 +67,7 @@ export default function Home() {
                       title={`${advert.brand} - ${advert.model}`}
                       desc={advert.description}
                       imageProfile="/image/profile.png"
-                      nameProfile="Samuel Pereira"
+                      nameProfile={advert.user.name}
                       km={advert.mileage}
                       age={advert.year}
                       price={`R$: ${advert.price}`}
@@ -89,7 +89,7 @@ export default function Home() {
                         title={`${advert.brand} - ${advert.model}`}
                         desc={advert.description}
                         imageProfile="/image/profile.png"
-                        nameProfile="Samuel Pereira"
+                        nameProfile={advert.user.name}
                         km={advert.mileage}
                         age={advert.year}
                         price={`R$: ${advert.price}`}

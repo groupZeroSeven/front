@@ -37,8 +37,7 @@ const UserProvider = ({ children }: IContextProps) => {
   const [isEditAdvertModal, setIsEditAdvertModal] =
     React.useState<boolean>(false);
 
-  const [isEditUserModal, setIsEditUserModal] =
-    React.useState<boolean>(false);
+  const [isEditUserModal, setIsEditUserModal] = React.useState<boolean>(false);
 
   const userLogout = (): void => {
     setLoad(false);
@@ -85,34 +84,50 @@ const UserProvider = ({ children }: IContextProps) => {
   const ResetPassword = async (data: IFormLogin) => {
     try {
       await api.post('/api/recoverpassword', data);
-      toast.success('Email enviado com sucesso!',{
+      toast.success('Email enviado com sucesso!', {
         position: 'bottom-right',
         autoClose: 5000,
-      })
+      });
     } catch (error: any) {
       toast.error(error?.response.data.message, {
         position: 'bottom-right',
         autoClose: 5000,
       });
     }
-  }
+  };
 
-  const EditUser = async (data: IUser) => {
+  const EditUser = async (editData: any) => {
+    const data = {
+      ...editData,
+      address: {
+        complement: editData.complement,
+        road: editData.road,
+        number: editData.number,
+        city: editData.city,
+        state: editData.state,
+        cep: editData.cep,
+      },
+    };
+
     try {
-      await api.patch(`/api/users/${user?.id}`, data);
-      toast.success('Dados alterados com sucesso!',{
+      const token = localStorage.getItem('token');
+
+      await api.patch(`/api/users/${user?.id}`, data, {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      toast.success('Dados alterados com sucesso!', {
         position: 'bottom-right',
         autoClose: 5000,
-      })
-      GetUserData()
-      setIsEditUserModal(false)
+      });
+      GetUserData();
+      setIsEditUserModal(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message, {
         position: 'bottom-right',
         autoClose: 5000,
       });
     }
-  }
+  };
 
   const GetUserData = async () => {
     const token: string | null = localStorage.getItem('token');
@@ -133,8 +148,7 @@ const UserProvider = ({ children }: IContextProps) => {
         autoClose: 5000,
       });
     }
-  }
-
+  };
 
   React.useEffect(() => {
     setLoad(true);

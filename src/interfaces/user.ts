@@ -107,6 +107,12 @@ export interface iFormRegister {
   description: string;
   address: iFormRegisterAddress;
   is_seller: string;
+  complement: string;
+  road: string;
+  number: string;
+  city: string;
+  state: string;
+  cep: string;
 }
 
 export interface iFormRegisterAddress {
