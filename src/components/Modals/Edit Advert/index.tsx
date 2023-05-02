@@ -19,9 +19,10 @@ import { StyledEditAdvertModal } from './style';
 
 export const EditAdvertModal = ({ id }: any) => {
   const { getEspecificAdverts, patchAdverts } = useContext(AdvertsContext);
-  const [advert, setAdvert] = useState<any>();
-  const [isPublished, setIsPublished] = useState<boolean>(advert?.is_published);
+  const [advert, setAdvert] = useState<iAdvert>();
+  const [isPublished, setIsPublished] = useState<boolean>(true);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [inputImageEdit, setInputImageEdit] = useState<boolean[]>([true, true])
   const {
     setIsEditAdvertModal,
     userLogout,
@@ -33,6 +34,7 @@ export const EditAdvertModal = ({ id }: any) => {
     async function getAdvert(id: string | undefined) {
       const advert2: iAdvert = await getEspecificAdverts(id);
       setAdvert(advert2);
+      setIsPublished(advert2.is_published)
     }
 
     getAdvert(id);
@@ -47,99 +49,134 @@ export const EditAdvertModal = ({ id }: any) => {
     resolver: yupResolver(schemaEditAdvert),
   });
 
+  const handleImagesEdit = (): void => {
+    setInputImageEdit((prevInputImages) => {
+      if (prevInputImages.length < 6) {
+        return [...prevInputImages, true];
+      }
+      return prevInputImages;
+    });
+  };
+
   const handleSubmitFunction = async (data: iEditAdvert) => {
     const token = localStorage.getItem('token');
 
     if (!token) return userLogout();
+    if (advert) {
+      if (advert.is_published !== isPublished) {
+        data.is_published = isPublished;
+      } else {
+        delete data.is_published;
+      }
+      if (data.brand === '') {
+        delete data.brand;
+      }
+      if (data.model === '') {
+        delete data.model;
+      }
+      if (data.year === '') {
+        delete data.year;
+      }
+      if (data.fuel === '') {
+        delete data.fuel;
+      }
+      if (data.mileage === '') {
+        delete data.mileage;
+      }
+      if (data.color === '') {
+        delete data.color;
+      }
+      if (data.price === '') {
+        delete data.price;
+      }
+      if (data.description === '') {
+        delete data.description;
+      }
+      if (data.fip === '') {
+        delete data.fip;
+      }
+      if (data.banner === '') {
+        delete data.banner;
+      }
 
-    if (advert.is_published !== isPublished) {
-      data.is_published = isPublished;
-    } else {
-      delete data.is_published;
-    }
-    if (data.brand === '') {
-      delete data.brand;
-    }
-    if (data.model === '') {
-      delete data.model;
-    }
-    if (data.year === '') {
-      delete data.year;
-    }
-    if (data.fuel === '') {
-      delete data.fuel;
-    }
-    if (data.mileage === '') {
-      delete data.mileage;
-    }
-    if (data.color === '') {
-      delete data.color;
-    }
-    if (data.price === '') {
-      delete data.price;
-    }
-    if (data.description === '') {
-      delete data.description;
-    }
-    if (data.fip === '') {
-      delete data.fip;
-    }
-    if (data.banner === '') {
-      delete data.banner;
-    }
-    if (data.firstImage === '') {
-      delete data.firstImage;
-    }
-    if (data.secondImage === '') {
-      delete data.secondImage;
-    }
-    if (data.firstImage || data.secondImage) {
-      if (data.firstImage) {
-        const image: iImage = { url: '' };
-        image.url += data.firstImage;
-        delete data.firstImage;
-        try {
-          api.post(`/api/images/${advert.id}`, image, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-        } catch (err) {
-          console.log(err);
+      const image1 = data.image1;
+      delete data.image1;
+      const image2 = data.image2;
+      delete data.image2;
+      const image3 = data.image3;
+      delete data.image3;
+      const image4 = data.image4;
+      delete data.image4;
+      const image5 = data.image5;
+      delete data.image5;
+      const image6 = data.image6;
+      delete data.image6;
+
+      const images = [];
+      if (image1) {
+        images.push(image1);
+      }
+      if (image2) {
+        images.push(image2);
+      }
+      if (image3) {
+        images.push(image3);
+      }
+      if (image4) {
+        images.push(image4);
+      }
+      if (image5) {
+        images.push(image5);
+      }
+      if (image6) {
+        images.push(image6);
+      }
+      if (images.length > 0) {
+        for (let i = 0; i < images.length; i++) {
+          const req: iImage = {"url": ""}
+          req["url"] = images[i]
+          try {
+            api.post(`/api/images/${advert.id}`, req, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
-      if (data.secondImage) {
-        const image: iImage = { url: '' };
-        image.url += data.secondImage;
-        delete data.secondImage;
+      if (Object.keys(data).length > 0) {
         try {
-          api.post(`/api/images/${advert.id}`, image, {
+          const res = await api.patch(`/api/anoucements/${advert!.id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
           });
+    
+          const filter = myAnnouncement?.filter((el) => el.id !== advert!.id);
+    
+          setMyAnnouncement([res.data, ...filter!]);
+    
+          toast.success('Anúncio alterado com sucesso', {
+            theme: 'dark',
+          });
+    
+          setIsEditAdvertModal(false);
         } catch (err) {
-          console.log(err);
+          toast.error('Não foi possível alterar o anúncio', {
+            theme: 'dark',
+          });
         }
+    
+        patchAdverts(data, id);
+      }
+
+      if (Object.keys(data).length === 0 && images.length > 0) {
+        toast.success('Anúncio alterado com sucesso', {
+          theme: 'dark',
+        });
+        setIsEditAdvertModal(false)
       }
     }
-    try {
-      const res = await api.patch(`/api/anoucements/${advert.id}`, data, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const filter = myAnnouncement?.filter((el) => el.id !== advert.id);
-
-      setMyAnnouncement([res.data, ...filter!]);
-
-      toast.success('Anúncio alterado com sucesso', {
-        theme: 'dark',
-      });
-
-      setIsEditAdvertModal(false);
-    } catch (err) {
-      toast.error('Não foi possível alterar o anúncio', {
-        theme: 'dark',
-      });
-    }
-
-    patchAdverts(data, id);
+    
+    
   };
 
   return (
@@ -148,7 +185,7 @@ export const EditAdvertModal = ({ id }: any) => {
         {isDeleteModal ? (
           <DeleteAdvertModal
             setIsDeleteModal={setIsDeleteModal}
-            advertId={advert.id}
+            advertId={advert!.id}
             setIsEditAdvertModal={setIsEditAdvertModal}
           />
         ) : null}
@@ -167,16 +204,18 @@ export const EditAdvertModal = ({ id }: any) => {
               <StyledInput
                 type="text"
                 id="brand"
-                placeholder="Mercedes Benz"
+                placeholder={advert ? advert.brand : ""}
                 {...register('brand')}
+                disabled
               />
 
               <Input_label>Modelo</Input_label>
               <StyledInput
                 type="text"
                 id="model"
-                placeholder="A 200 CGI ADVANCE SEDAN"
+                placeholder={advert ? advert.model : ""}
                 {...register('model')}
+                disabled
               />
             </div>
             <div className="formDoubleInput">
@@ -185,8 +224,9 @@ export const EditAdvertModal = ({ id }: any) => {
                 <StyledInput
                   type="text"
                   id="year"
-                  placeholder="2018"
+                  placeholder={advert ? advert.year : ""}
                   {...register('year')}
+                  disabled
                 />
               </div>
 
@@ -195,8 +235,9 @@ export const EditAdvertModal = ({ id }: any) => {
                 <StyledInput
                   type="text"
                   id="fuel"
-                  placeholder="Gasolina/Etanol"
+                  placeholder={advert ? advert.fuel : ""}
                   {...register('fuel')}
+                  disabled
                 />
               </div>
 
@@ -205,7 +246,7 @@ export const EditAdvertModal = ({ id }: any) => {
                 <StyledInput
                   type="text"
                   id="mileage"
-                  placeholder="30.000"
+                  placeholder={advert ? advert.mileage.toString() : ""}
                   {...register('mileage')}
                 />
               </div>
@@ -215,7 +256,7 @@ export const EditAdvertModal = ({ id }: any) => {
                 <StyledInput
                   type="text"
                   id="color"
-                  placeholder="Branco"
+                  placeholder={advert ? advert.color : ""}
                   {...register('color')}
                 />
               </div>
@@ -225,8 +266,9 @@ export const EditAdvertModal = ({ id }: any) => {
                 <StyledInput
                   type="text"
                   id="fipe"
-                  placeholder="R$ 48.000,00"
+                  placeholder={advert ? advert.fip : ""}
                   {...register('fip')}
+                  disabled
                 />
               </div>
 
@@ -235,7 +277,7 @@ export const EditAdvertModal = ({ id }: any) => {
                 <StyledInput
                   type="text"
                   id="price"
-                  placeholder="R$ 50.000,00"
+                  placeholder={advert ? advert.price : ""}
                   {...register('price')}
                 />
               </div>
@@ -245,7 +287,7 @@ export const EditAdvertModal = ({ id }: any) => {
               <StyledInput
                 type="text"
                 id="description"
-                placeholder="Descrição do anúncio"
+                placeholder={advert ? advert.description : ""}
                 {...register('description')}
               />
 
@@ -294,23 +336,30 @@ export const EditAdvertModal = ({ id }: any) => {
                 {...register('banner')}
               />
 
-              <Input_label>1º Imagem da galeria</Input_label>
-              <StyledInput
-                type="text"
-                id="firstImage"
-                placeholder="https://image.com"
-                {...register('firstImage')}
-              />
+            {inputImageEdit.map((image, i) => (
+              <div
+                key={i}
+                style={
+                  image
+                    ? { display: 'block', width: '100%' }
+                    : { display: 'none' }
+                }
+              >
+                <Input_label>{i + 1}º Imagem da galeria</Input_label>
+                <StyledInput
+                  type="text"
+                  placeholder="https://image.com"
+                  {...(i === 0 ? { ...register('image1') } : null)}
+                  {...(i === 1 ? { ...register('image2') } : null)}
+                  {...(i === 2 ? { ...register('image3') } : null)}
+                  {...(i === 3 ? { ...register('image4') } : null)}
+                  {...(i === 4 ? { ...register('image5') } : null)}
+                  {...(i === 5 ? { ...register('image6') } : null)}
+                />
+              </div>
+            ))}   
 
-              <Input_label>2º Imagem da galeria</Input_label>
-              <StyledInput
-                type="text"
-                id="secondImage"
-                placeholder="https://image.com"
-                {...register('secondImage')}
-              />
-
-              <StyledButtonImg type="button">
+              <StyledButtonImg type="button" onClick={handleImagesEdit}>
                 Adicionar campo para imagem da galeria
               </StyledButtonImg>
 

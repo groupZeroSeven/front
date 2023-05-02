@@ -13,4 +13,10 @@ export const schemaEditAdvert = yup.object({
   banner: yup.string().notRequired(),
   firstImage: yup.string().notRequired(),
   secondImage: yup.string().notRequired(),
+  image1: yup.string().notRequired(),
+  image2: yup.string().notRequired(),
+  image3: yup.string().notRequired(),
+  image4: yup.string().notRequired(),
+  image5: yup.string().notRequired(),
+  image6: yup.string().notRequired(),
 });
