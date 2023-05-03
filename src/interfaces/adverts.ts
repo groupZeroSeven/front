@@ -110,6 +110,7 @@ export interface iEditAdvert {
   image5?: string;
   image6?: string;
   images?: string[];
+  [key: string]: any;
 }
 
 export interface iImage {

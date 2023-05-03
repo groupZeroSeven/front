@@ -59,6 +59,7 @@ export const EditAdvertModal = ({ id }: any) => {
   };
 
   const handleSubmitFunction = async (data: iEditAdvert) => {
+
     const token = localStorage.getItem('token');
 
     if (!token) return userLogout();
@@ -68,35 +69,10 @@ export const EditAdvertModal = ({ id }: any) => {
       } else {
         delete data.is_published;
       }
-      if (data.brand === '') {
-        delete data.brand;
-      }
-      if (data.model === '') {
-        delete data.model;
-      }
-      if (data.year === '') {
-        delete data.year;
-      }
-      if (data.fuel === '') {
-        delete data.fuel;
-      }
-      if (data.mileage === '') {
-        delete data.mileage;
-      }
-      if (data.color === '') {
-        delete data.color;
-      }
-      if (data.price === '') {
-        delete data.price;
-      }
-      if (data.description === '') {
-        delete data.description;
-      }
-      if (data.fip === '') {
-        delete data.fip;
-      }
-      if (data.banner === '') {
-        delete data.banner;
+      for (const key in data) {
+        if (data.hasOwnProperty(key) && data[key] === '') {
+            delete data[key];
+           }
       }
 
       const image1 = data.image1;
@@ -146,14 +122,13 @@ export const EditAdvertModal = ({ id }: any) => {
       }
       if (Object.keys(data).length > 0) {
         try {
-          const res = await api.patch(`/api/anoucements/${advert!.id}`, data, {
+          const res = await api.patch(`/api/anoucements/${advert.id}`, data, {
             headers: { Authorization: `Bearer ${token}` },
           });
-    
-          const filter = myAnnouncement?.filter((el) => el.id !== advert!.id);
-    
+          const filter = myAnnouncement?.filter((el) => el.id !== advert.id);
+          
           setMyAnnouncement([res.data, ...filter!]);
-    
+
           toast.success('Anúncio alterado com sucesso', {
             theme: 'dark',
           });
@@ -164,8 +139,6 @@ export const EditAdvertModal = ({ id }: any) => {
             theme: 'dark',
           });
         }
-    
-        patchAdverts(data, id);
       }
 
       if (Object.keys(data).length === 0 && images.length > 0) {
@@ -175,8 +148,6 @@ export const EditAdvertModal = ({ id }: any) => {
         setIsEditAdvertModal(false)
       }
     }
-    
-    
   };
 
   return (
