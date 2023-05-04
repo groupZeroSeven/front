@@ -3,12 +3,11 @@ import { toast } from 'react-toastify';
 import { IAdvertsProps, iAdvert, iModel } from '../interfaces/adverts';
 import { api } from '../services/api';
 import { UserContext } from './userContext';
+import { IContextProps } from '../interfaces/global';
 
-export const AdvertsContext = React.createContext<IAdvertsProps>(
-  {} as IAdvertsProps
-);
+export const AdvertsContext = React.createContext({} as IAdvertsProps);
 
-const AdvertsProvider = ({ children }: IAdvertsProps) => {
+const AdvertsProvider = ({ children }: IContextProps) => {
   const [adverts, setAdverts] = React.useState<iAdvert[] | null>(null);
   const [selectBrand, setSelectBrand] = React.useState<string>('');
   const [selectModel, setSelectModel] = React.useState<string>('');

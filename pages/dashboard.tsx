@@ -66,7 +66,7 @@ export default function Dashboard() {
             {}
           );
 
-          setMyAnnouncement(data.data);
+          setMyAnnouncement(data.data.annoucements);
         } catch (e: any) {
           toast.error(e.response.data.message, {
             position: 'bottom-right',

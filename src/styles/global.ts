@@ -223,7 +223,7 @@ export const Button_big_text = styled.button`
   }
 `;
 
-export const Button_medium_text = styled.p`
+export const Button_medium_text = styled.button`
   font-family: var(--font-inter);
   font-weight: 600;
   font-size: 1.4rem;
