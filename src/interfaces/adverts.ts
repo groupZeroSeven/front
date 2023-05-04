@@ -88,6 +88,24 @@ export interface iAdvert {
   images: string[]
 }
 
+export interface iAdvertComment {
+  id: string;
+  brand: string;
+  banner: string;
+  model: string;
+  year: string;
+  fuel: string;
+  mileage: number;
+  color: string;
+  price: string;
+  description: string;
+  is_bargain: boolean;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+  fip: string;
+}
+
 export interface iEditAdvert {
   brand?: string;
   banner?: string;
@@ -115,4 +133,8 @@ export interface iEditAdvert {
 
 export interface iImage {
   url: string;
+}
+
+export interface iCreateComment {
+  text: string;
 }

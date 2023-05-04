@@ -4,6 +4,9 @@ import { Header } from '@/src/components/header';
 import { ProfileAdvertiser } from '@/src/components/profile';
 import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
+import { iCreateComment } from '@/src/interfaces/adverts';
+import { iComment } from '@/src/interfaces/user';
+import { schemaCreateComment } from '@/src/schemas/createComment';
 import { api } from '@/src/services/api';
 import { MainDetailsStyle } from '@/src/styles/details';
 import {
@@ -13,42 +16,12 @@ import {
   Heading_6_600,
   Heading_7_500,
 } from '@/src/styles/global';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
-const fotos = [
-  '/image/car.png',
-  '/image/car.png',
-  '/image/car.png',
-  '/image/car.png',
-  '/image/car.png',
-  '/image/car.png',
-];
-
-const commits = [
-  {
-    img: '/image/profile.png',
-    name: 'Júlia Lima',
-    date: 'há 3 dias',
-    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-
-  {
-    img: '/image/profile.png',
-    name: 'Marcos Antônio',
-    date: 'há 7 dias',
-    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-
-  {
-    img: '/image/profile.png',
-    name: 'Camila Silva',
-    date: 'há 1 mês',
-    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-];
 
 export default function DetailsPage() {
   const router = useRouter();
@@ -59,8 +32,8 @@ export default function DetailsPage() {
   const { user, setDetailAnnouncement, detailAnnouncement } =
     React.useContext(UserContext);
 
-  const [userDetails, setUserDetails] = React.useState();
-
+  const [comments, setComments] = React.useState<iComment[] | null>(null)
+  const [commentValue, setCommentValue] = React.useState<string | null>(null)
   React.useEffect(() => {
     setLoad(true);
     if (id) {
@@ -90,6 +63,73 @@ export default function DetailsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, id]);
 
+  React.useEffect(() => {
+    const res = async () => {
+      try {
+        const {data} = await api.get(`api/${id}/comments/`)
+        const filterdComments = data.filter((comment: iComment) => comment.announcement.id === id) 
+        setComments(filterdComments)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    res()
+  }, [])
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<iCreateComment>({
+    resolver: yupResolver(schemaCreateComment),
+  });
+
+  const handleSubmitFunction = async (data: iCreateComment) => {
+    if (!user) {
+      
+    } else {
+      const token = localStorage.getItem('token');
+      try {
+        const res = await api.post(`api/${id}/comments/`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        toast.success('Comentário criado com sucesso!', {
+          theme: 'dark',
+        })
+        setComments([res.data, ...comments!]);
+      } catch (err) {
+        console.log(err)
+        toast.error('Não foi possível criar o comentário', {
+          theme: 'dark',
+        });
+      }
+    }
+  }
+  const time = (advertTime: string) => {
+    const date = new Date(advertTime);
+    const now = new Date();
+    const timeDiffInMilliseconds = now.getTime() - date.getTime();
+    const timeDiffInSeconds = Math.floor(timeDiffInMilliseconds / 1000);
+    const timeDiffInMinutes = Math.floor(timeDiffInSeconds / 60);
+    const timeDiffInHours = Math.floor(timeDiffInMinutes / 60);
+
+    if (timeDiffInHours >= 24) {
+      const timeDiffInDays = Math.floor(timeDiffInHours / 24);
+      return timeDiffInDays + (timeDiffInDays === 1 ? " dia atrás" : " dias atrás");
+    } else if (timeDiffInHours >= 1) {
+      return timeDiffInHours + (timeDiffInHours === 1 ? " hora atrás" : " horas atrás");
+    } else if (timeDiffInMinutes >= 1) {
+      return timeDiffInMinutes + (timeDiffInMinutes === 1 ? " minuto atrás" : " minutos atrás");
+    } else {
+      return "há menos de 1 minuto";
+    }
+  }
+  const toLogin = () => {
+    if (!user) {
+      router.push("/login")
+    }
+  }
   return (
     <>
       <Header />
@@ -186,12 +226,12 @@ export default function DetailsPage() {
                 <section className="commits">
                   <Heading_6_600>Comentários</Heading_6_600>
                   <ul>
-                    {commits.map((el, i) => (
+                    {comments?.map((el, i) => (
                       <li key={i}>
                         <div>
                           <ProfileAdvertiser
-                            imgProfile={el.img}
-                            nameProfile={el.name}
+                            imgProfile={'/image/profile.png'}
+                            nameProfile={el.user.name}
                           />
                           <Image
                             src="/image/ellipse.png"
@@ -199,7 +239,7 @@ export default function DetailsPage() {
                             width={4}
                             height={4}
                           ></Image>
-                          <p>{el.date}</p>
+                          <p>{time(el.createdAt)}</p>
                         </div>
                         <Body_2_400>{el.text}</Body_2_400>
                       </li>
@@ -207,27 +247,29 @@ export default function DetailsPage() {
                   </ul>
                 </section>
 
-                <section className="commit">
-                  <ProfileAdvertiser
+                <form className="commit" onSubmit={handleSubmit(handleSubmitFunction)}>
+                  {user ? (
+                    <ProfileAdvertiser
                     imgProfile="/image/profile.png"
-                    nameProfile="Diego"
+                    nameProfile={user.name}
                   />
-                  <textarea placeholder="Carro muito confortável, foi uma ótima experiência de compra..."></textarea>
+                  ): null}
+                  <textarea placeholder="Carro muito confortável, foi uma ótima experiência de compra..." id='text' {...register('text')}></textarea>
                   <span>
-                    <ButtonMedium
-                      bgColor="var(--color-brand-1)"
-                      fontColor="var(--color-whiteFixed)"
-                      borderColor="var(--color-brand-1)"
+                    <button
+                    type={user ? 'submit' : 'button'}
+                    onClick={toLogin}
+                    style={user ? {backgroundColor: "var(--color-brand-1)", cursor: "pointer"} : {backgroundColor: "var(--color-grey-5)"}}
                     >
                       Comentar
-                    </ButtonMedium>
+                    </button>
                   </span>
-                  <div>
+                  {/* <div>
                     <p>Gostei muito!</p>
                     <p>Incrível</p>
                     <p>Recomendarei para meus amigos!</p>
-                  </div>
-                </section>
+                  </div> */}
+                </form>
               </div>
             </span>
           </span>
