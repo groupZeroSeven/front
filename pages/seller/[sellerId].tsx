@@ -43,9 +43,9 @@ export default function Dashboard() {
             api.get(`/api/anoucementUser/${sellerId}`),
             {}
           );
-          
-          setUserSeller(data.data[0].user);
-          setMyAnnouncementSeller(data.data);
+
+          setUserSeller(data.data.user);
+          setMyAnnouncementSeller(data.data.annoucements);
         } catch (e: any) {
           toast.error(e.response.data.message, {
             position: 'bottom-right',
@@ -61,7 +61,7 @@ export default function Dashboard() {
     setLoad(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ sellerId]);
+  }, [sellerId]);
 
   return (
     <>
