@@ -12,7 +12,7 @@ import { StyledEditUserModal } from './style';
 
 export const EditUserModal = () => {
   const { user, EditUser, userLogout } = useContext(UserContext);
-  const { isEditUserModal, setIsEditUserModal } = useContext(UserContext);
+  const { setIsEditUserModal } = useContext(UserContext);
 
   const {
     register,
