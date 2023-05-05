@@ -14,7 +14,7 @@ import {
   Heading_7_500,
 } from '@/src/styles/global';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 import React from 'react';
 import { toast } from 'react-toastify';
 
