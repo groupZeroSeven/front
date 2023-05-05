@@ -1,3 +1,5 @@
+import { iAdvertComment } from "./adverts";
+
 export interface IUserContext {
   userLogout: () => void;
 
@@ -46,6 +48,16 @@ export interface IUser {
   updatedAt: string;
   description: string;
   address?: iFormRegisterAddress;
+  comments: iComment[]
+}
+
+export interface iComment {
+  id: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  user: IUser;
+  announcement: iAdvertComment;
 }
 
 export interface IUserAnnouncement {

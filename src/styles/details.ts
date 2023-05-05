@@ -134,6 +134,7 @@ export const MainDetailsStyle = styled.main`
       }
       
       .commit {
+        position: relative;
         background-color: var(--color-grey-10);
         border-radius: 0.4rem;
         padding: 3.6rem 2.8rem;
@@ -153,6 +154,15 @@ export const MainDetailsStyle = styled.main`
         }
         > span {
           width: 10.8rem;
+          > button {
+            border-radius: 4px;
+            padding: 1.2rem 2rem;
+            border: none;
+            font-size: 1.4rem;
+            font-family: var(--font-inter);
+            font-weight: 600;
+            color: var(--color-whiteFixed);
+          }
         }
         > div {
           display: flex;
@@ -171,7 +181,6 @@ export const MainDetailsStyle = styled.main`
       }
     }
   }
-
   @media (min-width: 768px) {
     > div {
       > span {
@@ -188,6 +197,13 @@ export const MainDetailsStyle = styled.main`
             max-width: 752px;
           }
         }
+        .commit {
+          > span {
+            position: absolute;
+            bottom: 5rem;
+            right: 7.5rem;
+          }
+    }
       }
     }
   }
