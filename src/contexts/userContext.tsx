@@ -47,6 +47,7 @@ const UserProvider = ({ children }: IContextProps) => {
   };
 
   const LoginUser = async (userLogin: IFormLogin) => {
+    setLoad(true);
     try {
       const resp = await api.post(`/api/login`, userLogin);
       const { token } = resp.data;
@@ -66,10 +67,13 @@ const UserProvider = ({ children }: IContextProps) => {
         position: 'bottom-right',
         autoClose: 5000,
       });
+    } finally {
+      setLoad(false);
     }
   };
 
   const RegisterUser = async (data: any) => {
+    setLoad(true);
     try {
       await api.post('/api/users', data);
       router.push('/login');
@@ -78,6 +82,8 @@ const UserProvider = ({ children }: IContextProps) => {
         position: 'bottom-right',
         autoClose: 5000,
       });
+    } finally {
+      setLoad(false);
     }
   };
 
@@ -97,6 +103,7 @@ const UserProvider = ({ children }: IContextProps) => {
   };
 
   const EditUser = async (editData: any) => {
+    setLoad(true);
     const data = {
       ...editData,
       address: {
@@ -126,6 +133,8 @@ const UserProvider = ({ children }: IContextProps) => {
         position: 'bottom-right',
         autoClose: 5000,
       });
+    } finally {
+      setLoad(false);
     }
   };
 

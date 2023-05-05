@@ -85,18 +85,20 @@ export default function DetailsPage() {
 
   const handleSubmitFunction = async (data: iCreateComment) => {
     if (!user) {
-      
+       
     } else {
       const token = localStorage.getItem('token');
       try {
-        const res = await api.post(`api/${id}/comments/`, data, {
+        const res = await api.post(`/api/${id}/comments/`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
         toast.success('Comentário criado com sucesso!', {
           theme: 'dark',
         })
+        
         setComments([res.data, ...comments!]);
       } catch (err) {
         console.log(err)
