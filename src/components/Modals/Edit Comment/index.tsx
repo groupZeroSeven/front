@@ -5,8 +5,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { StyledSpanError } from '../Create Advert/style';
+import { StyledButtonClose, StyledDivButtons, StyledInput, StyledSpanError } from '../Create Advert/style';
 import { useRouter } from 'next/router';
+import { StyledEditCommentModal } from './style';
+import { Heading_7_500, Input_label } from '@/src/styles/global';
 
 interface iEditCommentModalProps {
   commentId: string;
@@ -45,12 +47,24 @@ export const EditCommentModal = (commentId : iEditCommentModalProps) => {
     }
   }
   return (
-    <form onSubmit={handleSubmit(handleSubmitFunction)}>
-      <label htmlFor="text">Editar comentário</label>
-      <input type="text" id='text' {...register('text')} />
-      <StyledSpanError>{errors.text?.message}</StyledSpanError>
-      <button type='submit'>Editar</button>
-      <button type='button' onClick={() => setIsEditCommentModal(false)}>Cancelar</button>
-    </form>
+    <StyledEditCommentModal>
+      <div className="modal">
+        <div className="head">
+          <Heading_7_500>Editar comentário</Heading_7_500>
+          <StyledButtonClose onClick={() => setIsEditCommentModal(false)}>
+            X
+          </StyledButtonClose>
+        </div>
+        <form onSubmit={handleSubmit(handleSubmitFunction)}>
+          <Input_label>Comentário</Input_label>
+          <StyledInput type="text" id='text' {...register('text')} />
+          <StyledSpanError>{errors.text?.message}</StyledSpanError>
+          <StyledDivButtons>
+            <button type='submit' className="confirm">Editar</button>
+            <button type='button' className="cancel" onClick={() => setIsEditCommentModal(false)}>Cancelar</button>
+          </StyledDivButtons>
+        </form>
+      </div>
+    </StyledEditCommentModal>
   )
 }
