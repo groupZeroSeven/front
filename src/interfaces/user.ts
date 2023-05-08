@@ -34,6 +34,15 @@ export interface IUserContext {
   RegisterUser: any;
   ResetPassword: any;
   EditUser: any;
+
+  isEditCommentModal: boolean;
+  setIsEditCommentModal: React.Dispatch<React.SetStateAction<boolean>>;
+
+  isDeleteCommentModal: boolean;
+  setIsDeleteCommentModal: React.Dispatch<React.SetStateAction<boolean>>;
+
+  comments: iComment[] | null;
+  setComments: React.Dispatch<React.SetStateAction<iComment[] | null>>;
 }
 
 export interface IUser {

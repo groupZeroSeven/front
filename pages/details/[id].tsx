@@ -22,6 +22,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { EditCommentModal } from '@/src/components/Modals/Edit Comment';
+import { DeleteCommentModal } from '@/src/components/Modals/Delete Comment';
 
 export default function DetailsPage() {
   const router = useRouter();
@@ -29,11 +33,11 @@ export default function DetailsPage() {
 
   const { setLoad } = React.useContext(LoadContext);
 
-  const { user, setDetailAnnouncement, detailAnnouncement } =
+  const { user, setDetailAnnouncement, detailAnnouncement, isEditCommentModal, setIsEditCommentModal, isDeleteCommentModal, setIsDeleteCommentModal, comments, setComments } =
     React.useContext(UserContext);
+ 
+  const [commentSelectedId, setCommentSelectedId] = React.useState<string>("")
 
-  const [comments, setComments] = React.useState<iComment[] | null>(null)
-  const [commentValue, setCommentValue] = React.useState<string | null>(null)
   React.useEffect(() => {
     setLoad(true);
     if (id) {
@@ -74,7 +78,7 @@ export default function DetailsPage() {
       }
     }
     res()
-  }, [])
+  }, [isEditCommentModal, isDeleteCommentModal])
   const {
     register,
     handleSubmit,
@@ -84,26 +88,21 @@ export default function DetailsPage() {
   });
 
   const handleSubmitFunction = async (data: iCreateComment) => {
-    if (!user) {
-      
-    } else {
-      const token = localStorage.getItem('token');
-      try {
-        const res = await api.post(`api/${id}/comments/`, data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        toast.success('Comentário criado com sucesso!', {
-          theme: 'dark',
-        })
-        setComments([res.data, ...comments!]);
-      } catch (err) {
-        console.log(err)
-        toast.error('Não foi possível criar o comentário', {
-          theme: 'dark',
-        });
-      }
+    const token = localStorage.getItem('token');
+    try {
+      const res = await api.post(`api/${id}/comments/`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success('Comentário criado com sucesso!', {
+        theme: 'dark',
+      })
+      setComments([res.data, ...comments!]);
+    } catch (err) {
+      toast.error('Não foi possível criar o comentário', {
+        theme: 'dark',
+      });
     }
   }
   const time = (advertTime: string) => {
@@ -130,9 +129,21 @@ export default function DetailsPage() {
       router.push("/login")
     }
   }
+  const editCommentModal = (commentId: string) => {
+    setCommentSelectedId(commentId)
+    setIsEditCommentModal(true)
+  }
+
+  const deleteCommentModal = (commentId: string) => {
+    setCommentSelectedId(commentId)
+    setIsDeleteCommentModal(true)
+  } 
+
   return (
     <>
       <Header />
+      {isEditCommentModal && <EditCommentModal commentId={commentSelectedId}/>}
+      {isDeleteCommentModal && <DeleteCommentModal commentId={commentSelectedId}/>}
       <MainDetailsStyle>
         <div className="container">
           <span>
@@ -228,6 +239,18 @@ export default function DetailsPage() {
                   <ul>
                     {comments?.map((el, i) => (
                       <li key={i}>
+                        {
+                          el.user.id === user?.id ? (
+                          <div className="containerIcons">
+                          <button onClick={() => editCommentModal(el.id)}>
+                            <EditIcon fontSize="medium"/>
+                          </button>
+                          <button onClick={() => deleteCommentModal(el.id)}>
+                            <DeleteIcon fontSize="medium"/>
+                          </button>
+                        </div> ) : null
+                        }
+                        
                         <div>
                           <ProfileAdvertiser
                             imgProfile={'/image/profile.png'}

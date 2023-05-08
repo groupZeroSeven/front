@@ -7,6 +7,7 @@ import {
   IUser,
   IUserAnnouncement,
   IUserContext,
+  iComment,
 } from '../interfaces/user';
 import { api } from '../services/api';
 import { LoadContext } from './loadingContext';
@@ -38,6 +39,12 @@ const UserProvider = ({ children }: IContextProps) => {
     React.useState<boolean>(false);
 
   const [isEditUserModal, setIsEditUserModal] = React.useState<boolean>(false);
+
+  const [isEditCommentModal, setIsEditCommentModal] = React.useState<boolean>(false)
+
+  const [isDeleteCommentModal, setIsDeleteCommentModal] = React.useState<boolean>(false) 
+
+  const [comments, setComments] = React.useState<iComment[] | null>(null)
 
   const userLogout = (): void => {
     setLoad(false);
@@ -203,6 +210,12 @@ const UserProvider = ({ children }: IContextProps) => {
         isEditUserModal,
         setIsEditUserModal,
         EditUser,
+        isEditCommentModal,
+        setIsEditCommentModal,
+        isDeleteCommentModal,
+        setIsDeleteCommentModal,
+        comments,
+        setComments,
       }}
     >
       {children}

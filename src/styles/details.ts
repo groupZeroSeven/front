@@ -113,6 +113,17 @@ export const MainDetailsStyle = styled.main`
             display: flex;
             flex-direction: column;
             gap: 1.6rem;
+            position: relative;
+            > .containerIcons {
+              position: absolute;
+              right: 1rem;
+              top: 1rem;
+              > button {
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+              }
+            }
             > div {
               display: flex;
               align-items: center;
