@@ -29,7 +29,7 @@ export const userSchema = yup.object({
       state: yup.string().required('digite o seu estado'),
       city: yup.string().required('digite o sua cidade'),
       road: yup.string().required('digite o sua rua'),
-      number: yup.number().required('digite o numero da sua casa'),
+      number: yup.string().required('digite o numero da casa'),
       complement: yup.string(),
     }),
     is_seller: yup.boolean(),

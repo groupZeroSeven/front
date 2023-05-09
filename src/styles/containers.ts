@@ -299,7 +299,9 @@ export const RegisterStyled = styled.main`
   & > div > form {
     margin: 3rem 0rem;
   }
-
+  & > div > form > .containerInput {
+    margin-bottom: 1.5rem;
+  }
   & > div > form > p {
     margin: 0.8rem 0rem 2rem 0rem;
   }
@@ -320,9 +322,11 @@ export const StyledAdress = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 0rem;
+    margin-bottom: 1rem;
   }
   & > div > div {
     width: 45%;
+    margin-bottom: 1rem;
   }
 `;
 
