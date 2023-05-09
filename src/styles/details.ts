@@ -179,7 +179,7 @@ export const MainDetailsStyle = styled.main`
           display: flex;
           flex-wrap: wrap;
           gap: 2.4rem 0.8rem;
-          > p {
+          > button {
             background: #e9ecef;
             border-radius: 24px;
             padding: 5px 12px;
@@ -219,3 +219,9 @@ export const MainDetailsStyle = styled.main`
     }
   }
 `;
+
+export const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`

@@ -1,17 +1,17 @@
 import { ButtonBig } from '@/src/components/button-big';
 import { ButtonMedium } from '@/src/components/button-medium';
 import { Header } from '@/src/components/header';
-import { ProfileAdvertiser } from '@/src/components/profile';
 import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
 import { iCreateComment } from '@/src/interfaces/adverts';
 import { iComment } from '@/src/interfaces/user';
 import { schemaCreateComment } from '@/src/schemas/createComment';
 import { api } from '@/src/services/api';
-import { MainDetailsStyle } from '@/src/styles/details';
+import { MainDetailsStyle, ProfileContainer } from '@/src/styles/details';
 import {
   Body_1_400,
   Body_2_400,
+  Body_2_500,
   Details,
   Heading_6_600,
   Heading_7_500,
@@ -26,6 +26,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { EditCommentModal } from '@/src/components/Modals/Edit Comment';
 import { DeleteCommentModal } from '@/src/components/Modals/Delete Comment';
+import { ProfilePic } from '@/src/components/ProfilePic';
 
 export default function DetailsPage() {
   const router = useRouter();
@@ -203,12 +204,7 @@ export default function DetailsPage() {
                   </section>
 
                   <section className="profile">
-                    <Image
-                      src="/image/profile.png"
-                      alt="Profile"
-                      width={77}
-                      height={77}
-                    ></Image>
+                    <ProfilePic user={detailAnnouncement.user!.name} isLarge={true}/>
                     <Heading_6_600>
                       {detailAnnouncement.user?.name}
                     </Heading_6_600>
@@ -252,10 +248,10 @@ export default function DetailsPage() {
                         }
                         
                         <div>
-                          <ProfileAdvertiser
-                            imgProfile={'/image/profile.png'}
-                            nameProfile={el.user.name}
-                          />
+                        <ProfileContainer>
+                          <ProfilePic user={el.user.name} isLarge={false}/>
+                          <Body_2_500>{el.user.name}</Body_2_500>
+                        </ProfileContainer>
                           <Image
                             src="/image/ellipse.png"
                             alt="Ellipse"
@@ -273,10 +269,10 @@ export default function DetailsPage() {
 
                 <form className="commit" onSubmit={handleSubmit(handleSubmitFunction)}>
                   {user ? (
-                    <ProfileAdvertiser
-                    imgProfile="/image/profile.png"
-                    nameProfile={user.name}
-                  />
+                    <ProfileContainer>
+                      <ProfilePic user={user.name} isLarge={false}/>
+                      <Body_2_500>{user.name}</Body_2_500>
+                    </ProfileContainer>
                   ): null}
                   <textarea placeholder="Carro muito confortável, foi uma ótima experiência de compra..." id='text' {...register('text')}></textarea>
                   <span>
@@ -289,9 +285,9 @@ export default function DetailsPage() {
                     </button>
                   </span>
                   {/* <div>
-                    <p>Gostei muito!</p>
-                    <p>Incrível</p>
-                    <p>Recomendarei para meus amigos!</p>
+                    <button>Gostei muito!</button>
+                    <button>Incrível</button>
+                    <button>Recomendarei para meus amigos!</button>
                   </div> */}
                 </form>
               </div>

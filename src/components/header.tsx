@@ -4,11 +4,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { UserContext } from '../contexts/userContext';
-import { Body_1_400, Body_1_600, Button_medium_text } from '../styles/global';
+import { Body_1_400, Body_1_600, Body_2_500, Button_medium_text } from '../styles/global';
 import { HeaderStyled } from '../styles/header';
 import { EditUserModal } from './Modals/Edit User';
 import { ButtonBig } from './button-big';
-import { ProfileAdvertiser } from './profile';
+import { ProfileContainer } from '../styles/details';
+import { ProfilePic } from './ProfilePic';
 
 export const Header = () => {
   const router = useRouter();
@@ -196,10 +197,10 @@ export const Header = () => {
                 onClick={() => openMenuHandler()}
                 style={{ cursor: 'pointer' }}
               >
-                <ProfileAdvertiser
-                  imgProfile="/image/profile.png"
-                  nameProfile={user.name}
-                />
+                <ProfileContainer>
+                  <ProfilePic user={user.name} isLarge={false}/>
+                  <Body_2_500>{user.name}</Body_2_500>
+                </ProfileContainer>
               </div>
               {openMenu && (
                 <span className="computerSpan">

@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import {
   Body_2_400,
+  Body_2_500,
   Details,
   Heading_7_500,
   Heading_7_600,
   ProductCardStyled,
 } from '../styles/global';
-import { ProfileAdvertiser } from './profile';
+import { ProfileContainer } from '../styles/details';
+import { ProfilePic } from './ProfilePic';
 
 export const ProductCard = ({
   img,
@@ -30,10 +32,10 @@ export const ProductCard = ({
         </div>
         <Heading_7_600>{title}</Heading_7_600>
         <Body_2_400>{desc}</Body_2_400>
-        <ProfileAdvertiser
-          imgProfile={imageProfile}
-          nameProfile={nameProfile}
-        />
+        <ProfileContainer>
+          <ProfilePic user={nameProfile} isLarge={false}/>
+          <Body_2_500>{nameProfile}</Body_2_500>
+        </ProfileContainer>
         <span>
           <Details href="">{km}</Details>
           <Details href="">{age}</Details>
