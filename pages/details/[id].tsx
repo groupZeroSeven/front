@@ -263,6 +263,7 @@ export default function DetailsPage() {
                             height={4}
                           ></Image>
                           <p>{time(el.createdAt)}</p>
+                          {el.is_updated ? <p>(editado)</p> : null}
                         </div>
                         <Body_2_400>{el.text}</Body_2_400>
                       </li>

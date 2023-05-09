@@ -16,7 +16,9 @@ interface iEditCommentModalProps {
 
 interface iComentForm {
   text: string;
+  is_updated: boolean;
 }
+
 export const EditCommentModal = (commentId : iEditCommentModalProps) => {
   const router = useRouter();
   const { id } = router.query;
@@ -30,6 +32,7 @@ export const EditCommentModal = (commentId : iEditCommentModalProps) => {
   });
   const handleSubmitFunction = async (data: iComentForm) => {
     const token = localStorage.getItem('token');
+    data["is_updated"] = true
     try {
       await api.patch(`api/${id}/comments/${commentId.commentId}`, data, {
         headers: {

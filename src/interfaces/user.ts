@@ -67,6 +67,7 @@ export interface iComment {
   updatedAt: string;
   user: IUser;
   announcement: iAdvertComment;
+  is_updated: boolean;
 }
 
 export interface IUserAnnouncement {
