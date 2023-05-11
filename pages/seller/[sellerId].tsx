@@ -62,7 +62,7 @@ export default function Dashboard() {
     setLoad(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ sellerId]);
+  }, [sellerId]);
 
   return (
     <>

@@ -18,7 +18,7 @@ import {
 } from '@/src/styles/global';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';

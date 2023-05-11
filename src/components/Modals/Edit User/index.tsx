@@ -1,3 +1,4 @@
+import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
 import { iFormRegister } from '@/src/interfaces/user';
 import { api } from '@/src/services/api';
@@ -12,7 +13,8 @@ import { StyledEditUserModal } from './style';
 
 export const EditUserModal = () => {
   const { user, EditUser, userLogout } = useContext(UserContext);
-  const { isEditUserModal, setIsEditUserModal } = useContext(UserContext);
+  const { setIsEditUserModal } = useContext(UserContext);
+  const { setLoad } = useContext(LoadContext);
 
   const {
     register,
@@ -30,6 +32,7 @@ export const EditUserModal = () => {
   };
 
   const deleteUser = async (id: string) => {
+    setLoad(true);
     const token = localStorage.getItem('token');
 
     await toast.promise(
@@ -44,6 +47,7 @@ export const EditUserModal = () => {
 
     setIsEditUserModal(false);
 
+    setLoad(false);
     return userLogout();
   };
 

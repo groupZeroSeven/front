@@ -38,11 +38,7 @@ export const Header = () => {
 
   return (
     <>
-      {isEditUserModal ? (
-        <>
-          <EditUserModal />
-        </>
-      ) : null}
+      {isEditUserModal && <EditUserModal />}
       <HeaderStyled>
         <Image
           src="/image/logo.png"
@@ -77,19 +73,6 @@ export const Header = () => {
                         <Body_1_400>Editar Perfil</Body_1_400>
                       </Button_medium_text>
 
-                      <Button_medium_text
-                        style={{
-                          backgroundColor: 'transparent',
-                          color: 'var(--color-grey-2)',
-                          borderColor: 'transparent',
-                        }}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          // router.push('/dashboard');
-                        }}
-                      >
-                        {/* <Body_1_400>Editar endereço</Body_1_400> */}
-                      </Button_medium_text>
                       {user.is_seller && (
                         <Button_medium_text
                           style={{
