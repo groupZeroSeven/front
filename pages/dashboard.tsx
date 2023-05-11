@@ -11,6 +11,8 @@ import { IUserAnnouncement } from '@/src/interfaces/user';
 import { api } from '@/src/services/api';
 import { DashboardStyle } from '@/src/styles/dashboard';
 import { ProfileContainer } from '@/src/styles/details';
+import { Heading_1_700 } from '@/src/styles/global';
+import { Heading_2_600 } from '@/src/styles/global';
 import {
   Body_1_400,
   Body_2_400,
@@ -102,39 +104,41 @@ export default function Dashboard() {
       <Header />
       {isEditAdvertModal && <EditAdvertModal id={advertSelected?.id} />}
       <DashboardStyle>
-        <aside>
-          <ProfilePic user={user!.name} isLarge={true}/>
-          <span style={{ display: 'flex', gap: '9px', alignContent: 'center' }}>
-            <Heading_6_600>{user?.name}</Heading_6_600>
-            <Details href="">
-              {user?.is_seller ? 'Anunciante' : 'Client'}
-            </Details>
-          </span>
-          <Body_1_400>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta rem
-            consectetur at, esse expedita eos eius id deleniti voluptas amet
-            nobis explicabo maxime sit culpa, blanditiis temporibus ratione,
-            placeat animi?
-          </Body_1_400>
-          <div style={{ maxWidth: '160px' }}>
-            <Button_big_text
-              style={{
-                backgroundColor: 'var(--color-grey-10',
-                color: 'var(--color-brand-1)',
-                border: '1px solid var(--color-brand-1)',
-              }}
-              onClick={(event: any) => {
-                event.preventDefault();
-                setIsCreateAdvertModal(true);
-              }}
-            >
-              Criar anuncio
-            </Button_big_text>
-          </div>
-        </aside>
+        { user &&
+          <aside>
+            <ProfilePic user={user!.name} isLarge={true}/>
+            <span style={{ display: 'flex', gap: '9px', alignContent: 'center' }}>
+              <Heading_6_600>{user?.name}</Heading_6_600>
+              <Details href="">
+                {user?.is_seller ? 'Anunciante' : 'Client'}
+              </Details>
+            </span>
+            <Body_1_400>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta rem
+              consectetur at, esse expedita eos eius id deleniti voluptas amet
+              nobis explicabo maxime sit culpa, blanditiis temporibus ratione,
+              placeat animi?
+            </Body_1_400>
+            <div style={{ maxWidth: '160px' }}>
+              <Button_big_text
+                style={{
+                  backgroundColor: 'var(--color-grey-10',
+                  color: 'var(--color-brand-1)',
+                  border: '1px solid var(--color-brand-1)',
+                }}
+                onClick={(event: any) => {
+                  event.preventDefault();
+                  setIsCreateAdvertModal(true);
+                }}
+              >
+                Criar anuncio
+              </Button_big_text>
+            </div>
+          </aside>
+        }
 
         <ul>
-          {myAnnouncement &&
+          {myAnnouncement && myAnnouncement.length > 0 ?
             myAnnouncement.map((el) => (
               <ProductCardStyled key={el.id}>
                 <div className="img">
@@ -184,7 +188,9 @@ export default function Dashboard() {
                   </div>
                 )}
               </ProductCardStyled>
-            ))}
+            )) : 
+              <Heading_2_600>Você ainda não possui anúncios</Heading_2_600>
+            }
         </ul>
         <div>
           <Heading_5_600>

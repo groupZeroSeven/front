@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  // baseURL: 'http://localhost:8000',
-  baseURL: 'https://project-sevenzero.onrender.com',
+  baseURL: 'http://localhost:10000',
+  // baseURL: 'https://project-sevenzero.onrender.com',
   timeout: 5000,
 });
 

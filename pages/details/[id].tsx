@@ -12,6 +12,7 @@ import {
   Body_1_400,
   Body_2_400,
   Body_2_500,
+  Button_medium_text,
   Details,
   Heading_6_600,
   Heading_7_500,
@@ -70,16 +71,18 @@ export default function DetailsPage() {
 
   React.useEffect(() => {
     const res = async () => {
-      try {
-        const {data} = await api.get(`api/${id}/comments/`)
-        const filterdComments = data.filter((comment: iComment) => comment.announcement.id === id) 
-        setComments(filterdComments)
-      } catch (err) {
-        console.log(err)
+      if (id) {
+        try {
+          const {data} = await api.get(`api/${id}/comments/`)
+          const filterdComments = data.filter((comment: iComment) => comment.announcement.id === id) 
+          setComments(filterdComments)
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
     res()
-  }, [isEditCommentModal, isDeleteCommentModal])
+  }, [isEditCommentModal, isDeleteCommentModal, id])
   const {
     register,
     handleSubmit,
@@ -170,13 +173,24 @@ export default function DetailsPage() {
                     </div>
                     <Heading_7_500>{`R$: ${detailAnnouncement?.price}`}</Heading_7_500>
                     <span>
-                      <ButtonMedium
-                        bgColor="var(--color-brand-1)"
-                        fontColor="var(--color-whiteFixed)"
-                        borderColor="var(--color-brand-1)"
+                      <Button_medium_text
+                        style={{
+                          backgroundColor: "var(--color-brand-1)",
+                          color: "var(--color-whiteFixed)",
+                          borderColor: "var(--color-brand-1)",
+                          height: "38px"
+                        }}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          if (user) {
+                            router.push(`https://api.whatsapp.com/send?phone=+55${detailAnnouncement.user?.phone}&text=${detailAnnouncement.brand} - ${detailAnnouncement.model}`)
+                          } else {
+                            router.push("/login")
+                          }
+                        }}
                       >
                         Comprar
-                      </ButtonMedium>
+                    </Button_medium_text>
                     </span>
                   </section>
 

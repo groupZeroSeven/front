@@ -70,6 +70,7 @@ const UserProvider = ({ children }: IContextProps) => {
 
       router.push('/');
     } catch (error: any) {
+      console.log(error)
       toast.error(error?.response.data.message, {
         position: 'bottom-right',
         autoClose: 5000,
