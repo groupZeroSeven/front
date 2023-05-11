@@ -1,3 +1,4 @@
+import { StyledSpanError } from '@/src/components/Modals/Create Advert/style';
 import { ButtonBig } from '@/src/components/button-big';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
@@ -15,7 +16,6 @@ import { StyledLabels } from '@/src/styles/labels';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 
 export default function Register() {
   const { RegisterUser } = useContext(UserContext);
@@ -33,9 +33,10 @@ export default function Register() {
     <>
       <Header />
       <RegisterStyled>
-        <div>
+        <div className="containerInput">
           <Heading_5_500>Cadastro</Heading_5_500>
           <form onSubmit={handleSubmit(RegisterUser)}>
+          <div className="containerInput">
             <Body_2_500>Informações pessoais</Body_2_500>
             <StyledLabels htmlFor="name">Nome</StyledLabels>
             <StyledInput2
@@ -43,41 +44,58 @@ export default function Register() {
               placeholder="Ex: Samuel Leão"
               {...register('name')}
             />
+            <StyledSpanError>{errors.name?.message}</StyledSpanError>
+          </div>
 
-            <StyledLabels htmlFor="email">Email</StyledLabels>
-            <StyledInput2
-              id="email"
-              placeholder="Ex: samuel@email.com"
-              {...register('email')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="email">Email</StyledLabels>
+              <StyledInput2
+                id="email"
+                placeholder="Ex: samuel@email.com"
+                {...register('email')}
+              />
+              <StyledSpanError>{errors.email?.message}</StyledSpanError>
+            </div>
 
-            <StyledLabels htmlFor="cpf">CPF</StyledLabels>
-            <StyledInput2
-              id="cpf"
-              placeholder="000.000.000-00"
-              {...register('cpf')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="cpf">CPF</StyledLabels>
+              <StyledInput2
+                id="cpf"
+                placeholder="000.000.000-00"
+                {...register('cpf')}
+              />
+              <StyledSpanError>{errors.cpf?.message}</StyledSpanError>
+            </div>
 
-            <StyledLabels htmlFor="phone">Celular</StyledLabels>
-            <StyledInput2
-              id="phone"
-              placeholder="(DDD) 90000-0000"
-              {...register('phone')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="phone">Celular</StyledLabels>
+              <StyledInput2
+                id="phone"
+                placeholder="(DDD) 90000-0000"
+                {...register('phone')}
+              />
+              <StyledSpanError>{errors.phone?.message}</StyledSpanError>
+            </div>
 
-            <StyledLabels htmlFor="birth_date">Data de nascimento</StyledLabels>
-            <StyledInput2
-              id="birth_date"
-              placeholder="00/00/00"
-              {...register('birth_date')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="birth_date">Data de nascimento</StyledLabels>
+              <StyledInput2
+                id="birth_date"
+                placeholder="00/00/00"
+                {...register('birth_date')}
+              />
+              <StyledSpanError>{errors.birth_date?.message}</StyledSpanError>
+            </div>
 
-            <StyledLabels htmlFor="description">Descrição</StyledLabels>
-            <StyledInput2
-              id="description"
-              placeholder="Digitar Descrição"
-              {...register('description')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="description">Descrição</StyledLabels>
+              <StyledInput2
+                id="description"
+                placeholder="Digitar Descrição"
+                {...register('description')}
+              />
+              <StyledSpanError>{errors.description?.message}</StyledSpanError>
+            </div>
 
             <StyledAdress>
               <Body_2_500>Informações de endereço</Body_2_500>
@@ -87,6 +105,8 @@ export default function Register() {
                 {...register('address.cep')}
                 placeholder="00000.000"
               ></StyledInput2>
+              <StyledSpanError>{errors.address?.cep?.message}</StyledSpanError>
+  
               <div>
                 <div>
                   <StyledLabels htmlFor="state">Estado</StyledLabels>
@@ -95,6 +115,7 @@ export default function Register() {
                     {...register('address.state')}
                     placeholder="Digitar estado"
                   ></StyledInput2>
+                  <StyledSpanError>{errors.address?.state?.message}</StyledSpanError>
                 </div>
                 <div>
                   <StyledLabels htmlFor="city">Cidade</StyledLabels>
@@ -103,6 +124,7 @@ export default function Register() {
                     {...register('address.city')}
                     placeholder="Digitar cidade"
                   ></StyledInput2>
+                  <StyledSpanError>{errors.address?.city?.message}</StyledSpanError>
                 </div>
               </div>
               <StyledLabels htmlFor="road">Rua</StyledLabels>
@@ -111,7 +133,7 @@ export default function Register() {
                 {...register('address.road')}
                 placeholder="Digitar rua"
               ></StyledInput2>
-
+              <StyledSpanError>{errors.address?.road?.message}</StyledSpanError>
               <div>
                 <div>
                   <StyledLabels htmlFor="number">Número</StyledLabels>
@@ -120,6 +142,7 @@ export default function Register() {
                     {...register('address.number')}
                     placeholder="Digitar numero"
                   ></StyledInput2>
+                  <StyledSpanError>{errors.address?.number?.message}</StyledSpanError>
                 </div>
                 <div>
                   <StyledLabels htmlFor="complement">Complemento</StyledLabels>
@@ -128,6 +151,7 @@ export default function Register() {
                     {...register('address.complement')}
                     placeholder="Digitar complemento"
                   ></StyledInput2>
+                  <StyledSpanError>{errors.address?.complement?.message}</StyledSpanError>
                 </div>
               </div>
             </StyledAdress>
@@ -159,23 +183,29 @@ export default function Register() {
               </StyledCheckbox>
             </div>
 
-            <StyledLabels htmlFor="password">Senha</StyledLabels>
-            <StyledInput2
-              id="password"
-              type="password"
-              placeholder="Digitar senha"
-              {...register('password')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="password">Senha</StyledLabels>
+              <StyledInput2
+                id="password"
+                type="password"
+                placeholder="Digitar senha"
+                {...register('password')}
+              />
+              <StyledSpanError>{errors.password?.message}</StyledSpanError>
+            </div>
 
-            <StyledLabels htmlFor="confim_password">
-              Confirmar Senha
-            </StyledLabels>
-            <StyledInput2
-              id="confim_password"
-              type="password"
-              placeholder="Digitar senha"
-              {...register('confim_password')}
-            />
+            <div className="containerInput">
+              <StyledLabels htmlFor="confim_password">
+                Confirmar Senha
+              </StyledLabels>
+              <StyledInput2
+                id="confim_password"
+                type="password"
+                placeholder="Digitar senha"
+                {...register('confim_password')}
+              />
+              <StyledSpanError>{errors.confim_password?.message}</StyledSpanError>
+            </div>
 
             <ButtonBig
               bgColor="var(--color-brand-1)"

@@ -1,18 +1,20 @@
 import { ConfirmModal } from '@/src/components/Modals/Confirm';
 import { CreateAdvertModal } from '@/src/components/Modals/Create Advert';
 import { EditAdvertModal } from '@/src/components/Modals/Edit Advert';
+import { ProfilePic } from '@/src/components/ProfilePic';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
-import { ProfileAdvertiser } from '@/src/components/profile';
 import { AdvertsContext } from '@/src/contexts/advertsContext';
 import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
 import { IUserAnnouncement } from '@/src/interfaces/user';
 import { api } from '@/src/services/api';
 import { DashboardStyle } from '@/src/styles/dashboard';
+import { ProfileContainer } from '@/src/styles/details';
 import {
   Body_1_400,
   Body_2_400,
+  Body_2_500,
   Button_big_text,
   Button_medium_text,
   Details,
@@ -101,12 +103,7 @@ export default function Dashboard() {
       {isEditAdvertModal && <EditAdvertModal id={advertSelected?.id} />}
       <DashboardStyle>
         <aside>
-          <Image
-            src={'/image/profile.png'}
-            alt="Profile"
-            width={104}
-            height={104}
-          />
+          <ProfilePic user={user!.name} isLarge={true}/>
           <span style={{ display: 'flex', gap: '9px', alignContent: 'center' }}>
             <Heading_6_600>{user?.name}</Heading_6_600>
             <Details href="">
@@ -145,10 +142,10 @@ export default function Dashboard() {
                 </div>
                 <Heading_7_600>{`${el.brand} - ${el.model}`}</Heading_7_600>
                 <Body_2_400>{el.description}</Body_2_400>
-                <ProfileAdvertiser
-                  imgProfile="/image/profile.png"
-                  nameProfile={user?.name}
-                />
+                <ProfileContainer>
+                  <ProfilePic user={user!.name} isLarge={false}/>
+                  <Body_2_500>{user?.name}</Body_2_500>
+                </ProfileContainer>
                 <span>
                   <Details href="">{el.mileage}</Details>
                   <Details href="">{el.year}</Details>

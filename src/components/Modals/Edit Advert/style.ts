@@ -16,7 +16,7 @@ z-index: 500;
     background-color: white;
     width: 100%;
     overflow: auto;
-    border-radius: 0.8rem,;
+    border-radius: 0.8rem;
     ::-webkit-scrollbar {
       width: 0.5em;
       height: 0.5em;

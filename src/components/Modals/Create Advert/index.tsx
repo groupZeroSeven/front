@@ -129,20 +129,12 @@ export const CreateAdvertModal = () => {
 
       if (!token) return userLogout();
 
-      // await toast.promise(
       const res = await api.post('/api/anoucements', data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      // {
-      //   pending: 'Waiting...',
-      //   success: 'Anúncio criado com sucesso.',
-      // },
-      // {
-      //   theme: 'dark',
-      // }
-      // );
+  
       if (myAnnouncement) {
         setMyAnnouncement([res.data, ...myAnnouncement!]);
       }

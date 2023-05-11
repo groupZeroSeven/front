@@ -1,14 +1,16 @@
+import { ProfilePic } from '@/src/components/ProfilePic';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
-import { ProfileAdvertiser } from '@/src/components/profile';
 import { LoadContext } from '@/src/contexts/loadingContext';
 import { UserContext } from '@/src/contexts/userContext';
 import { IUser } from '@/src/interfaces/user';
 import { api } from '@/src/services/api';
 import { DashboardStyle } from '@/src/styles/dashboard';
+import { ProfileContainer } from '@/src/styles/details';
 import {
   Body_1_400,
   Body_2_400,
+  Body_2_500,
   Details,
   Heading_5_600,
   Heading_6_600,
@@ -28,14 +30,13 @@ export default function Dashboard() {
 
   const { setLoad } = React.useContext(LoadContext);
 
-  const { user, userLogout, myAnnouncementSeller, setMyAnnouncementSeller } =
+  const { myAnnouncementSeller, setMyAnnouncementSeller } =
     React.useContext(UserContext);
 
   const [userSeller, setUserSeller] = React.useState<IUser | null>(null);
-
+  const [sellerName, setSellerName] = React.useState<string>("")
   React.useEffect(() => {
     setLoad(true);
-
     if (sellerId) {
       const getAnnouncement = async () => {
         try {
@@ -43,9 +44,9 @@ export default function Dashboard() {
             api.get(`/api/anoucementUser/${sellerId}`),
             {}
           );
-
           setUserSeller(data.data.user);
           setMyAnnouncementSeller(data.data.annoucements);
+          setSellerName(data.data.user.name)
         } catch (e: any) {
           toast.error(e.response.data.message, {
             position: 'bottom-right',
@@ -70,12 +71,7 @@ export default function Dashboard() {
         {userSeller && (
           <>
             <aside>
-              <Image
-                src={'/image/profile.png'}
-                alt="Profile"
-                width={104}
-                height={104}
-              />
+              <ProfilePic user={sellerName} isLarge={true}/>
               <span
                 style={{ display: 'flex', gap: '9px', alignContent: 'center' }}
               >
@@ -113,10 +109,10 @@ export default function Dashboard() {
                     </div>
                     <Heading_7_600>{`${el.brand} - ${el.model}`}</Heading_7_600>
                     <Body_2_400>{el.description}</Body_2_400>
-                    <ProfileAdvertiser
-                      imgProfile="/image/profile.png"
-                      nameProfile={userSeller?.name}
-                    />
+                    <ProfileContainer>
+                      <ProfilePic user={userSeller!.name} isLarge={false}/>
+                      <Body_2_500>{userSeller?.name}</Body_2_500>
+                    </ProfileContainer>
                     <span>
                       <Details href="#">{el.mileage}</Details>
                       <Details href="#">{el.year}</Details>
